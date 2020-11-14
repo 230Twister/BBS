@@ -7,7 +7,11 @@ from flask.cli import with_appcontext
 #获取数据库对象
 def getDatabase():
     if 'db' not in g:
-        g.db = pymysql.connect(host="150.158.179.219", port=3306, user="remote_root", password="jouep72xt.Czc", database="bbs")
+        g.db = pymysql.connect( host=current_app.config['HOST'],            #数据库ip
+                                port=current_app.config['PORT'],            #端口
+                                user=current_app.config['USER'],            #用户
+                                password=current_app.config['PASSWORD'],    #密码
+                                database=current_app.config['DATABASE'])    #数据库名
     return g.db
 
 #关闭数据库
@@ -43,7 +47,7 @@ def initDatabase():
         'content LONGTEXT NOT NULL,'                            #内容
         'posttime DATETIME NOT NULL,'                           #发表时间
         'updatetime DATETIME NOT NULL,'                         #更新时间
-        'reply INT UNSIGNED NOT NULL,'                          #回复对象
+        'reply INT UNSIGNED NOT NULL'                          #回复对象
         ');')
     cursor.execute('CREATE TABLE IF NOT EXISTS user ('
         'uuid INT NOT NULL PRIMARY KEY AUTO_INCREMENT, '        #用户id
@@ -54,7 +58,7 @@ def initDatabase():
         'lastlogin DATETIME NOT NULL,'                          #最后登录时间
         'permission TEXT NOT NULL,'                             #权限列表
         'collect TEXT NOT NULL,'                                #收藏的主题
-        'point MEDIUMINT UNSIGNED NOT NULL,'                    #积分
+        'point MEDIUMINT UNSIGNED NOT NULL'                    #积分
         ');')
 
 @click.command('init_db')
