@@ -23,7 +23,7 @@ def register():
         curse = database.cursor()
         user = curse.execute(
             'SELECT * FROM user WHERE name=?', (username,)
-        ).fetchone()                            #从数据库查找用户记录
+        ).fetchone()                                #从数据库查找用户记录
         error = None
         if user is not None:
             error = '该用户已存在'
@@ -40,30 +40,32 @@ def register():
         flash(error)
     return render_template('auth/register.html')
 
-@authbp.route('/sendcode')
-def sendEmail(dest):
-    database = getDatabase()
-    cursor = database.cursor()
-    mail = cursor.execute(
-        'SELECT * FROM mail WHERE destination=?', (dest,)
-    ).fetchone()
+@authbp.route('/sendcode', methods=('GET', 'POST'))
+def sendEmail():
+    if request.method == 'POST':
+        dest = request.form['email']
+        database = getDatabase()
+        cursor = database.cursor()
+        mail = cursor.execute(
+            'SELECT * FROM mail WHERE destination=?', (dest,)
+        ).fetchone()
 
-    if len(dest) > 7 and re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", dest) != None:
-        #间隔两分钟才能发送邮件
-        if time.time() - mail['posttime'] > 120:
-            app = current_app._get_current_object()
-            vcode = generateCode()
-            thr = Thread(target = sendMail, args = [app, '', vcode])
-            thr.start()
+        if len(dest) > 7 and re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", dest) != None:
+            #间隔两分钟才能发送邮件
+            if time.time() - mail['posttime'] > 120:
+                app = current_app._get_current_object()
+                vcode = generateCode()          #生成验证码
+                thr = Thread(target = sendMail, args = [app, dest, vcode])
+                thr.start()                     #异步发送邮件
 
-            cursor.execute(
-                'UPDATE mail SET posttime=? WHERE destination=?', (time.time(), dest,)
-            )
-            session['emailvcode'] = vcode
+                session['emailvcode'] = vcode
+                cursor.execute(
+                    'UPDATE mail SET posttime=? WHERE destination=?', (time.time(), dest,)
+                )
+            else:
+                flash('发送邮件过于频繁')
         else:
-            flash('发送邮件过于频繁')
-    else:
-        flash('邮箱格式不正确')
+            flash('邮箱格式不正确')
 
 @authbp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -96,6 +98,12 @@ def login():
 @authbp.route('/imageCode')
 def imageCode():
     return ImageCode().getImageCode()
+
+@authbp.route('/forget', methods=('GET', 'POST'))
+def forgetPassword():
+    if request.method == 'POST':
+        
+    return render_template('auth/forget.html')
 
 @authbp.before_app_request
 def loadLoginedUser():
