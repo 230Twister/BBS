@@ -5,7 +5,7 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 #获取数据库对象
-def getDatabase():
+def getDatabase() -> pymysql.connections.Connection:
     if 'db' not in g:
         g.db = pymysql.connect( host=current_app.config['HOST'],            #数据库ip
                                 port=current_app.config['PORT'],            #端口
@@ -30,7 +30,7 @@ def initDatabase():
     db = getDatabase()
     cursor = db.cursor()
 
-    cursor.execute('CREATE TABLE IF NOT EXISTS post('
+    cursor.execute('CREATE TABLE IF NOT EXISTS post('           #主题表单
         'id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'  #主题id
         'title TEXT NOT NULL,'                                  #标题
         'content LONGTEXT NOT NULL,'                            #内容
@@ -47,19 +47,28 @@ def initDatabase():
         'content LONGTEXT NOT NULL,'                            #内容
         'posttime DATETIME NOT NULL,'                           #发表时间
         'updatetime DATETIME NOT NULL,'                         #更新时间
-        'reply INT UNSIGNED NOT NULL'                          #回复对象
+        'reply INT UNSIGNED NOT NULL'                           #回复对象
         ');')
     cursor.execute('CREATE TABLE IF NOT EXISTS user ('
         'uuid INT NOT NULL PRIMARY KEY AUTO_INCREMENT, '        #用户id
         'name varchar(128) NOT NULL, '                          #昵称
         'ip varchar(32) NOT NULL,'                              #ip
         'password varchar(256) NOT NULL,'                       #密码
+        'email varchar(32) NOT NULL'                            #邮箱
         'registertime DATETIME NOT NULL,'                       #注册时间
         'lastlogin DATETIME NOT NULL,'                          #最后登录时间
+        ');')
+    cursor.execute('CREATE TABLE IF NOT EXISTS userinfo ('
+        'uuid INT NOT NULL PRIMARY KEY AUTO_INCREMENT, '        #用户id
+        'warn TEXT NOT NULL'                                    #提醒
         'permission TEXT NOT NULL,'                             #权限列表
         'collect TEXT NOT NULL,'                                #收藏的主题
-        'point MEDIUMINT UNSIGNED NOT NULL'                    #积分
-        ');')
+        'point MEDIUMINT UNSIGNED NOT NULL'                     #积分
+    )
+    cursor.execute('CREATE TABLE IF NOT EXISTS mail ('
+        'destination varchar(32) NOT NULL,'                     #发送邮箱
+        'posttime INT NOT NULL'                                #发送时间
+    )
 
 @click.command('init_db')
 @with_appcontext
