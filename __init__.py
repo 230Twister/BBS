@@ -9,6 +9,8 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
 
     app.config.from_mapping(  #默认配置
+        SECRET_KEY="dev",
+
         HOST="127.0.0.1",
         PORT=3306,
         USER="root",
@@ -33,6 +35,9 @@ def create_app():
 
     from BBS import database
     database.init_app(app)       #注册数据库初始化命令
+
+    from BBS import auth
+    app.register_blueprint(auth.authbp)
 
     @app.route('/test')
     def hello():

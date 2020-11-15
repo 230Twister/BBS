@@ -26,7 +26,7 @@ class ImageCode():
     def __getVerifyCode(self) -> (Image, string):
         code = generateCode()
         width, height = 120, 50
-        image = Image.new('RPG', (width, height), 'white')
+        image = Image.new('RGB', (width, height), 'white')
         font = ImageFont.truetype('app/static/arial.ttf', 40)
         draw = ImageDraw.Draw(image)
 
