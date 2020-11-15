@@ -1,0 +1,246 @@
+.font-400{
+    font-family: 'Noto Serif SC',serif;
+
+}
+
+
+/* for navbar */
+.avatar-xs {
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+}
+
+/* for photo page */
+.avatar-s {
+    width: 50px;
+    height: 50px;
+}
+
+/* for user card */
+.avatar-m {
+    width: 100px;
+    height: 100px;
+}
+
+/* for user header */
+.avatar-l {
+    width: 180px;
+    height: 180px;
+}
+
+/* nav .index-nav{
+    margin-left: 15px;
+    height: 50px;
+} */
+
+nav .container-fluid{
+    /* height: 50px; */
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    /* background-color: burlywood; */
+    
+}
+
+.search-form {
+    margin-left:30px;
+    margin-right:10px;
+}
+
+
+.navbar-bbs a{
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.navbar-bbs .item-hover{
+    transition: all 0.3s;
+}
+
+
+.navbar-bbs .item-hover:hover{
+    transform:scale(1.1);
+}
+
+.item-font-size-sm{
+    font-size: 5px;
+}
+
+.item-font-size-md{
+    font-size: 14px;
+}
+
+.item-font-size-lg{
+    font-size: 30px;
+}
+
+.search-button {
+    background-color: rgb(112, 125, 126); 
+    border: none;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 5px 5px;
+    cursor: pointer;
+    border-radius: 18px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
+
+
+.button-hover:focus {
+    outline: none;
+}
+
+.button-hover:hover {
+    box-shadow: 0 8px 12px 0 rgba(0,0,0,0.24),0 15px 35px 0 rgba(32, 32, 32, 0.19);
+}
+
+.input-text {
+    height: 32px;
+}
+
+/* 登录界面 */
+:root {
+    --input-padding-x: 1.5rem;
+    --input-padding-y: .75rem;
+}
+
+.body-login {
+    margin-top: 80px;
+    background: #b1b5b9;
+    border-radius: 1rem;
+    background: linear-gradient(to right, rgb(107, 161, 223), rgb(148, 202, 230));
+}
+
+.card-signin {
+    background-color: rgb(210, 223, 235);
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    padding: 1rem;
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-signin .card-title {
+    margin-bottom: 2rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+}
+
+.card-signin .card-body {
+  padding: 3rem;
+}
+
+.form-signin {
+  width: 100%;
+}
+
+.form-signin .font-size-md {
+    font-size: 14px;
+}
+
+
+.form-signin .btn {
+  font-size: 100%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  
+  transition: all 0.2s;
+}
+
+.form-signin .item-hover{
+    transition: all 0.5s;
+}
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-label-group input {
+  height: auto;
+  border-radius: 2rem;
+}
+
+.form-label-group>input,
+.form-label-group>label {
+  padding: var(--input-padding-y) var(--input-padding-x);
+}
+
+.form-label-group>label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: all .1s ease-in-out;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+  padding-bottom: calc(var(--input-padding-y) / 3);
+}
+
+.form-label-group input:not(:placeholder-shown)~label {
+    padding-top: calc(var(--input-padding-y) / 3);
+    padding-bottom: calc(var(--input-padding-y) / 3);
+    font-size: 12px;
+    color: #777;
+}
+
+.form-signin .btn-register {
+    color: white;
+    background-color: #4f698a;
+}
+
+.form-signin .verify_code{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 40px;
+    border-radius: 2px;
+    margin-left: 5px;
+}
+
+.form-signin .btn-login{
+    color: white;
+    background-color: #7da6dd;
+}
