@@ -5,7 +5,7 @@ import string
 from io import BytesIO
 from PIL import Image, ImageFont, ImageDraw, ImageFilter
 
-from BBS import mail
+from . import mail
 
 #验证码类
 class ImageCode():

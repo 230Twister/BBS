@@ -33,10 +33,10 @@ def create_app():
     global mail
     mail = Mail(app)
 
-    from BBS import database
+    from . import database
     database.init_app(app)       #注册数据库初始化命令
 
-    from BBS import auth
+    from . import auth
     app.register_blueprint(auth.authbp)
 
     @app.route('/test')

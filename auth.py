@@ -6,8 +6,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from threading import Thread
 import time, re
 
-from BBS.database import getDatabase
-from BBS.api import ImageCode, generateCode, sendMail
+from .database import getDatabase
+from .api import ImageCode, generateCode, sendMail
 
 authbp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -21,7 +21,7 @@ def register():
 
         database = getDatabase()
         cursor = database.cursor()
-        curse.execute(
+        cursor.execute(
             'SELECT * FROM user WHERE name=%s;', (username,)
         )
         user = cursor.fetchone()                        #从数据库查找用户记录
