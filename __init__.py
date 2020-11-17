@@ -18,8 +18,8 @@ def create_app():
         DATABASE="bbs",
 
         MAIL_SERVER='smtp.qq.com',
-        EMAIL_USERNAME="null",
-        EMAIL_PASSWORD="null",
+        MAIL_USERNAME="null",
+        MAIL_PASSWORD="null",
         MAIL_DEFAULT_SENDER="null",
         MAIL_USE_TLS=True,
         MAIL_PORT=587

@@ -23,7 +23,7 @@ class ImageCode():
             draw.line(((x1, y1), (x2, y2)), fill='black', width=1)
     
     #生成验证码图片
-    def __getVerifyCode(self) -> (Image, string):
+    def __getVerifyCode(self):
         code = generateCode()
         width, height = 120, 50
         image = Image.new('RGB', (width, height), 'white')
@@ -54,8 +54,6 @@ def generateCode():
     return ''.join(random.sample(string.ascii_letters + string.digits, 4))
 
 def sendMail(app, desemail, captcha):
-    #passwd = "fzxgjhijwvntbghd"
-    #pw = 'qslcbmbkxnbgbjhg'
     with app.app_context():
         message = Message(subject = '论坛验证码', recipients=[desemail], body='您的验证码是 %s 请在五分钟内进行验证' % captcha)
         mail.send(message)

@@ -1,6 +1,6 @@
 import functools
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app, make_response
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from threading import Thread
@@ -54,20 +54,27 @@ def sendEmail():
 
         if len(dest) > 7 and re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", dest) != None:
             #间隔两分钟才能发送邮件
-            if time.time() - mail['posttime'] > 120:
+            if mail is None or time.time() - mail[1] > 120:
                 app = current_app._get_current_object()
                 vcode = generateCode()          #生成验证码
                 thr = Thread(target = sendMail, args = [app, dest, vcode])
                 thr.start()                     #异步发送邮件
 
                 session['emailvcode'] = vcode
-                cursor.execute(
-                    'UPDATE mail SET posttime=%s WHERE destination=%s', (time.time(), dest,)
-                )
+                if mail is None:
+                    cursor.execute(
+                        'INSERT INTO mail(destination, posttime) '
+                        'VALUES(%s, %s);', (dest, time.time(),)
+                    )
+                else:
+                    cursor.execute(
+                        'UPDATE mail SET posttime=%s WHERE destination=%s', (time.time(), dest,)
+                    )
             else:
                 flash('发送邮件过于频繁')
         else:
             flash('邮箱格式不正确')
+    return make_response("处理完成")
 
 @authbp.route('/login', methods=('GET', 'POST'))
 def login():

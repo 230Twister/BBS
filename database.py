@@ -11,7 +11,8 @@ def getDatabase() -> pymysql.connections.Connection:
                                 port=current_app.config['PORT'],            #端口
                                 user=current_app.config['USER'],            #用户
                                 password=current_app.config['PASSWORD'],    #密码
-                                database=current_app.config['DATABASE'])    #数据库名
+                                database=current_app.config['DATABASE'],   #数据库名
+                                autocommit=True)
     return g.db
 
 #关闭数据库
@@ -50,24 +51,24 @@ def initDatabase():
         'reply INT UNSIGNED NOT NULL'                           #回复对象
         ');')
     cursor.execute('CREATE TABLE IF NOT EXISTS user ('
-        'uuid INT NOT NULL PRIMARY KEY AUTO_INCREMENT, '        #用户id
+        'uuid INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'#用户id
         'name varchar(128) NOT NULL, '                          #昵称
         'ip varchar(32) NOT NULL,'                              #ip
         'password varchar(256) NOT NULL,'                       #密码
-        'email varchar(32) NOT NULL,'                            #邮箱
+        'email varchar(32) NOT NULL,'                           #邮箱
         'registertime DATETIME NOT NULL,'                       #注册时间
-        'lastlogin DATETIME NOT NULL'                          #最后登录时间
+        'lastlogin DATETIME NOT NULL'                           #最后登录时间
         ');')
     cursor.execute('CREATE TABLE IF NOT EXISTS userinfo ('
-        'uuid INT NOT NULL PRIMARY KEY AUTO_INCREMENT, '        #用户id
-        'warn TEXT NOT NULL,'                                    #提醒
+        'uuid INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'#用户id
+        'warn TEXT NOT NULL,'                                   #提醒
         'permission TEXT NOT NULL,'                             #权限列表
         'collect TEXT NOT NULL,'                                #收藏的主题
-        'point MEDIUMINT UNSIGNED NOT NULL)'                     #积分
+        'point MEDIUMINT UNSIGNED NOT NULL)'                    #积分
     )
     cursor.execute('CREATE TABLE IF NOT EXISTS mail ('
         'destination varchar(32) NOT NULL,'                     #发送邮箱
-        'posttime INT NOT NULL)'                                #发送时间
+        'posttime INT UNSIGNED NOT NULL)'                        #发送时间
     )
 
 @click.command('init_db')
