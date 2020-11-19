@@ -15,6 +15,7 @@ authbp = Blueprint('auth', __name__, url_prefix='/auth')
 def register():
     if request.method == 'POST':
         username = request.form['username']              #用户名
+        email = request.form['email']                    #邮箱
         emailvcode = request.form['emailcode']           #邮箱验证码
         password = request.form['password']              #密码
         repassword = request.form['repassword']          #确认密码
@@ -28,8 +29,10 @@ def register():
         error = None
         if user is not None:
             error = '该用户已存在'
+            username = '0'
         elif password != repassword:
             error = '两次密码不一致'
+            repassword = '0'
         elif emailvcode != session['emailvcode']:
             error = '验证码错误'
 
@@ -39,7 +42,12 @@ def register():
             return redirect(url_for('auth.login'))
 
         flash(error)
-    return render_template('auth/register.html')
+        return render_template('auth/register.html', 
+                                userdata={  "uername"=username,
+                                            "password"=password,
+                                            "repassword"=repassword,
+                                            "email"=email})
+    return render_template('auth/register.html', userdata={"username"='0', "password"='0', "repassword"='0', "email"='0'})
 
 @authbp.route('/sendcode', methods=('GET', 'POST'))
 def sendEmail():
@@ -74,7 +82,11 @@ def sendEmail():
                 flash('发送邮件过于频繁')
         else:
             flash('邮箱格式不正确')
-    return make_response("处理完成")
+    return render_template('auth/register.html', 
+                            userdata={  "username"=request.form['username'],
+                                        "password"=request.form['password'],
+                                        "repassword"=request.form['repassword'],
+                                        "email"=request.form['email']})
 
 @authbp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -92,8 +104,11 @@ def login():
 
         if user is None:
             error = '用户名不存在！'
+            username = '0'
+            password = '0'
         elif not check_password_hash(user[3], password):
             error = '密码错误！'
+            password = '0'
         elif vcode !=  session['imageCode']:
             error = '验证码错误！'
         
@@ -102,7 +117,8 @@ def login():
             session['userID'] = user
             return redirect(url_for('hello'))
         flash(error)
-    return render_template('auth/login.html')
+        return render_template('auth/login.html', userdata={"username":username, "password":password})
+    return render_template('auth/login.html', userdata={"username":'0', "password":'0'})
 
 @authbp.route('/imageCode')
 def imageCode():
