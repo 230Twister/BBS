@@ -1,71 +1,63 @@
-.font-400{
-    font-family: 'Noto Serif SC',serif;
-
+/* 选中颜色 */
+::selection {
+    color: #fff;
+    background: rgb(171, 173, 173);
 }
 
+/* 字体源 */
+.font-400{
+    font-family: 'Noto Serif SC',serif;
+}
 
-/* for navbar */
+/* 小头像 导航上显示的头像 */
 .avatar-xs {
     width: 30px;
     height: 30px;
-    border-radius: 2px;
+    border-radius: 3px;
+    
 }
 
-/* for photo page */
-.avatar-s {
-    width: 50px;
-    height: 50px;
+/* 按钮悬浮样式 */
+.button-hover:focus {
+    outline: none;
 }
 
-/* for user card */
-.avatar-m {
-    width: 100px;
-    height: 100px;
+.button-hover:hover {
+    box-shadow: 0 0px 6px 0 rgba(0,0,0,0.24),0 6px 8px 0 rgba(32, 32, 32, 0.19);
 }
 
-/* for user header */
-.avatar-l {
-    width: 180px;
-    height: 180px;
-}
 
-/* nav .index-nav{
-    margin-left: 15px;
-    height: 50px;
-} */
-
+/*************************************
+导航样式表
+作者:Yaozh
+更新时间: 2020/11/18
+************************************/
 nav .container-fluid{
-    /* height: 50px; */
     margin-left: 30px;
     margin-right: 30px;
     margin-top: 0px;
     margin-bottom: 0px;
     padding-top: 0px;
-    padding-bottom: 0px;
-    /* background-color: burlywood; */
-    
+    padding-bottom: 0px；
 }
-
-.search-form {
-    margin-left:30px;
-    margin-right:10px;
-}
-
 
 .navbar-bbs a{
-    margin-left: 10px;
+    margin-left: 5px;
     margin-right: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
+/* 导航悬浮样式 */
 .navbar-bbs .item-hover{
     transition: all 0.3s;
 }
 
-
 .navbar-bbs .item-hover:hover{
-    transform:scale(1.1);
+    background-color: rgb(220, 220, 228,.5);
 }
 
+/* 导航项字体大小 */
 .item-font-size-sm{
     font-size: 5px;
 }
@@ -78,8 +70,9 @@ nav .container-fluid{
     font-size: 30px;
 }
 
+/* 搜索按钮 */
 .search-button {
-    background-color: rgb(112, 125, 126); 
+    background-color: rgb(132, 142, 143); 
     border: none;
     color: white;
     padding: 6px 15px;
@@ -87,28 +80,30 @@ nav .container-fluid{
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
-    margin: 5px 5px;
+    margin: 5px 0px;
     cursor: pointer;
     border-radius: 18px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
 }
 
+.navbar-bbs .input-text {
+    height: 32px;
+    margin-right: 10px;
+    border-radius: 18px;
+}
 
-
-.button-hover:focus {
+.navbar-bbs .input-text:focus{
+    box-shadow:none;
     outline: none;
 }
 
-.button-hover:hover {
-    box-shadow: 0 8px 12px 0 rgba(0,0,0,0.24),0 15px 35px 0 rgba(32, 32, 32, 0.19);
-}
+/*************************************
+登录注册界面样式表
+作者:Yaozh
+更新时间: 2020/11/18
+************************************/
 
-.input-text {
-    height: 32px;
-}
-
-/* 登录界面 */
 :root {
     --input-padding-x: 1.5rem;
     --input-padding-y: .75rem;
@@ -149,19 +144,65 @@ nav .container-fluid{
     font-size: 14px;
 }
 
-
 .form-signin .btn {
   font-size: 100%;
   border-radius: 5rem;
   letter-spacing: .1rem;
   font-weight: bold;
   padding: 1rem;
-  
   transition: all 0.2s;
 }
 
 .form-signin .item-hover{
-    transition: all 0.5s;
+    transition: all 0.3s;
+}
+
+.body-reg {
+    margin-top: 80px;
+    background: #b1b5b9;
+    border-radius: 1rem;
+    background: linear-gradient(to right, rgb(107, 161, 223), rgb(148, 202, 230));
+}
+
+.card-reg {
+    background-color: rgb(210, 223, 235);
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    padding: 1rem;
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-reg .card-title {
+    margin-bottom: 2rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+}
+
+.card-reg .card-body {
+  padding: 3rem;
+}
+
+.form-reg {
+  width: 100%;
+}
+
+.form-reg .font-size-md {
+    font-size: 14px;
+}
+
+.form-reg .btn {
+  font-size: 100%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.form-reg .item-hover{
+    transition: all 0.3s;
 }
 
 .form-label-group {
@@ -170,7 +211,7 @@ nav .container-fluid{
 }
 
 .form-label-group input {
-  height: auto;
+  height: 50px;
   border-radius: 2rem;
 }
 
@@ -186,7 +227,7 @@ nav .container-fluid{
   display: block;
   width: 100%;
   margin-bottom: 0;
-  /* Override default `<label>` margin */
+  
   line-height: 1.5;
   color: #495057;
   border: 1px solid transparent;
@@ -231,16 +272,48 @@ nav .container-fluid{
     background-color: #4f698a;
 }
 
+.form-signin .btn-login{
+    color: white;
+    background-color: #7da6dd;
+}
+
+.form-signin .form-verify {
+    height: 48px;
+    border-radius: 2rem;
+    padding: 0.75rem 1.5rem;
+}
+
 .form-signin .verify_code{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    width: 100px;
-    height: 40px;
+    margin-top: 3px;
+    margin-bottom: 14px;
+    width:85px;
+    height: 45px;
     border-radius: 2px;
     margin-left: 5px;
 }
 
-.form-signin .btn-login{
+.form-reg .btn-register {
+    color: white;
+    background-color: #4f698a;
+}
+
+.form-reg .form-verify {
+    height: 48px;
+    border-radius: 2rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.form-reg .verify_btn{
     color: white;
     background-color: #7da6dd;
+    border: none;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 2px 5px 2px 5px;
+    border-radius: 2rem;
+    -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
 }

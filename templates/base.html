@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+    {% block css %}{% endblock %}
+    <title>{% block title %}{% endblock %} - XXBBS</title>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav
+        class="navbar navbar-expand-lg index-nav navbar-light bg-light fixed-top shadow p-1 mb-5 bg-white rounded font-400 ">
+        <div class="container-fluid">
+            <!-- 品牌 -->
+            <a class="navbar-brand" href="#">XXBBS</a>
+
+            <!--  -->
+            <button class="navbar-toggler" style="outline: none;" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- 导航主体 -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav navbar-bbs">
+                    <li class="nav-item item-hover active" style="margin-right: 10px; ">
+                        <a class="nav-link" href="#"><i class="fa fa-home fa-fw"></i>首页 <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+
+                </ul>
+
+                <ul class="navbar-nav navbar-bbs ml-lg-auto">
+                    <!-- 搜索输入框 与 搜索按钮 -->
+                    <form class="form-inline ">
+
+                        <input class=" form-control input-text " type="search" placeholder="What you want?"
+                            aria-label="Search">
+
+                        <button class="search-button button-hover " type="submit"><i
+                                class="fa fa-search fa-fw"></i>搜索</button>
+
+                    </form>
+
+                </ul>
+
+
+                <!-- 如果用户登录了 -->
+                <ul class="navbar-nav  navbar-bbs ml-auto">
+                    <li class="nav-item dropdown">
+
+                        <!-- 下拉菜单按钮 -->
+                        <a class="nav-link dropdown-toggle " id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+
+                            <!-- 用户头像 -->
+                            <img class="avatar-xs " src="/static/img/avatar.jpg">
+                        </a>
+
+                        <!-- 下拉菜单 -->
+                        <div class="dropdown-menu w-50" aria-labelledby="navbarDropdown">
+
+                            <!-- 展示部分(不可跳转) -->
+                            <a class="dropdown-item mx-0" href="#"><b>Admin</b></a>
+                            <a class="item-font-size-md dropdown-item mx-0"><i class="fa fa-level-up fa-fw"></i>等级:2</a>
+                            <a class="item-font-size-md dropdown-item mx-0"><i class="fa fa-jpy fa-fw"></i>积分:77</a>
+                            <a class="item-font-size-md " style="margin-left:25px;"><i
+                                    class="fa fa-heart-o fa-fw"></i>经验:</a>
+
+                            <!-- 经验条 -->
+                            <div class="progress w-75" style="height: 8px; margin-left:25px;">
+                                <div class="progress-bar " role="progressbar" style="width: 25%;" aria-valuenow="25"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+
+                            <!-- 分割线 -->
+                            <div class="dropdown-divider"></div>
+
+                            <!-- 可跳转选项 -->
+                            <a class="item-font-size-md dropdown-item mx-0 item-hover " href="#"><i
+                                    class="fa fa-user fa-fw"></i>主页</a>
+                            <a class="item-font-size-md dropdown-item mx-0 item-hover" href="#"><i
+                                    class="fa fa-gear fa-fw"></i>设置</a>
+                            <a class="item-font-size-md dropdown-item mx-0 item-hover" href="#"><i
+                                    class="fa fa-sign-out fa-fw"></i>注销</a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="navbar-nav navbar-bbs">
+
+                    <li class="nav-item item-hover active ">
+                        <a class="nav-link" href="#"><i class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
+                    </li>
+
+                    <li class="nav-item item-hover active ">
+                        <a class="nav-link" href="#"><i class="fa fa-bell-o fa-fw"></i>通知</a>
+                    </li>
+
+                </ul>
+
+                <!-- 如果用户没有登录 -->
+                <ul hidden class="navbar-nav ml-auto navbar-bbs" style="margin-right: 40px;">
+
+                    <li class="nav-item item-hover active ">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}" ><i class="fa fa-sign-in fa-fw"></i>登录</a>
+                    </li>
+
+                    <li class="nav-item item-hover active ">
+                        <a class="nav-link" href="{{ url_for('auth.register') }}" ><i class="fa fa-user-plus fa-fw"></i>注册</a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    {% block main %}{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    {% block js %}{% endblock %}
+</body>
+
+</html>
