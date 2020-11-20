@@ -50,7 +50,7 @@ class ImageCode():
         return response
 
 #生成随机字母数字
-def generateCode():
+def generateCode() -> str:
     return ''.join(random.sample(string.ascii_letters + string.digits, 4))
 
 def sendMail(app, desemail, captcha):
