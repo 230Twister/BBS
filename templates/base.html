@@ -21,7 +21,7 @@
             <!-- 品牌 -->
             <a class="navbar-brand" href="#">XXBBS</a>
 
-            <!--  -->
+            <!-- 下拉菜单 -->
             <button class="navbar-toggler" style="outline: none;" type="button" data-toggle="collapse"
                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -53,6 +53,7 @@
 
                 </ul>
 
+                {% if g.user %}
 
                 <!-- 如果用户登录了 -->
                 <ul class="navbar-nav  navbar-bbs ml-auto">
@@ -70,9 +71,9 @@
                         <div class="dropdown-menu w-50" aria-labelledby="navbarDropdown">
 
                             <!-- 展示部分(不可跳转) -->
-                            <a class="dropdown-item mx-0" href="#"><b>Admin</b></a>
-                            <a class="item-font-size-md dropdown-item mx-0"><i class="fa fa-level-up fa-fw"></i>等级:2</a>
-                            <a class="item-font-size-md dropdown-item mx-0"><i class="fa fa-jpy fa-fw"></i>积分:77</a>
+                            <a class="dropdown-item mx-0" href="#"><b>{{ g.user['username'] }}</b></a>
+                            <a class="item-font-size-md dropdown-item mx-0"><i class="fa fa-level-up fa-fw"></i>等级:{{ g.user['level'] }}</a>
+                            <a class="item-font-size-md dropdown-item mx-0"><i class="fa fa-jpy fa-fw"></i>积分:{{ g.user['points'] }}</a>
                             <a class="item-font-size-md " style="margin-left:25px;"><i
                                     class="fa fa-heart-o fa-fw"></i>经验:</a>
 
@@ -95,6 +96,7 @@
                         </div>
                     </li>
                 </ul>
+
                 <ul class="navbar-nav navbar-bbs">
 
                     <li class="nav-item item-hover active ">
@@ -107,19 +109,23 @@
 
                 </ul>
 
+                {% else %}
+
                 <!-- 如果用户没有登录 -->
                 <ul hidden class="navbar-nav ml-auto navbar-bbs" style="margin-right: 40px;">
 
                     <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}" ><i class="fa fa-sign-in fa-fw"></i>登录</a>
+                        <a class="nav-link" href="{{ url_for('auth.login') }}"><i class="fa fa-sign-in fa-fw"></i>登录</a>
                     </li>
 
                     <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="{{ url_for('auth.register') }}" ><i class="fa fa-user-plus fa-fw"></i>注册</a>
+                        <a class="nav-link" href="{{ url_for('auth.register') }}"><i
+                                class="fa fa-user-plus fa-fw"></i>注册</a>
                     </li>
 
                 </ul>
 
+                {% endif %}
             </div>
         </div>
     </nav>
