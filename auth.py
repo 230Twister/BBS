@@ -43,11 +43,11 @@ def register():
 
         flash(error)
         return render_template('auth/register.html', 
-                                userdata={  "uername"=username,
-                                            "password"=password,
-                                            "repassword"=repassword,
-                                            "email"=email})
-    return render_template('auth/register.html', userdata={"username"='0', "password"='0', "repassword"='0', "email"='0'})
+                                userdata={  "uername":username,
+                                            "password":password,
+                                            "repassword":repassword,
+                                            "email":email})
+    return render_template('auth/register.html', userdata={"username":'0', "password":'0', "repassword":'0', "email":'0'})
 
 @authbp.route('/sendcode', methods=('GET', 'POST'))
 def sendEmail():
@@ -83,10 +83,10 @@ def sendEmail():
         else:
             flash('邮箱格式不正确')
     return render_template('auth/register.html', 
-                            userdata={  "username"=request.form['username'],
-                                        "password"=request.form['password'],
-                                        "repassword"=request.form['repassword'],
-                                        "email"=request.form['email']})
+                            userdata={  "username":request.form['username'],
+                                        "password":request.form['password'],
+                                        "repassword":request.form['repassword'],
+                                        "email":request.form['email']})
 
 @authbp.route('/login', methods=('GET', 'POST'))
 def login():
