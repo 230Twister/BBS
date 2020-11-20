@@ -5,7 +5,7 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 #获取数据库对象
-def getDatabase() -> pymysql.connections.Connection:
+def getDatabase():
     if 'db' not in g:
         g.db = pymysql.connect( host=current_app.config['HOST'],            #数据库ip
                                 port=current_app.config['PORT'],            #端口

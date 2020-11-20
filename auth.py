@@ -6,7 +6,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from threading import Thread
-import time, re
+import time, datetime, re
 
 from .database import getDatabase
 from .api import ImageCode, generateCode, sendMail
@@ -25,7 +25,7 @@ def register():
             database = getDatabase()
             cursor = database.cursor()
             cursor.execute(
-                'SELECT * FROM user WHERE name=%s;', (username,)
+                'SELECT * FROM user WHERE name=%s OR email=%s;', (username, email, )
             )
             user = cursor.fetchone()                        #从数据库查找用户记录
             error = None
@@ -38,12 +38,24 @@ def register():
             elif emailvcode != session['emailvcode']:
                 error = '验证码错误'
 
+            dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            cursor.execute(
+                'INSERT INTO user(uuid, name, ip, password, email, registertime, lastlogin)'
+                'VALUES(null, %s, %s, %s, %s, %s, %s);'
+                , (username, '0.0.0.0', generate_password_hash(password), email, dtime, dtime)
+            )
+            cursor.execute(
+                'SELECT * FROM user WHERE name=%s;', (username,)
+            )
+            user = cursor.fetchone()
             if error is None:
                 session.clear()
-                session['userID'] = user['uuid']
+                session['userID'] = user
                 return redirect(url_for('auth.login'))
             flash(error)
-        return render_template('auth/register.html', 
+        else:
+            sendEmail(request)
+        return render_template('auth/register.html',
                                     userdata={  "uername":username,
                                                 "password":password,
                                                 "repassword":repassword,
@@ -92,7 +104,7 @@ def login():
         database = getDatabase()
         curse = database.cursor()
         curse.execute(
-            'SELECT * FROM user WHERE name=%s;', (username,)
+            'SELECT * FROM user WHERE name=%s OR email=%s;', (username, username,)
             )                            #从数据库查找用户记录
         user = curse.fetchone()
         error = None
@@ -106,7 +118,7 @@ def login():
             password = '0'
         elif vcode !=  session['imageCode']:
             error = '验证码错误！'
-        
+
         if error is None:
             session.clear()
             session['userID'] = user
@@ -143,5 +155,5 @@ def loginRequired(view):
         if g.user is None:
             return redirect(url_for('auth.login'))
         return view(**kwargs)
-    
+
     return wrappedView
