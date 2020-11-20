@@ -12,12 +12,19 @@
             <div class="card card-signin ">
                 <div class="card-body">
                     <h3 class="card-title text-center" style="font-size: 30px; font-weight: bold;">登 录</h3>
-                    <form class="form-signin">
+                    <form class="form-signin" method="POST">
 
                         <!-- 输入用户名 -->
                         <div class="form-label-group font-size-md">
+
+                            {% if userdata.username == '0' %}
                             <input type="text" id="inputEmail" class="form-control" placeholder="电子邮箱/用户名"
                                 name="username" style="flex:1; font-size: 14px;" autofocus required>
+                            {% else %}
+                            <input type="text" id="inputEmail" class="form-control" placeholder="电子邮箱/用户名"
+                                name="username" style="flex:1; font-size: 14px;" value="{{ userdata.username }}" autofocus required>
+                            {% endif %}
+
                             <label for="inputEmail">电子邮箱/用户名</label>
                         </div>
 
@@ -35,7 +42,7 @@
                             <input class="form-control form-verify" style="flex:1; font-size: 14px;" id="inputCode"
                                 type="text" placeholder="验证码" required>
                             <img id="verify_code" class="verify_code" src="/auth/imageCode"
-                                    onclick="this.src='/auth/imageCode?'+ Math.random()">
+                                onclick="this.src='/auth/imageCode?'+ Math.random()">
 
                         </div>
 
@@ -58,7 +65,8 @@
 
                         <!-- 注册按钮 -->
                         <a class="btn search-button  btn-register button-hover  btn-block item-hover"
-                            style="color: white;" href="{{ url_for('auth.register') }}"><i class="fa fa-user-plus fa-fw"></i> 注册</a>
+                            style="color: white;" href="{{ url_for('auth.register') }}"><i
+                                class="fa fa-user-plus fa-fw"></i> 注册</a>
 
                     </form>
                 </div>

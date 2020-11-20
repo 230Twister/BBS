@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block main %}
+<!-- 注册栏容器 -->
+<div class="container body-login font-400">
+    <div class="row">
+        <div class="col-sm-9 col-md-6 col-lg-5 mx-auto">
+            <div class="card card-reg ">
+                <div class="card-body">
+                    <h3 class="card-title text-center" style="font-size: 30px; font-weight: bold;">注 册</h3>
+                    <form class="form-reg" method="POST">
+
+                        <!-- 输入邮箱 -->
+                        <div class="form-label-group font-size-md">
+                            <input type="email" id="inputEmail" class="form-control" placeholder="电子邮箱" name="email"
+                                style="flex:1; font-size: 14px;" autofocus required>
+                            <label for="inputEmail">电子邮箱</label>
+                        </div>
+
+                        <!-- 输入用户名 -->
+                        <div class="form-label-group font-size-md">
+                            <input type="text" id="inputUsername" class="form-control" placeholder="用户名" name="username"
+                                style="flex:1; font-size: 14px;" autofocus required>
+                            <label for="inputUsername">用户名</label>
+                        </div>
+
+                        <!-- 输入密码 -->
+                        <div class="form-label-group font-size-md">
+                            <input type="password" id="inputPassword" class="form-control" placeholder="密码"
+                                name="password" style="flex:1; font-size: 14px;" required>
+                            <label for="inputPassword">密码</label>
+                        </div>
+
+                        <!-- 确认密码 -->
+                        <div class="form-label-group font-size-md">
+                            <input type="password" id="inputPasswordCheck" class="form-control" placeholder="确认密码"
+                                name="repassword" style="flex:1; font-size: 14px;" required>
+                            <label for="inputPasswordCheck">确认密码</label>
+                        </div>
+
+                        <!-- 输入验证码 -->
+                        <div class="" style="display: flex;justify-content:space-between;">
+                            <input class="form-control form-verify" name="emailcode" style="flex:1; font-size: 14px;"
+                                id="inputCode" type="text" placeholder="验证码" required>
+
+
+                            <!-- 发送验证码 -->
+                            <button class="verify_btn button-hover " type="submit" name="Send">发送验证码</button>
+
+                        </div>
+
+                        <!-- 分割线 -->
+                        <hr class="my-3">
+
+                        <!-- 注册按钮 -->
+                        <button class="btn search-button  btn-register button-hover  btn-block item-hover"
+                            type="submit"name="register" ><i class="fa fa-user-plus fa-fw"></i> 注册</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    var countdown = 9;
+    function SetTime(obj) {
+        if (countdown == 0) {
+            obj.removeAttribute("disabled");
+            obj.value = "发送验证码";
+            countdown = 9;
+            return;
+        } else {
+            obj.setAttribute("disabled", true);
+            obj.value = "重新发送(" + countdown + "s)";
+            countdown--;
+        }
+
+        setTimeout(function () {
+            SetTime(obj)
+        }
+            , 1000)
+    }	  
+</script>
+{% endblock %}

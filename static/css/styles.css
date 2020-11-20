@@ -317,3 +317,9 @@ nav .container-fluid{
     -webkit-transition-duration: 0.3s; /* Safari */
     transition-duration: 0.3s;
 }
+
+.form-reg .verify_input_btn{
+    outline: none; 
+    margin-bottom: 0px;
+    padding-top: 4px;
+}
