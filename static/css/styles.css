@@ -26,6 +26,14 @@
     box-shadow: 0 0px 6px 0 rgba(0,0,0,0.24),0 6px 8px 0 rgba(32, 32, 32, 0.19);
 }
 
+.alert-login-reg{
+    margin-top: 50px;
+    color: #676a71;
+    background-color: #c7cada;
+    border-color: #ffffff;
+    text-align: center;
+}
+
 
 /*************************************
 导航样式表
@@ -308,6 +316,8 @@ nav .container-fluid{
     background-color: #7da6dd;
     border: none;
     padding: 6px 15px;
+    padding-left: 1px;
+    padding-right: 1px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
