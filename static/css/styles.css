@@ -316,20 +316,16 @@ nav .container-fluid{
     background-color: #7da6dd;
     border: none;
     padding: 6px 15px;
-    padding-left: 1px;
-    padding-right: 1px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 12px;
+    font-size: 10px;
     margin: 2px 5px 2px 5px;
-    border-radius: 2rem;
-    -webkit-transition-duration: 0.3s; /* Safari */
+    border-radius: 1.5rem;
+    -webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
 }
 
 .form-reg .verify_input_btn{
-    outline: none; 
-    margin-bottom: 0px;
-    padding-top: 4px;
+    outline: none;
 }
