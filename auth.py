@@ -24,44 +24,44 @@ def register():
         if 'register' in request.form:
             database = getDatabase()
             cursor = database.cursor()
-            cursor.execute(
-                'SELECT * FROM user WHERE name=%s OR email=%s;', (username, email, )
-            )
-            user = cursor.fetchone()                        #从数据库查找用户记录
+            user = checkUser(cursor, username, email)   #从数据库查找用户记录
             error = None
             if user is not None:
                 error = '该用户已存在'
-                username = '0'
             elif password != repassword:
                 error = '两次密码不一致'
-                repassword = '0'
             elif emailvcode != session['emailvcode']:
                 error = '验证码错误'
 
-            dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            cursor.execute(
-                'INSERT INTO user(uuid, name, ip, password, email, registertime, lastlogin)'
-                'VALUES(null, %s, %s, %s, %s, %s, %s);'
-                , (username, '0.0.0.0', generate_password_hash(password), email, dtime, dtime)
-            )
-            cursor.execute(
-                'SELECT * FROM user WHERE name=%s;', (username,)
-            )
-            user = cursor.fetchone()
             if error is None:
+                dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                cursor.execute(
+                    'INSERT INTO user(uuid, name, ip, password, email, registertime, lastlogin)'
+                    'VALUES(null, %s, %s, %s, %s, %s, %s);'
+                    , (username, '0.0.0.0', generate_password_hash(password), email, dtime, dtime)
+                )
+                cursor.execute(
+                    'SELECT * FROM user WHERE name=%s;', (username,)
+                )
+                user = cursor.fetchone()
                 session.clear()
                 session['userID'] = user
                 return redirect(url_for('auth.login'))
             flash(error)
         else:
-            sendEmail(request)
+            database = getDatabase()
+            cursor = database.cursor()
+            if checkUser(cursor, username, email) is not None:
+                flash("用户已存在")
+            else:
+                sendEmail(request)
         return render_template('auth/register.html',
-                                    userdata={  "uername":username,
+                                    userdata={  "username":username,
                                                 "password":password,
                                                 "repassword":repassword,
                                                 "email":email})
 
-    return render_template('auth/register.html', userdata={"username":'0', "password":'0', "repassword":'0', "email":'0'})
+    return render_template('auth/register.html', userdata={})
 
 def sendEmail(request):
     dest = request.form['email']
@@ -125,7 +125,7 @@ def login():
             return redirect(url_for('hello'))
         flash(error)
         return render_template('auth/login.html', userdata={"username":username, "password":password})
-    return render_template('auth/login.html', userdata={"username":'0', "password":'0'})
+    return render_template('auth/login.html', userdata={})
 
 @authbp.route('/imageCode')
 def imageCode():
@@ -157,3 +157,10 @@ def loginRequired(view):
         return view(**kwargs)
 
     return wrappedView
+
+def checkUser(cursor, name, email):
+    cursor.execute(
+                'SELECT * FROM user WHERE name=%s OR email=%s;', (name, email, )
+            )
+    user = cursor.fetchone()                        #从数据库查找用户记录
+    return user

@@ -21,36 +21,6 @@
                 <div class="card-body">
                     <h3 class="card-title text-center" style="font-size: 30px; font-weight: bold;">注 册</h3>
                     <form class="form-reg" method="POST">
-                        {% if userdata.username == '0' %}
-                        <!-- 输入邮箱 -->
-                        <div class="form-label-group font-size-md">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="电子邮箱" name="email"
-                                style="flex:1; font-size: 14px;" autofocus required>
-                            <label for="inputEmail">电子邮箱</label>
-                        </div>
-
-                        <!-- 输入用户名 -->
-                        <div class="form-label-group font-size-md">
-                            <input type="text" id="inputUsername" class="form-control" placeholder="用户名" name="username"
-                                style="flex:1; font-size: 14px;" autofocus required>
-                            <label for="inputUsername">用户名</label>
-                        </div>
-
-                        <!-- 输入密码 -->
-                        <div class="form-label-group font-size-md">
-                            <input type="password" id="inputPassword" class="form-control" placeholder="密码"
-                                name="password" style="flex:1; font-size: 14px;" required>
-                            <label for="inputPassword">密码</label>
-                        </div>
-
-                        <!-- 确认密码 -->
-                        <div class="form-label-group font-size-md">
-                            <input type="password" id="inputPasswordCheck" class="form-control" placeholder="确认密码"
-                                name="repassword" style="flex:1; font-size: 14px;" required>
-                            <label for="inputPasswordCheck">确认密码</label>
-                        </div>
-
-                        {% else %}
                         <div class="form-label-group font-size-md">
                             <input type="email" id="inputEmail" class="form-control" placeholder="电子邮箱" name="email"
                                 style="flex:1; font-size: 14px;" value="{{ userdata.email }}" autofocus required>
@@ -77,7 +47,6 @@
                                 name="repassword" style="flex:1; font-size: 14px;" value="{{ userdata.repassword }}" required>
                             <label for="inputPasswordCheck">确认密码</label>
                         </div>
-                        {% endif %}
 
                         <!-- 输入验证码 -->
                         <div class="" style="display: flex;justify-content:space-between;">
