@@ -9,6 +9,15 @@
     font-family: 'Noto Serif SC',serif;
 }
 
+.font-md{
+    font-size: 14px;
+}
+
+.font-title{
+    font-weight: 700;
+    color: black;
+}
+
 /* 小头像 导航上显示的头像 */
 .avatar-xs {
     width: 30px;
@@ -319,13 +328,34 @@ nav .container-fluid{
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 10px;
+    font-size: 12px;
     margin: 2px 5px 2px 5px;
-    border-radius: 1.5rem;
-    -webkit-transition-duration: 0.3s;
+    border-radius: 2rem;
+    -webkit-transition-duration: 0.3s; /* Safari */
     transition-duration: 0.3s;
 }
 
 .form-reg .verify_input_btn{
     outline: none;
+    padding-top: 4px;
+}
+
+.container-edit .edit-input{
+    margin-right: 0px; 
+    margin-left: 0px;
+}
+
+.container-edit .edit-input:focus{
+    box-shadow:none;
+    outline: none;
+}
+
+.footer-icon{
+    width: 20px; 
+    height:20px; 
+    margin-right: 5px;
+}
+
+.footer-link >div>a{
+    color: rgb(59, 57, 57);
 }
