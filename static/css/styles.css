@@ -32,7 +32,7 @@
 }
 
 .button-hover:hover {
-    box-shadow: 0 0px 6px 0 rgba(0,0,0,0.24),0 6px 8px 0 rgba(32, 32, 32, 0.19);
+    box-shadow: 0 0px 4px 0 rgba(0,0,0,0.24),0 4px 6px 0 rgba(32, 32, 32, 0.19);
 }
 
 .alert-login-reg{
@@ -43,10 +43,52 @@
     text-align: center;
 }
 
-.alert-close-button:focus{
-    outline: 0;
+#web_bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 1000px;
+    z-index: -10;
+    zoom: 1;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+    height: 12px;
+    background-color: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+    display: block;
+    min-height: 12px;
+    min-width: 8px;
+    border-radius: 6px;
+    background-color: rgb(161, 182, 199);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    display: block;
+    min-height: 12px;
+    min-width: 8px;
+    border-radius: 6px;
+    background-color: rgb(139, 160, 187);
+}
+
+
+/* 动态为footer添加类fixed-bottom */
+.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 
 /*************************************
 导航样式表
@@ -56,10 +98,7 @@
 nav .container-fluid{
     margin-left: 30px;
     margin-right: 30px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px；
+    
 }
 
 .navbar-bbs a{
@@ -75,7 +114,8 @@ nav .container-fluid{
 }
 
 .navbar-bbs .item-hover:hover{
-    background-color: rgb(220, 220, 228,.5);
+    background-color: rgba(196, 196, 201, 0.5);
+    border-radius: 6px;
 }
 
 /* 导航项字体大小 */
@@ -119,6 +159,32 @@ nav .container-fluid{
     outline: none;
 }
 
+/*  */
+.dropdown-item-hover:active{
+    background-color: rgba(196, 196, 201, 0.5);
+    color: rgb(0, 0, 0);
+}
+
+.dropdown-item-hover:hover{
+    background-color: rgba(196, 196, 201, 0.5);
+    border-radius: 1px;
+}
+
+.dropdown-item-hover-no:active{
+    background-color: rgba(196, 196, 201, 0.5);
+    color: rgb(0, 0, 0);
+}
+
+.dropdown-item-hover-no:hover{
+    background-color: #fff;
+    border-radius: 1px;
+}
+
+.nav-bg{
+    background: #fbfdfdec;
+}
+/*  */
+
 /*************************************
 登录注册界面样式表
 作者:Yaozh
@@ -132,13 +198,13 @@ nav .container-fluid{
 
 .body-login {
     margin-top: 80px;
-    background: #b1b5b9;
+    /* background: #b1b5b9; */
     border-radius: 1rem;
-    background: linear-gradient(to right, rgb(107, 161, 223), rgb(148, 202, 230));
+    /* background: linear-gradient(to right, rgb(107, 161, 223), rgb(148, 202, 230)); */
 }
 
 .card-signin {
-    background-color: rgb(210, 223, 235);
+    background-color: rgba(195, 206, 216,.85);
     margin-top: 5rem;
     margin-bottom: 5rem;
     padding: 1rem;
@@ -335,7 +401,7 @@ nav .container-fluid{
     font-size: 12px;
     margin: 2px 5px 2px 5px;
     border-radius: 2rem;
-    -webkit-transition-duration: 0.3s; /* Safari */
+    -webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
 }
 
@@ -355,11 +421,19 @@ nav .container-fluid{
 }
 
 .footer-icon{
-    width: 20px; 
-    height:20px; 
+    width: 30px; 
+    height:30px; 
     margin-right: 5px;
 }
 
 .footer-link >div>a{
     color: rgb(59, 57, 57);
+}
+
+.alert-close-button:focus{
+    outline: 0;
+}
+
+.footer-bg{
+    background: rgb(233, 237, 238);
 }
