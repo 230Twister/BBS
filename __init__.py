@@ -39,6 +39,8 @@ def create_app():
     from . import auth
     app.register_blueprint(auth.authbp)
 
+    from . import userpage
+    app.register_blueprint(userpage.userpagebp)
     from . import index
     app.register_blueprint(index.indexbp)
 
