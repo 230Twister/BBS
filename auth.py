@@ -15,6 +15,8 @@ authbp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @authbp.route('/register', methods=('GET', 'POST'))
 def register():
+    if g.user:
+        return redirect(url_for('index.index'))
     if request.method == 'POST':
         username = request.form['username']              #用户名
         email = request.form['email']                    #邮箱
@@ -97,6 +99,8 @@ def sendEmail(request):
 
 @authbp.route('/login', methods=('GET', 'POST'))
 def login():
+    if g.user:
+        return redirect(url_for('index.index'))
     if request.method == 'POST':
         username = request.form['username']              #用户名
         password = request.form['password']              #密码
@@ -109,20 +113,15 @@ def login():
         user = curse.fetchone()
         error = None
 
-        if user is None:
-            error = '用户名不存在！'
-            username = '0'
-            password = '0'
-        elif not check_password_hash(user[3], password):
-            error = '密码错误！'
-            password = '0'
+        if user is None or not check_password_hash(user[3], password):
+            error = '用户名或密码错误！'
         elif vcode !=  session['imageCode']:
             error = '验证码错误！'
 
         if error is None:
             session.clear()
             session['userID'] = user
-            return redirect(url_for('hello'))
+            return redirect(url_for('index.index'))
         flash(error)
         return render_template('auth/login.html', userdata={"username":username, "password":password})
     return render_template('auth/login.html', userdata={})
@@ -137,6 +136,13 @@ def forgetPassword():
         pass
     return render_template('auth/forget.html')
 
+#登出
+@authbp.route('/logout')
+def logout():
+    if session['userID']:
+        session.clear()
+    return redirect('index.index')
+
 @authbp.before_app_request
 def loadLoginedUser():
     userID = session.get('userID')
@@ -149,6 +155,7 @@ def loadLoginedUser():
         )
         g.user = cursor.fetchone()
 
+#需要登陆检测
 def loginRequired(view):
     @functools.wraps(view)
     def wrappedView(**kwargs):
@@ -158,6 +165,7 @@ def loginRequired(view):
 
     return wrappedView
 
+#查询是否存在一个用户
 def checkUser(cursor, name, email):
     cursor.execute(
                 'SELECT * FROM user WHERE name=%s OR email=%s;', (name, email, )

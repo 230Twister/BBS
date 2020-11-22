@@ -7,7 +7,7 @@
 {% for message in get_flashed_messages() %}
 <div class="alert alert-dismissible fade show alert-login-reg" role="alert">
     {{ message }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <button type="button" class="close  alert-close-button" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
@@ -20,7 +20,8 @@
             <!-- 登录卡片 -->
             <div class="card card-signin ">
                 <div class="card-body">
-                    <h3 class="card-title text-center" style="font-size: 30px; font-weight: bold;">登 录</h3>
+                    <h3 class="card-title text-center" style="font-size: 30px; font-weight: bold;">登&nbsp;&nbsp;&nbsp;录
+                    </h3>
                     <form class="form-signin" method="POST">
 
                         <!-- 输入用户名 -->
@@ -56,11 +57,7 @@
 
                         </div>
 
-                        <!-- 记住密码 -->
-                        <div class="custom-control custom-checkbox mb-3 font-size-md">
-                            <input type="checkbox" class="custom-control-input" id="customCheck">
-                            <label class="custom-control-label" for="customCheck">记住密码</label>
-                        </div>
+                        
                         <!-- 登录提交按钮 -->
                         <button class="btn search-button  btn-login button-hover  btn-block item-hover" type="submit"><i
                                 class="fa fa-sign-in fa-fw"></i>登录</button>
