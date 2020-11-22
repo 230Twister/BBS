@@ -1,5 +1,5 @@
 from flask import make_response, session
-from flask_mail import Message, Mail
+from flask_mail import Message
 import random
 import string
 from io import BytesIO
