@@ -198,9 +198,7 @@ nav .container-fluid{
 
 .body-login {
     margin-top: 80px;
-    /* background: #b1b5b9; */
     border-radius: 1rem;
-    /* background: linear-gradient(to right, rgb(107, 161, 223), rgb(148, 202, 230)); */
 }
 
 .card-signin {
@@ -244,15 +242,9 @@ nav .container-fluid{
     transition: all 0.3s;
 }
 
-.body-reg {
-    margin-top: 80px;
-    background: #b1b5b9;
-    border-radius: 1rem;
-    background: linear-gradient(to right, rgb(107, 161, 223), rgb(148, 202, 230));
-}
 
 .card-reg {
-    background-color: rgb(210, 223, 235);
+    background-color: rgba(195, 206, 216,.85);
     margin-top: 5rem;
     margin-bottom: 5rem;
     padding: 1rem;
