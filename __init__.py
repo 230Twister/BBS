@@ -39,6 +39,9 @@ def create_app():
     from . import auth
     app.register_blueprint(auth.authbp)
 
+    from . import userpage
+    app.register_blueprint(userpage.userpagebp)
+
     @app.route('/test')
     def hello():
         return "这是一个测试网站"
