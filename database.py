@@ -34,7 +34,7 @@ def initDatabase():
     cursor.execute('CREATE TABLE IF NOT EXISTS post('           #主题表单
         'id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'  #主题id
         'title TEXT NOT NULL,'                                  #标题
-        'classification TEXT NOT NULL,'                         #主题分类 暂时为study,techshare,entertain    
+        'type TINYINT NOT NULL,'                                #主题分类 1 2 3 4    
         'content LONGTEXT NOT NULL,'                            #内容
         'userid INT UNSIGNED NOT NULL,'                         #发主题的用户id
         'posttime DATETIME NOT NULL,'                           #发表时间
