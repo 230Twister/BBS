@@ -1,4 +1,4 @@
-/* 选中颜色 */
+/* 设置选中的颜色 */
 ::selection {
     color: #fff;
     background: rgb(171, 173, 173);
@@ -9,10 +9,12 @@
     font-family: 'Noto Serif SC',serif;
 }
 
+/* 中号字体 */
 .font-md{
     font-size: 14px;
 }
 
+/* 字体加粗 */
 .font-title{
     font-weight: 700;
     color: black;
@@ -23,26 +25,17 @@
     width: 30px;
     height: 30px;
     border-radius: 3px;
-    
 }
 
 /* 按钮悬浮样式 */
 .button-hover:focus {
     outline: none;
 }
-
 .button-hover:hover {
     box-shadow: 0 0px 4px 0 rgba(0,0,0,0.24),0 4px 6px 0 rgba(32, 32, 32, 0.19);
 }
 
-.alert-login-reg{
-    margin-top: 50px;
-    color: #676a71;
-    background-color: #c7cada;
-    border-color: #ffffff;
-    text-align: center;
-}
-
+/* 设置滚动条颜色 */
 #web_bg {
     position: fixed;
     top: 0;
@@ -59,13 +52,11 @@
     -o-background-size: cover;
     background-position: center 0;
 }
-
 ::-webkit-scrollbar {
     width: 8px;
     height: 12px;
     background-color: #fff;
 }
-
 ::-webkit-scrollbar-thumb {
     display: block;
     min-height: 12px;
@@ -73,7 +64,6 @@
     border-radius: 6px;
     background-color: rgb(161, 182, 199);
 }
-
 ::-webkit-scrollbar-thumb:hover {
     display: block;
     min-height: 12px;
@@ -82,13 +72,19 @@
     background-color: rgb(139, 160, 187);
 }
 
-
-/* 动态为footer添加类fixed-bottom */
-.fixed-bottom {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+/* 警告框 */
+.alert-login-reg{
+    margin-top: 50px;
+    color: #676a71;
+    background-color: #c7cada;
+    border-color: #ffffff;
+    text-align: center;
 }
+.alert-close-button:focus{
+    outline: 0;
+}
+
+
 
 /*************************************
 导航样式表
@@ -183,7 +179,7 @@ nav .container-fluid{
 .nav-bg{
     background: #fbfdfdec;
 }
-/*  */
+
 
 /*************************************
 登录注册界面样式表
@@ -218,11 +214,11 @@ nav .container-fluid{
 }
 
 .card-signin .card-body {
-  padding: 3rem;
+    padding: 3rem;
 }
 
 .form-signin {
-  width: 100%;
+    width: 100%;
 }
 
 .form-signin .font-size-md {
@@ -230,12 +226,12 @@ nav .container-fluid{
 }
 
 .form-signin .btn {
-  font-size: 100%;
-  border-radius: 5rem;
-  letter-spacing: .1rem;
-  font-weight: bold;
-  padding: 1rem;
-  transition: all 0.2s;
+    font-size: 100%;
+    border-radius: 5rem;
+    letter-spacing: .1rem;
+    font-weight: bold;
+    padding: 1rem;
+    transition: all 0.2s;
 }
 
 .form-signin .item-hover{
@@ -260,11 +256,11 @@ nav .container-fluid{
 }
 
 .card-reg .card-body {
-  padding: 3rem;
+    padding: 3rem;
 }
 
 .form-reg {
-  width: 100%;
+    width: 100%;
 }
 
 .form-reg .font-size-md {
@@ -272,12 +268,12 @@ nav .container-fluid{
 }
 
 .form-reg .btn {
-  font-size: 100%;
-  border-radius: 5rem;
-  letter-spacing: .1rem;
-  font-weight: bold;
-  padding: 1rem;
-  transition: all 0.2s;
+    font-size: 100%;
+    border-radius: 5rem;
+    letter-spacing: .1rem;
+    font-weight: bold;
+    padding: 1rem;
+    transition: all 0.2s;
 }
 
 .form-reg .item-hover{
@@ -285,58 +281,58 @@ nav .container-fluid{
 }
 
 .form-label-group {
-  position: relative;
-  margin-bottom: 1rem;
+    position: relative;
+    margin-bottom: 1rem;
 }
 
 .form-label-group input {
-  height: 50px;
-  border-radius: 2rem;
+    height: 50px;
+    border-radius: 2rem;
 }
 
 .form-label-group>input,
 .form-label-group>label {
-  padding: var(--input-padding-y) var(--input-padding-x);
+    padding: var(--input-padding-y) var(--input-padding-x);
 }
 
 .form-label-group>label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  margin-bottom: 0;
-  
-  line-height: 1.5;
-  color: #495057;
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  transition: all .1s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+    
+    line-height: 1.5;
+    color: #495057;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    transition: all .1s ease-in-out;
 }
 
 .form-label-group input::-webkit-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input:-ms-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input::-ms-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input::-moz-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input::placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input:not(:placeholder-shown) {
-  padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
-  padding-bottom: calc(var(--input-padding-y) / 3);
+    padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+    padding-bottom: calc(var(--input-padding-y) / 3);
 }
 
 .form-label-group input:not(:placeholder-shown)~label {
@@ -393,13 +389,49 @@ nav .container-fluid{
     font-size: 12px;
     margin: 2px 5px 2px 5px;
     border-radius: 2rem;
-    -webkit-transition-duration: 0.3s;
+    -webkit-transition-duration: 0.3s; /* Safari */
     transition-duration: 0.3s;
 }
 
 .form-reg .verify_input_btn{
     outline: none;
     padding-top: 4px;
+}
+
+/* 
+footer样式
+*/
+.footer-icon{
+    width: 30px; 
+    height:30px; 
+    margin-right: 5px;
+}
+.footer-link >div>a{
+    color: rgb(59, 57, 57);
+}
+.footer-bg{
+    background: rgb(233, 237, 238);
+}
+/* 动态为footer添加类fixed-bottom */
+.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+/* 
+编辑框样式
+*/
+.container-edit{
+    margin-top: 80px;
+    margin-bottom: 80px;
+    background-color: #fafcfcf7;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: .5rem;
+    border-radius: 1.1rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 
 .container-edit .edit-input{
@@ -412,20 +444,17 @@ nav .container-fluid{
     outline: none;
 }
 
-.footer-icon{
-    width: 30px; 
-    height:30px; 
-    margin-right: 5px;
-}
-
-.footer-link >div>a{
-    color: rgb(59, 57, 57);
-}
-
-.alert-close-button:focus{
-    outline: 0;
-}
-
-.footer-bg{
-    background: rgb(233, 237, 238);
+.container-edit .edit-submit-bnt{
+    background-color: rgb(132, 142, 143);
+    border: none;
+    color: white;
+    padding: 6px 15px ;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 0px;
+    cursor: pointer;
+    border-radius: 18px;
+    -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
 }

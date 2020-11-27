@@ -22,7 +22,7 @@
 
     <!-- 导航栏 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bg fixed-top shadow p-1 mb-5 font-400 ">
-        <div class="container-fluid nav-bg">
+        <div class="container nav-bg">
             <!-- 品牌 -->
             <a class="navbar-brand" href="#">XXBBS</a>
 
@@ -37,7 +37,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav navbar-bbs">
-                    <li class="nav-item active" style="margin-right: 10px; ">
+                    <li class="nav-item item-hover active" style="margin-right: 10px; ">
                         <a class="nav-link" href="#"><i class="fa fa-home fa-fw"></i>首页 <span
                                 class="sr-only">(current)</span></a>
                     </li>
@@ -107,7 +107,7 @@
                 <ul class="navbar-nav navbar-bbs">
 
                     <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="#"><i class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
+                        <a class="nav-link" href="{{ url_for('edit.edit') }}"><i class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
                     </li>
 
                     <li class="nav-item item-hover active ">

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='editormd/css/editormd.min.css')}}">
+
+{% endblock %}
+
+{% block title %}Let's Write{% endblock %}
+
+{% block main %}
+
+<!-- 编辑栏 -->
+<form class="container font-400 container-edit " method="POST">
+    <div class="row mx-1">
+
+        <div class="row input-group mt-5 justify-content-between" style="margin-right: 0px; margin-left: 0px;">
+
+            <select class="col-4 custom-select font-md edit-input" style="border-radius: 15px;" name="type" required>
+                <option value="1">技术分享</option>
+                <option value="2">学习生活</option>
+                <option value="3">休闲娱乐</option>
+                <option value="4">摸鱼灌水</option>
+            </select>
+
+
+            <input type="text" class="col-7 form-control font-md edit-input font-title" style="border-radius: 15px;"
+                name="title" placeholder="标题..." required>
+
+        </div>
+
+        <div id="test-editor" class=" row mt-4">
+            <textarea class="col-12" name="content" style="display:none;" required>
+### 耗子尾汁
+**诶..朋友们好啊，我是混元形意太极门掌门人——马保国**
+
+> 我一说完他啪就站起来了，很快啊！然后上来就是一个左正蹬，吭，一个右鞭腿一个左刺拳，我全部防区（口误）防出去了啊！
+
+*如果这一拳发力，一拳就把他鼻子打骨折了*
+
+~~我收拳的时间不打了，他突然袭击，左刺拳来打我脸，啊，我大意了啊，没有闪~~
+
+```
+这两个年轻人不讲武德，来骗！来偷袭，我六十九岁的老同志。这好吗？这不好！
+```
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606417345697&di=c5197bc70b25897d93a01e55f15f2742&imgtype=0&src=http%3A%2F%2Fwx4.sinaimg.cn%2Fmw690%2F005PeXV6gy1gkq2oaknlyj30us0ustnl.jpg)
+</textarea>
+        </div>
+
+    </div>
+
+    <div class="row justify-content-end mx-2 mt-3 mb-2">
+        <button type="submit" class="edit-submit-bnt px-3 my-2 button-hover">发&nbsp;&nbsp;&nbsp;布</button>
+    </div>
+</form>
+
+{% endblock %}
+
+{ block js }
+
+<script src="{{ url_for('static', filename='editormd/editormd.js') }}"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var editor = editormd("test-editor", {
+            emoji: true,
+            height: 600,
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart: true,             // 开启流程图支持，默认关闭
+            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭  
+            path: "./static/editormd/lib/",
+            toolbarIcons: function () {
+                return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "|", "h1", "h2", "h3", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link", "image", "code", "code-block", "table", "datetime", "emoji", "html-entities", "|", "goto-line", "watch", "preview", "clear", "search", "|", "help", "info"]
+            }
+        });
+    });
+</script>
+
+{ endblock }
