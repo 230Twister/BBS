@@ -77,7 +77,7 @@
 
                             <!-- 展示部分(不可跳转) -->
                             <a class="dropdown-item mx-0 dropdown-item-hover-no"
-                                href="#"><b>{{ g.user['username'] }}</b></a>
+                                href="#"><b>{{ g.user[1] }}</b></a>
                             <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover-no"><i
                                     class="fa fa-level-up fa-fw"></i>等级:{{ g.user['level'] }}</a>
                             <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover-no"><i
@@ -107,7 +107,8 @@
                 <ul class="navbar-nav navbar-bbs">
 
                     <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="{{ url_for('edit.edit') }}"><i class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
+                        <a class="nav-link" href="{{ url_for('edit.edit') }}"><i
+                                class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
                     </li>
 
                     <li class="nav-item item-hover active ">
@@ -185,6 +186,7 @@
     <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    {% block js %}{% endblock %}
     <script>
         $(function () {
             function footerPosition() {
@@ -194,13 +196,14 @@
                 if (!(contentHeight > winHeight)) {
                     //当网页正文高度小于可视窗口高度时，为footer添加类fixed-bottom
                     $("footer").addClass("fixed-bottom");
+                } else {
+                    $("footer").removeClass("fixed-bottom");
                 }
             }
             footerPosition();
             $(window).resize(footerPosition);
         });
     </script>
-    {% block js %}{% endblock %}
 </body>
 
 </html>
