@@ -141,7 +141,7 @@ def forgetPassword():
 def logout():
     if session['userID']:
         session.clear()
-    return redirect('index.index')
+    return redirect(url_for('index.index'))
 
 @authbp.before_app_request
 def loadLoginedUser():
