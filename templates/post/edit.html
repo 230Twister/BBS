@@ -56,7 +56,7 @@
 
 {% endblock %}
 
-{ block js }
+{% block js %}
 
 <script src="{{ url_for('static', filename='editormd/editormd.js') }}"></script>
 
@@ -69,8 +69,9 @@
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             tex: true,                   // 开启科学公式TeX语言支持，默认关闭
             flowChart: true,             // 开启流程图支持，默认关闭
-            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭  
-            path: "./static/editormd/lib/",
+            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭
+            imageUploadURL: "{{ url_for('edit.upload') }}",  
+            path: "{{ url_for('static',filename='editormd/lib/') }}",
             toolbarIcons: function () {
                 return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "|", "h1", "h2", "h3", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link", "image", "code", "code-block", "table", "datetime", "emoji", "html-entities", "|", "goto-line", "watch", "preview", "clear", "search", "|", "help", "info"]
             }
@@ -78,4 +79,4 @@
     });
 </script>
 
-{ endblock }
+{% endblock %}

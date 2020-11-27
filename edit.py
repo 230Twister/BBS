@@ -4,8 +4,8 @@ from flask import(
 import os, datetime
 from PIL import Image
 
-from auth import loginRequired
-from database import getDatabase
+from .auth import loginRequired
+from .database import getDatabase
 
 editbp = Blueprint('edit', __name__, url_prefix='/edit')
 
@@ -22,20 +22,18 @@ def edit():
         dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cursor.execute(
                     'INSERT INTO post(id, title, type, content, userid, posttime, updatetime, reply, visit, collect)'
-                    'VALUES(null, %s, %s, %s, %s, %s, %s);'
+                    'VALUES(null, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
                     , (title, _type, content, g.user[0], dtime, dtime, '', 1, 0)
                 )
         return redirect(url_for('index.index'))
             
-    return render_template('edit.html')
+    return render_template('post/edit.html')
 
 @editbp.route('/upload', methods=('GET', 'POST'))
 @loginRequired
 def upload():
     if request.method == 'POST':
         file = request.files.get('editormd-image-file')     #获取上传的图片
-        image = Image.open(file)
-        image.save(file)
         if not file:
             result = {
                 'success':0,
@@ -43,16 +41,16 @@ def upload():
             }
         else:
             ext = os.path.splitext(file.filename)[1]
-            filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ext
+            filename = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + ext
             current_path = os.path.abspath(os.path.dirname(__file__))       #获取当前文件夹绝对路径
-            filedir = os.path.join(current_path, 'static\\asset\\img')      #获取保存图片的路径
+            filedir = os.path.join(current_path, 'data\\img')               #获取保存图片的路径
             filepath = os.path.join(filedir, g.user[1])                     #获取当前用户保存图片的路径
-            if os.path.exists(filepath):
+            if not os.path.exists(filepath):
                 os.mkdir(filepath)
             file.save(os.path.join(filepath, filename))
             result = {
-                'success':1
-                'message':'上传成功'
+                'success':1,
+                'message':'上传成功',
                 'url':url_for('edit.image', name=filename)
             }
         return result
@@ -61,7 +59,7 @@ def upload():
 @loginRequired
 def image(name):
     current_path = os.path.abspath(os.path.dirname(__file__))
-    filedir = os.path.join(current_path, 'static\\asset\\img')
+    filedir = os.path.join(current_path, 'data\\img')
     filepath = os.path.join(filedir, g.user[1])         #获取图片文件路径
 
     with open(os.path.join(filepath, name), 'rb') as f:

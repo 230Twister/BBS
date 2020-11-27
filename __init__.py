@@ -43,6 +43,8 @@ def create_app():
     app.register_blueprint(userpage.userpagebp)
     from . import index
     app.register_blueprint(index.indexbp)
+    from . import edit
+    app.register_blueprint(edit.editbp)
 
     @app.route('/test')
     def hello():
