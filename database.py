@@ -11,7 +11,7 @@ def getDatabase():
                                 port=current_app.config['PORT'],            #端口
                                 user=current_app.config['USER'],            #用户
                                 password=current_app.config['PASSWORD'],    #密码
-                                database=current_app.config['DATABASE'],   #数据库名
+                                database=current_app.config['DATABASE'],    #数据库名
                                 autocommit=True)
     return g.db
 
@@ -69,7 +69,7 @@ def initDatabase():
     )
     cursor.execute('CREATE TABLE IF NOT EXISTS mail ('
         'destination varchar(32) NOT NULL,'                     #发送邮箱
-        'posttime INT UNSIGNED NOT NULL)'                        #发送时间
+        'posttime INT UNSIGNED NOT NULL)'                       #发送时间
     )
 
 @click.command('init_db')
