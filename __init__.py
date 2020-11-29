@@ -10,6 +10,7 @@ def create_app():
 
     app.config.from_mapping(  #默认配置
         SECRET_KEY="dev",
+        MAX_CONTENT_LENGTH=3 * 1024 * 1024, #限制上传文件大小3M
 
         HOST="127.0.0.1",
         PORT=3306,
@@ -40,11 +41,11 @@ def create_app():
     app.register_blueprint(auth.authbp)
 
     from . import userpage
-    app.register_blueprint(userpage.userpagebp)
+    app.register_blueprint(userpage.userpagebp) #用户主页蓝图
     from . import index
-    app.register_blueprint(index.indexbp)
+    app.register_blueprint(index.indexbp)       #主页
     from . import edit
-    app.register_blueprint(edit.editbp)
+    app.register_blueprint(edit.editbp)         #帖子编辑
 
     @app.route('/test')
     def hello():

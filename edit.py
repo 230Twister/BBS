@@ -51,6 +51,22 @@ def edit(id):
             
     return render_template('post/edit.html', post=post)
 
+@editbp.route('/delete/<int:id>')
+@loginRequired
+def delete(id):
+    database = getDatabase()
+    cursor = database.cursor()
+    cursor.execute(
+        'SELECT * FROM post WHERE id=%s;' ,(id,)
+    )
+    post = cursor.fetchone()
+    if post is None or post[4] != g.user[0]:        #若不存在这个主题或楼主不是当前访问用户
+        return render_template('404.html')          #返回404
+
+    cursor.execute(
+        'DELETE FROM post WHERE id=%s;', (id,)
+    )
+
 @editbp.route('/upload', methods=('GET', 'POST'))
 @loginRequired
 def upload():

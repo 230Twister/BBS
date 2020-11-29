@@ -18,15 +18,15 @@ def getPartsData():
     entertain='entertain'
     studypart=cursor.execute(
         'SELECT * FROM post WHERE classification=%s'
-        'ORDER BY updatetime DESC',(study,)
+        'ORDER BY updatetime DESC;',(study,)
         ).fetchall()
     techsharepart=cursor.execute(
         'SELECT * FROM post WHERE classification=%s'
-        'ORDER BY updatetime DESC',(techshare,)
+        'ORDER BY updatetime DESC;',(techshare,)
         ).fetchall()
     entertainpart=cursor.execute(
         'SELECT * FROM post WHERE classification=%s'
-        'ORDER BY updatetime DESC',(entertain,)
+        'ORDER BY updatetime DESC;',(entertain,)
         ).fetchall()
     return render_template('parts.html', parts={'study':studypart,
                                                 'techshare':techsharepart,
