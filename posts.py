@@ -10,7 +10,7 @@ from .database import getDatabase
 
 postsbp = Blueprint('posts', __name__, url_prefix='/posts')
 
-@posts.route('/<int::postid>')
+@postsbp.route('/<int::postid>')
 def getPostData(postid):
     if g.user is None:
         return redirect(url_for('auth.login'))
