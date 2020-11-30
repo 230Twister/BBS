@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_mail import Mail
 
 mail = None         #邮件发送对象
@@ -47,8 +47,8 @@ def create_app():
     from . import edit
     app.register_blueprint(edit.editbp)         #帖子编辑
 
-    @app.route('/test')
+    @app.route('/')
     def hello():
-        return "这是一个测试网站"
+        return redirect(url_for('index.index'))
     
     return app

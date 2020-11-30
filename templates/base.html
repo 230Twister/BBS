@@ -17,7 +17,7 @@
 
     <div class="wrapper">
         <!--背景图片-->
-        <div id="web_bg" style="background-image: url(../static/img/bg.jpg);"></div>
+        <div id="web_bg" style="background-image: url({{ url_for('static', filename='img/bg.jpg') }});"></div>
     </div>
 
     <!-- 导航栏 -->
@@ -107,7 +107,7 @@
                 <ul class="navbar-nav navbar-bbs">
 
                     <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="{{ url_for('edit.edit') }}"><i
+                        <a class="nav-link" href="{{ url_for('edit.create', part=1) }}"><i
                                 class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
                     </li>
 

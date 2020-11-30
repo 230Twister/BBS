@@ -16,21 +16,22 @@
 
         <div class="row input-group mt-5 justify-content-between" style="margin-right: 0px; margin-left: 0px;">
 
-            <select class="col-4 custom-select font-md edit-input" style="border-radius: 15px;" name="type" required>
-                <option value="1">技术分享</option>
-                <option value="2">学习生活</option>
-                <option value="3">休闲娱乐</option>
-                <option value="4">摸鱼灌水</option>
+            <select class="col-4 custom-select font-md edit-input" style="border-radius: 15px;" name="type" {% if post != None %}disabled="disabled"{% endif %} required>
+                <option value="1" {% if post != None and post[2] == 1 %}selected="select"{% endif %}>技术分享</option>
+                <option value="2" {% if post != None and post[2] == 2 %}selected="select"{% endif %}>学习生活</option>
+                <option value="3" {% if post != None and post[2] == 3 %}selected="select"{% endif %}>休闲娱乐</option>
+                <option value="4" {% if post != None and post[2] == 4 %}selected="select"{% endif %}>摸鱼灌水</option>
             </select>
 
 
             <input type="text" class="col-7 form-control font-md edit-input font-title" style="border-radius: 15px;"
-                name="title" placeholder="标题..." required>
+                name="title" placeholder="标题..." value="{%if post != None %}{{ post[1] }}{% endif %}" required>
 
         </div>
 
         <div id="test-editor" class=" row mt-4">
             <textarea class="col-12" name="content" style="display:none;" required>
+{% if post != None%}{{post[3]}}{% else %}
 ### 耗子尾汁
 **诶..朋友们好啊，我是混元形意太极门掌门人——马保国**
 
@@ -44,13 +45,16 @@
 这两个年轻人不讲武德，来骗！来偷袭，我六十九岁的老同志。这好吗？这不好！
 ```
 ![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606417345697&di=c5197bc70b25897d93a01e55f15f2742&imgtype=0&src=http%3A%2F%2Fwx4.sinaimg.cn%2Fmw690%2F005PeXV6gy1gkq2oaknlyj30us0ustnl.jpg)
+{% endif %}
 </textarea>
         </div>
 
     </div>
 
     <div class="row justify-content-end mx-2 mt-3 mb-2">
-        <button type="submit" class="edit-submit-bnt px-3 my-2 button-hover">发&nbsp;&nbsp;&nbsp;布</button>
+        <button type="submit" class="edit-submit-bnt px-3 my-2 button-hover">
+        {% if post != None %}保&nbsp;&nbsp;&nbsp;存{% else %}发&nbsp;&nbsp;&nbsp;布{% endif %}
+        </button>
     </div>
 </form>
 

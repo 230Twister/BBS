@@ -6,26 +6,33 @@ from PIL import Image
 
 from .auth import loginRequired
 from .database import getDatabase
+from .api import readImg, uploadImg
 
 editbp = Blueprint('edit', __name__, url_prefix='/edit')
 
-@editbp.route('/<part>')
+@editbp.route('/<int:part>/create', methods=('GET','POST'))
 @loginRequired
 def create(part):
+    if part < 1 or part > 4:
+        return render_template('404.html')
     database = getDatabase()
     cursor = database.cursor()
-    #创建新主题
-    cursor.execute(
-                'INSERT INTO post(id, title, type, content, userid, posttime, updatetime, reply, visit, collect)'
-                'VALUES(null, '', %s, '', %s, %s, %s, '', %s, %s);'
-                , (part, g.user[0], dtime, dtime, 1, 0)
-            )
-    cursor.execute(
-        'SELECT LAST_INSERT_ID();'
-    )
-    return redirect(url_for(edit.edit), id=cursor.fetchone())
 
-@editbp.route('/<int:id>', methods=('GET', 'POST'))
+    if request.method == 'POST':
+        title = request.form['title']       #标题
+        content = request.form['content']   #内容
+        _type = request.form['type']        #发往的版块
+        dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        #创建新主题
+        cursor.execute(
+                    'INSERT INTO post(id, title, type, content, userid, posttime, updatetime, reply, visit, collect)'
+                    'VALUES(null, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
+                    , (title, _type, content, g.user[0], dtime, dtime, '', 1, 0)
+                )
+        return redirect(url_for('index.index'))
+    return render_template('post/edit.html', post=None)
+
+@editbp.route('/<int:id>/post', methods=('GET', 'POST'))
 @loginRequired
 def edit(id):
     database = getDatabase()
@@ -48,10 +55,10 @@ def edit(id):
                     , (title, _type, content, dtime, id,)
                 )
         return redirect(url_for('index.index'))
-            
+    
     return render_template('post/edit.html', post=post)
 
-@editbp.route('/delete/<int:id>')
+@editbp.route('/<int:id>/delete')
 @loginRequired
 def delete(id):
     database = getDatabase()
@@ -66,6 +73,7 @@ def delete(id):
     cursor.execute(
         'DELETE FROM post WHERE id=%s;', (id,)
     )
+    return redirect(url_for('index.index'))
 
 @editbp.route('/upload', methods=('GET', 'POST'))
 @loginRequired
@@ -80,12 +88,7 @@ def upload():
         else:
             ext = os.path.splitext(file.filename)[1]
             filename = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + ext
-            current_path = os.path.abspath(os.path.dirname(__file__))       #获取当前文件夹绝对路径
-            filedir = os.path.join(current_path, 'data\\img')               #获取保存图片的路径
-            filepath = os.path.join(filedir, g.user[1])                     #获取当前用户保存图片的路径
-            if not os.path.exists(filepath):
-                os.makedirs(filepath)
-            file.save(os.path.join(filepath, filename))
+            uploadImg(g.user[0], filename, file)
             result = {
                 'success':1,
                 'message':'上传成功',
@@ -96,11 +99,5 @@ def upload():
 @editbp.route('/image/<name>')
 @loginRequired
 def image(name):
-    current_path = os.path.abspath(os.path.dirname(__file__))
-    filedir = os.path.join(current_path, 'data\\img')
-    filepath = os.path.join(filedir, g.user[1])         #获取图片文件路径
-
-    with open(os.path.join(filepath, name), 'rb') as f:
-        res = Response(f.read(), mimetype="image/jpeg")
-    return res          #返回图片
+    return readImg(g.user[0], name)
 
