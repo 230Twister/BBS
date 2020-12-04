@@ -11,7 +11,7 @@ from .api import readImg
 
 indexbp = Blueprint('index', __name__, url_prefix='/index')
 
-@indexbp.route('/')
+@indexbp.route('/', methods=('GET', 'POST'))
 def index():
     # 主页
     # 主要包括各板块最新和最热的帖子标题、用户头像、id、昵称、积分、积分排行榜
@@ -21,6 +21,13 @@ def index():
             findLatestPosts(cursor, 3), findHottestPosts(cursor, 3), findLatestPosts(cursor, 4), findHottestPosts(cursor, 4)}
     highestusers = findHighestPoints(cursor)
    
+    # 搜索
+    if request.methods == 'POST':
+        search = request.form['search']                                 #搜索的内容，会搜索出与此字符串相关度较高的帖子
+        searchposts = findSearchPost(cursor, search)                    #搜索结果
+
+        return render_template('index.html', indexdata = [post, highestusers, searchposts])
+
     return render_template('index.html', indexdata = [post, highestusers])
 
 
@@ -59,7 +66,15 @@ def findHottestPosts(cursor, type):
 def findHighestPoints(cursor):
     # 从userinfo中按积分排序，取积分最高的15个用户
     cursor.execute(
-        'SELECT * FROM userinfo ORDER BY point DESC;',
+        'SELECT * FROM userinfo ORDER BY point DESC;'
     )
     users = cursor.fetchmany(15)
     return users
+
+def findSearchPost(cursor, search):
+    # 根据search内容找到相关的帖子
+    cursor.execute(
+        'SELECT * FROM post WHERE title LIKE %s ORDER BY visit DESC', ('%' + search + '%', )
+    )
+    searchposts = cursor.fetchall()
+    return searchposts
