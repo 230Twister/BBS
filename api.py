@@ -83,3 +83,10 @@ def readImg(uuid, name):                                                    #uui
     with open(os.path.join(filepath, name), 'rb') as f:
         res = Response(f.read(), mimetype="image/jpeg")
     return res                                                              #返回图片
+
+#获取表内的一行数据
+def getData(cursor, table, key, value):
+    cursor.execute(
+        'SELECT * FROM '+table+' WHERE '+key+'=%s;', (value,)
+    )
+    return cursor.fetchone()

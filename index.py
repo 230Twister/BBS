@@ -21,7 +21,7 @@ def index():
             findLatestPosts(cursor, 3), findHottestPosts(cursor, 3), findLatestPosts(cursor, 4), findHottestPosts(cursor, 4)}
     highestusers = findHighestPoints(cursor)
    
-    return render_template('index.html', indexdata = {post, highestusers})
+    return render_template('index.html', indexdata = [post, highestusers])
 
 
 def findUser(cursor, id):
@@ -59,7 +59,7 @@ def findHottestPosts(cursor, type):
 def findHighestPoints(cursor):
     # 从userinfo中按积分排序，取积分最高的15个用户
     cursor.execute(
-        'SELECT * FROM userinfo ORDER BY visit DESC;',
+        'SELECT * FROM userinfo ORDER BY point DESC;',
     )
     users = cursor.fetchmany(15)
     return users

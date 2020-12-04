@@ -6,7 +6,7 @@ from PIL import Image
 
 from .auth import loginRequired
 from .database import getDatabase
-from .api import readImg, uploadImg
+from .api import readImg, uploadImg, getData
 
 editbp = Blueprint('edit', __name__, url_prefix='/edit')
 
@@ -17,6 +17,9 @@ def create(part):
         return render_template('404.html')
     database = getDatabase()
     cursor = database.cursor()
+
+    if g.userinfo[2] == 'ban':
+        return render_template('404.html')
 
     if request.method == 'POST':
         title = request.form['title']       #标题
@@ -41,7 +44,7 @@ def edit(id):
         'SELECT * FROM post WHERE id=%s;' ,(id,)
     )
     post = cursor.fetchone()
-    if post is None or post[4] != g.user[0]:        #若不存在这个主题或楼主不是当前访问用户
+    if not hasPermission(post):                     #检查是否有权限
         return render_template('404.html')          #返回404
 
     if request.method == 'POST':
@@ -63,11 +66,8 @@ def edit(id):
 def delete(id):
     database = getDatabase()
     cursor = database.cursor()
-    cursor.execute(
-        'SELECT * FROM post WHERE id=%s;' ,(id,)
-    )
-    post = cursor.fetchone()
-    if post is None or post[4] != g.user[0]:        #若不存在这个主题或楼主不是当前访问用户
+    post = getData(cursor, 'post', 'id', id)        #获取帖子信息
+    if not hasPermission(post):                     #检查是否有权限
         return render_template('404.html')          #返回404
 
     cursor.execute(
@@ -100,4 +100,15 @@ def upload():
 @loginRequired
 def image(name):
     return readImg(g.user[0], name)
+
+#检查用户是否有对帖子的操作权限
+def hasPermission(post):
+    if post is None:
+        return False
+    if g.userinfo[2] == 'ban':
+        return False
+    if post[4] != g.user[0] and g.userinfo[2] != 'admin' and g.userinfo[2] != 'part' + str(post[2]):
+        return False
+    return True
+
 
