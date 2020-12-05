@@ -7,7 +7,7 @@ from .database import getDatabase
 from .auth import loginRequired
 from PIL import Image
 import time, datetime, re
-from .api import readImg
+from .api import readImg, getData, getGroupName
 
 indexbp = Blueprint('index', __name__, url_prefix='/index')
 
@@ -40,20 +40,12 @@ def search():
 
 def findUser(cursor, id):
     # 从user中查找用户记录
-    cursor.execute(
-        'SELECT * FROM user WHERE uuid=%s;', (id, )
-    )
-    user = cursor.fetchone()
-    return user
+    return getData(cursor, 'user', 'uuid', id)
 
 
 def findUserinfo(cursor, id):
     # 从userinfo获取用户记录
-    cursor.execute(
-        'SELECT * FROM userinfo WHERE uuid=%s;', (id, )
-    )
-    userinfo = cursor.fetchone()
-    return userinfo
+    return getData(cursor, 'userinfo', 'uuid', id)
 
 
 def findLatestPosts(cursor, type):
@@ -64,10 +56,7 @@ def findLatestPosts(cursor, type):
     _post = cursor.fetchmany(4)
     post = []
     for p in _post:
-        cursor.execute(
-            'SELECT * FROM user WHERE uuid=%s;', (p[4],)
-        )
-        post.append([p[1], cursor.fetchone()[1], 10])
+        post.append([p[1], findUser(cursor, p[4])[1], 10])
     return post
 
 
@@ -77,8 +66,10 @@ def findHighestPoints(cursor):
         'SELECT * FROM userinfo ORDER BY point DESC;'
     )
     users = cursor.fetchmany(15)
-    return users
-
+    user = []
+    for u in users:
+        user.append([u[0], findUser(cursor, u[0])[1], u[4]])
+    return user
 
 def findSearchPost(cursor, search):
     # 根据search内容找到相关的帖子
@@ -88,8 +79,5 @@ def findSearchPost(cursor, search):
     _searchposts = cursor.fetchall()
     searchposts = []
     for p in _searchposts:
-        cursor.execute(
-            'SELECT * FROM user WHERE uuid=%s;', (p[4],)
-        )
-        searchposts.append([p[1], cursor.fetchone()[1], 10])
+        searchposts.append([p[1], findUser(cursor, p[4])[1], 10])
     return searchposts

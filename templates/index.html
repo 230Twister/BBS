@@ -182,7 +182,7 @@
 
                         <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
                             <div class="col-4 my-auto pl-2 pr-0">
-                                <a href="#"><img class="avatar-md" src="{{ url_for('static', filename='img/avatar.jpg') }}"></a>
+                                <a href="#"><img class="avatar-md" src="{{ url_for('userpage.showImg', id=g.user[0]) }}"></a>
                             </div>
                             <div class="col-7 info-1 mx-auto pt-1 pb-2">
                                 <div class="username">{{ g.user[1] }}</div>
@@ -217,12 +217,12 @@
                         <div class="card-body rank-list" style="padding-bottom: 2rem; padding-top: 0rem;">
                             <ul class="list-group" >
 
-                                {% for user in highestusers %}
+                                {% for user in indexdata[1] %}
                                 <li class="list-group-item rank-item"><a href="#"><img class="avatar-sm"
-                                            src="./static/img/avatar.jpg">
-                                    </a>{{ user[0] }}
+                                            src="{{ url_for('userpage.showImg', id=user[0]) }}">
+                                    </a>{{ user[1] }}
                                     <div class="d-inline"
-                                        style="position:absolute; right: 3rem; top: 1rem; bottom: 1rem;">{{ user[4] }}</div>
+                                        style="position:absolute; right: 3rem; top: 1rem; bottom: 1rem;">{{ user[2] }}</div>
                                 </li>
                                 {% endfor %}
                                 
