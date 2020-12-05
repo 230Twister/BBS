@@ -22,7 +22,7 @@ def index():
     highestusers = findHighestPoints(cursor)
    
     # 搜索
-    if request.methods == 'POST':
+    if request.method == 'POST':
         search = request.form['search']                                 #搜索的内容，会搜索出与此字符串相关度较高的帖子
         searchposts = findSearchPost(cursor, search)                    #搜索结果
 
@@ -66,12 +66,6 @@ def findHottestPosts(cursor, type):
 def findHighestPoints(cursor):
     # 从userinfo中按积分排序，取积分最高的15个用户
     cursor.execute(
-<<<<<<< HEAD
-        'SELECT * FROM userinfo ORDER BY visit DESC;',
-    )
-    users = cursor.fetchmany(15)
-    return users
-=======
         'SELECT * FROM userinfo ORDER BY point DESC;'
     )
     users = cursor.fetchmany(15)
@@ -84,4 +78,3 @@ def findSearchPost(cursor, search):
     )
     searchposts = cursor.fetchall()
     return searchposts
->>>>>>> e3b2c443b14f4f7dbf72061ddca0f777e030a8cf
