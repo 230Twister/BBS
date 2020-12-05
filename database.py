@@ -53,7 +53,7 @@ def initDatabase():
         ');')
     cursor.execute('CREATE TABLE IF NOT EXISTS user ('
         'uuid INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'#用户id
-        'name varchar(128) NOT NULL, '                          #昵称
+        'name varchar(128) BINARY NOT NULL, '                   #昵称
         'ip varchar(32) NOT NULL,'                              #ip
         'password varchar(256) NOT NULL,'                       #密码
         'email varchar(32) NOT NULL,'                           #邮箱

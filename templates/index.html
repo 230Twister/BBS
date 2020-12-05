@@ -1,3 +1,241 @@
 {% extends 'base.html' %}
 
 {% block title %}Welcome{% endblock %}
+
+{% block main %}
+<div class="container body-index font-400">
+
+    <!-- 轮播图 -->
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 px-lg-5 px-sm-4 px-md-4 mt-lg-5 mt-md-4 mt-sm-4 mt-4">
+            <div class="top-pic-body">
+                <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item ">
+                            <img src="{{ url_for('static', filename='img/1.jpg') }}" class="d-block w-100 top-pic-img">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>魔女宅急便</h5>
+                                <p>我想找个看得见海的地方</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item active">
+                            <img src="{{ url_for('static', filename='img/2.png') }}" class="d-block w-100 top-pic-img">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>New Edge</h5>
+                                <p>What? Why?</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ url_for('static', filename='img/4.jpg') }}" class="d-block w-100 top-pic-img">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>起风了</h5>
+                                <p>和平才是梦想最好的温床</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button"
+                        data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button"
+                        data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 左边: 板块一二三四 右边:用户信息 排行榜-->
+    <div class="row">
+
+        <div class="col-md-12 col-lg-12 px-lg-5 px-sm-4 px-md-4">
+            <div class="row justify-content-between">
+
+                <!-- 左边: 板块一二三四-->
+                <div class="col-lg-8 px-3">
+
+                    <div class="card part mb-5">
+
+                        <div class="card-header part-title part-post py-2 part-enter"
+                            style="border-radius: .6rem .6rem 0 0;">
+                            技术分享
+                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                        </div>
+                        <ul class="list-group ">
+                            {% for post1 in indexdata[0][0] %}
+                            <li class="list-group-item part-post">
+                                <div class="row justify-content-between">
+                                    <div class="col-6 text-truncate post-title">
+                                        <a href="#">{{post1[0]}}</a>
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-user fa-fw"></i>{{post1[1]}}
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-comment fa-fw"></i>{{post1[2]}}
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+
+                    </div>
+
+                    <div class="card part mb-5">
+
+                        <div class="card-header part-title part-post py-2 part-enter"
+                            style="border-radius: .6rem .6rem 0 0;">
+                            技术分享
+                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                        </div>
+                        <ul class="list-group ">
+                            {% for post2 in indexdata[0][1] %}
+                            <li class="list-group-item part-post">
+                                <div class="row justify-content-between">
+                                    <div class="col-6 text-truncate post-title">
+                                        <a href="#">{{post2[0]}}</a>
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-user fa-fw"></i>{{post2[1]}}
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-comment fa-fw"></i>{{post2[2]}}
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+
+                    </div>
+
+                    <div class="card part mb-5">
+
+                        <div class="card-header part-title part-post py-2 part-enter"
+                            style="border-radius: .6rem .6rem 0 0;">
+                            技术分享
+                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                        </div>
+                        <ul class="list-group ">
+                            {% for post3 in indexdata[0][2] %}
+                            <li class="list-group-item part-post">
+                                <div class="row justify-content-between">
+                                    <div class="col-6 text-truncate post-title">
+                                        <a href="#">{{post3[0]}}</a>
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-user fa-fw"></i>{{post3[1]}}
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-comment fa-fw"></i>{{post3[2]}}
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+
+                    </div>
+
+                    <div class="card part mb-5">
+
+                        <div class="card-header part-title part-post py-2 part-enter"
+                            style="border-radius: .6rem .6rem 0 0;">
+                            技术分享
+                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                        </div>
+                        <ul class="list-group ">
+                            {% for post4 in indexdata[0][3] %}
+                            <li class="list-group-item part-post">
+                                <div class="row justify-content-between">
+                                    <div class="col-6 text-truncate post-title">
+                                        <a href="#">{{post4[0]}}</a>
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-user fa-fw"></i>{{post4[1]}}
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-comment fa-fw"></i>{{post4[2]}}
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+
+                    </div>
+                </div>
+
+                <!-- 右边:用户信息 排行榜-->
+                <div class="col-lg-4 px-3">
+
+                    <div class="card w-100 info-card mb-5 pt-2 container-fluid px-0">
+
+                        <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
+                            <div class="col-4 my-auto pl-2 pr-0">
+                                <a href="#"><img class="avatar-md" src="{{ url_for('static', filename='img/avatar.jpg') }}"></a>
+                            </div>
+                            <div class="col-7 info-1 mx-auto pt-1 pb-2">
+                                <div class="username">{{ g.user[1] }}</div>
+                                <div class="info-2 mt-2">等级:{{ g.user['level'] }}</div>
+                                <div class="info-2">积分:{{ g.userinfo[4] }}</div>
+                                <div class="progress w-100 mt-3" style="height: 10px;">
+                                    <div class="progress-bar"
+                                        style="width: 25%; background-color: rgb(93, 156, 196);"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body row justify-content-between ">
+                            <div class="col-5 info-enter mx-2  py-1 text-center">
+                                <a href="#"><i class="fa fa-star fa-fw"></i>收藏</a>
+                            </div>
+                            <div class="col-5 info-enter mx-2 py-1 text-center">
+                                <a href="#"><i class="fa fa-gear fa-fw"></i>设置</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card w-100 rank mb-5" >
+                        <div class="card-header text-center rank-title"
+                            style="border-radius: .6rem .6rem 0 0;background-color:rgb(0,0,0,0); padding-top: 1rem;">
+                            积分排行榜
+                        </div>
+                        <div class="card-body rank-list" style="padding-bottom: 2rem; padding-top: 0rem;">
+                            <ul class="list-group" >
+
+                                {% for user in highestusers %}
+                                <li class="list-group-item rank-item"><a href="#"><img class="avatar-sm"
+                                            src="./static/img/avatar.jpg">
+                                    </a>{{ user[0] }}
+                                    <div class="d-inline"
+                                        style="position:absolute; right: 3rem; top: 1rem; bottom: 1rem;">{{ user[4] }}</div>
+                                </li>
+                                {% endfor %}
+                                
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %}

@@ -17,11 +17,12 @@ def index():
     # 主要包括各板块最新和最热的帖子标题、用户头像、id、昵称、积分、积分排行榜
     database = getDatabase()
     cursor = database.cursor()
-    post = {findLatestPosts(cursor, 1), findHottestPosts(cursor, 1), findLatestPosts(cursor, 2), findHottestPosts(cursor, 2),
-            findLatestPosts(cursor, 3), findHottestPosts(cursor, 3), findLatestPosts(cursor, 4), findHottestPosts(cursor, 4)}
+    post = [findLatestPosts(cursor, 1), findLatestPosts(cursor, 2),
+            findLatestPosts(cursor, 3), findLatestPosts(cursor, 4)]
     highestusers = findHighestPoints(cursor)
 
     return render_template('index.html', indexdata = [post, highestusers])
+
 
 @indexbp.route('/search', methods=('GET', 'POST'))
 def search():
@@ -36,6 +37,7 @@ def search():
 
     return render_template('search.html')
 
+
 def findUser(cursor, id):
     # 从user中查找用户记录
     cursor.execute(
@@ -43,6 +45,7 @@ def findUser(cursor, id):
     )
     user = cursor.fetchone()
     return user
+
 
 def findUserinfo(cursor, id):
     # 从userinfo获取用户记录
@@ -52,21 +55,21 @@ def findUserinfo(cursor, id):
     userinfo = cursor.fetchone()
     return userinfo
 
+
 def findLatestPosts(cursor, type):
-    # 从post中按发布时间排序，取最新的3条
+    # 从post中按发布时间排序，取最新的4条
     cursor.execute(
         'SELECT * FROM post WHERE type=%s ORDER BY posttime DESC;', (type, )
     )
-    post = cursor.fetchmany(3)
+    _post = cursor.fetchmany(4)
+    post = []
+    for p in _post:
+        cursor.execute(
+            'SELECT * FROM user WHERE uuid=%s;', (p[4],)
+        )
+        post.append([p[1], cursor.fetchone()[1], 10])
     return post
 
-def findHottestPosts(cursor, type):
-    # 从post中按热度排序，取最热的3条
-    cursor.execute(
-        'SELECT * FROM post WHERE type=%s ORDER BY visit DESC;', (type, )
-    )
-    post = cursor.fetchmany(3)
-    return post
 
 def findHighestPoints(cursor):
     # 从userinfo中按积分排序，取积分最高的15个用户
@@ -76,10 +79,17 @@ def findHighestPoints(cursor):
     users = cursor.fetchmany(15)
     return users
 
+
 def findSearchPost(cursor, search):
     # 根据search内容找到相关的帖子
     cursor.execute(
         'SELECT * FROM post WHERE title LIKE %s ORDER BY visit DESC', ('%' + search + '%', )
     )
-    searchposts = cursor.fetchall()
+    _searchposts = cursor.fetchall()
+    searchposts = []
+    for p in _searchposts:
+        cursor.execute(
+            'SELECT * FROM user WHERE uuid=%s;', (p[4],)
+        )
+        searchposts.append([p[1], cursor.fetchone()[1], 10])
     return searchposts
