@@ -33,7 +33,7 @@ def search():
         search = request.form['search']                                 #搜索的内容，会搜索出与此字符串相关度较高的帖子
         searchposts = findSearchPost(cursor, search)                    #搜索结果
 
-        return render_template('search.html', searchposts=searchposts)
+        return render_template('search.html', searchposts=[searchposts, search])
 
     return render_template('search.html')
 

@@ -46,10 +46,10 @@
 
                 <ul class="navbar-nav navbar-bbs ml-lg-auto">
                     <!-- 搜索输入框 与 搜索按钮 -->
-                    <form class="form-inline">
+                    <form class="form-inline" action="{{ url_for('index.search') }}" method="POST">
 
                         <input class=" form-control input-text " type="search" placeholder="What you want?"
-                            aria-label="Search">
+                            aria-label="Search" name="search">
 
                         <button class="search-button button-hover " type="submit"><i
                                 class="fa fa-search fa-fw"></i>搜索</button>
@@ -97,7 +97,7 @@
                                     class="fa fa-user fa-fw"></i>主页</a>
                             <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="#"><i
                                     class="fa fa-gear fa-fw"></i>设置</a>
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="#"><i
+                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="{{ url_for('auth.logout') }}"><i
                                     class="fa fa-sign-out fa-fw"></i>注销</a>
                         </div>
                     </li>
