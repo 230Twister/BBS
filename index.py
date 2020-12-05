@@ -11,7 +11,7 @@ from .api import readImg
 
 indexbp = Blueprint('index', __name__, url_prefix='/index')
 
-@indexbp.route('/', methods=('GET', 'POST'))
+@indexbp.route('/')
 def index():
     # 主页
     # 主要包括各板块最新和最热的帖子标题、用户头像、id、昵称、积分、积分排行榜
@@ -20,16 +20,21 @@ def index():
     post = {findLatestPosts(cursor, 1), findHottestPosts(cursor, 1), findLatestPosts(cursor, 2), findHottestPosts(cursor, 2),
             findLatestPosts(cursor, 3), findHottestPosts(cursor, 3), findLatestPosts(cursor, 4), findHottestPosts(cursor, 4)}
     highestusers = findHighestPoints(cursor)
-   
-    # 搜索
-    if request.methods == 'POST':
-        search = request.form['search']                                 #搜索的内容，会搜索出与此字符串相关度较高的帖子
-        searchposts = findSearchPost(cursor, search)                    #搜索结果
-
-        return render_template('index.html', indexdata = [post, highestusers, searchposts])
 
     return render_template('index.html', indexdata = [post, highestusers])
 
+@indexbp.route('/search', methods=('GET', 'POST'))
+def search():
+    # 搜索
+    database = getDatabase()
+    cursor = database.cursor()
+    if request.method == 'POST':
+        search = request.form['search']                                 #搜索的内容，会搜索出与此字符串相关度较高的帖子
+        searchposts = findSearchPost(cursor, search)                    #搜索结果
+
+        return render_template('search.html', searchposts=searchposts)
+
+    return render_template('search.html')
 
 def findUser(cursor, id):
     # 从user中查找用户记录
