@@ -158,10 +158,12 @@ def loadLoginedUser():
     if user is None:
         g.user = None
         g.userinfo = None
+        g.group = None
     else:
         cursor = getDatabase().cursor()
         g.user = getData(cursor, 'user', 'uuid', user[0])
         g.userinfo = getData(cursor, 'userinfo', 'uuid', user[0])
+        g.group = [int(g.userinfo[4]/100), g.userinfo[4]%100, g.userinfo[2]]
 
 #需要登陆检测
 def loginRequired(view):
