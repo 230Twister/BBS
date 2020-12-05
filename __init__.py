@@ -38,10 +38,9 @@ def create_app():
     database.init_app(app)       #注册数据库初始化命令
 
     from . import auth
-    app.register_blueprint(auth.authbp)
-
+    app.register_blueprint(auth.authbp)         #登陆注册
     from . import userpage
-    app.register_blueprint(userpage.userpagebp) #用户主页蓝图
+    app.register_blueprint(userpage.userpagebp) #用户主页
     from . import index
     app.register_blueprint(index.indexbp)       #主页
     from . import edit

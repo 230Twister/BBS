@@ -63,13 +63,13 @@ def initDatabase():
     cursor.execute('CREATE TABLE IF NOT EXISTS userinfo ('
         'uuid INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'#用户id
         'warn TEXT NOT NULL,'                                   #提醒
-        'permission TEXT NOT NULL,'                             #权限列表
+        'permission varchar(32) NOT NULL,'                      #权限列表 admin管理员 part1/2/3/4版主 normal普通会员 ban禁言
         'collect TEXT NOT NULL,'                                #收藏的主题
         'point MEDIUMINT UNSIGNED NOT NULL)'                    #积分
     )
     cursor.execute('CREATE TABLE IF NOT EXISTS mail ('
         'destination varchar(32) NOT NULL,'                     #发送邮箱
-        'posttime INT UNSIGNED NOT NULL)'                       #发送时间
+        'posttime INT UNSIGNED NOT NULL);'                      #发送时间
     )
 
 @click.command('init_db')

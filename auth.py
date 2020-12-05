@@ -9,7 +9,7 @@ from threading import Thread
 import time, datetime, re
 
 from .database import getDatabase
-from .api import ImageCode, generateCode, sendMail
+from .api import ImageCode, generateCode, sendMail, getData
 
 authbp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -24,6 +24,7 @@ def register():
         password = request.form['password']              #密码
         repassword = request.form['repassword']          #确认密码
         if 'register' in request.form:
+            ip = request.remote_addr
             database = getDatabase()
             cursor = database.cursor()
             user = checkUser(cursor, username, email)   #从数据库查找用户记录
@@ -37,17 +38,23 @@ def register():
 
             if error is None:
                 dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                cursor.execute(
+                cursor.execute(             #插入新用户
                     'INSERT INTO user(uuid, name, ip, password, email, registertime, lastlogin)'
                     'VALUES(null, %s, %s, %s, %s, %s, %s);'
-                    , (username, '0.0.0.0', generate_password_hash(password), email, dtime, dtime)
+                    , (username, ip, generate_password_hash(password), email, dtime, dtime)
                 )
-                cursor.execute(
-                    'SELECT * FROM user WHERE name=%s;', (username,)
+                cursor.execute(             #获取新用户的uuid
+                    'SELECT LAST_INSERT_ID();'
                 )
-                user = cursor.fetchone()
+                id = cursor.fetchone()
+                cursor.execute(             #插入新用户的详细信息
+                    'INSERT INTO userinfo(uuid, warn, permission, collect, point)'
+                    'VALUES(%s, %s, %s, %s, %s);'
+                    , (id, '', 'normal', '', '0')
+                )
                 session.clear()
-                session['userID'] = user
+                session['userID'] = getData(cursor, 'user', 'uuid', id)
+                session['userInfo'] = getData(cursor, 'userinfo', 'uuid', id)
                 return redirect(url_for('auth.login'))
             flash(error)
         else:
@@ -106,11 +113,11 @@ def login():
         password = request.form['password']              #密码
         vcode = request.form['verifycode']               #验证码
         database = getDatabase()
-        curse = database.cursor()
-        curse.execute(
+        cursor = database.cursor()
+        cursor.execute(
             'SELECT * FROM user WHERE name=%s OR email=%s;', (username, username,)
             )                            #从数据库查找用户记录
-        user = curse.fetchone()
+        user = cursor.fetchone()
         error = None
 
         if user is None or not check_password_hash(user[3], password):
@@ -121,6 +128,7 @@ def login():
         if error is None:
             session.clear()
             session['userID'] = user
+            session['userInfo'] = getData(cursor, 'userinfo', 'uuid', user[0])
             return redirect(url_for('index.index'))
         flash(error)
         return render_template('auth/login.html', userdata={"username":username, "password":password})
@@ -145,15 +153,15 @@ def logout():
 
 @authbp.before_app_request
 def loadLoginedUser():
-    userID = session.get('userID')
-    if userID is None:
+    user = session.get('userID')
+    userinfo = session.get('userInfo')
+    if user is None:
         g.user = None
+        g.userinfo = None
     else:
         cursor = getDatabase().cursor()
-        cursor.execute(
-        'SELECT * FROM user WHERE uuid=%s;', (userID[0],)
-        )
-        g.user = cursor.fetchone()
+        g.user = getData(cursor, 'user', 'uuid', user[0])
+        g.userinfo = getData(cursor, 'userinfo', 'uuid', user[0])
 
 #需要登陆检测
 def loginRequired(view):
