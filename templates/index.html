@@ -177,7 +177,7 @@
 
                 <!-- 右边:用户信息 排行榜-->
                 <div class="col-lg-4 px-3">
-
+                    {% if g.user%}
                     <div class="card w-100 info-card mb-5 pt-2 container-fluid px-0">
 
                         <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
@@ -186,11 +186,12 @@
                             </div>
                             <div class="col-7 info-1 mx-auto pt-1 pb-2">
                                 <div class="username">{{ g.user[1] }}</div>
-                                <div class="info-2 mt-2">等级:{{ g.user['level'] }}</div>
-                                <div class="info-2">积分:{{ g.userinfo[4] }}</div>
+                                <div class="info-2 mt-2">等级: Lv.{{ g.group[0] }}</div>
+                                <div class="info-2">积分: {{ g.userinfo[4] }}</div>
+                                <div class="info-2">用户组: {{ g.group[2] }}</div>
                                 <div class="progress w-100 mt-3" style="height: 10px;">
                                     <div class="progress-bar"
-                                        style="width: 25%; background-color: rgb(93, 156, 196);"></div>
+                                        style="width: {{ g.group[1] }}%; background-color: rgb(93, 156, 196);"></div>
                                 </div>
                             </div>
                         </div>
@@ -206,6 +207,7 @@
 
 
                     </div>
+                    {% endif %}
 
                     <div class="card w-100 rank mb-5" >
                         <div class="card-header text-center rank-title"

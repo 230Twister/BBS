@@ -79,14 +79,14 @@
                             <a class="dropdown-item mx-0 dropdown-item-hover-no"
                                 href="#"><b>{{ g.user[1] }}</b></a>
                             <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover-no"><i
-                                    class="fa fa-level-up fa-fw"></i>等级:{{ g.userinfo['level'] }}</a>
+                                    class="fa fa-level-up fa-fw"></i>等级:{{ g.group[0] }}</a>
                             <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover-no"><i
                                     class="fa fa-jpy fa-fw"></i>积分:{{ g.userinfo[4] }}</a>
 
 
                             <!-- 经验条 -->
                             <div class="progress w-75" style="height: 8px; margin-left:25px;">
-                                <div class="progress-bar " role="progressbar" style="width: 25%; background-color: rgb(93, 156, 196);" ></div>
+                                <div class="progress-bar " role="progressbar" style="width: {{ g.group[1] }}%; background-color: rgb(93, 156, 196);" ></div>
                             </div>
 
                             <!-- 分割线 -->
