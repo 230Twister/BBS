@@ -145,7 +145,7 @@ def changeAvatar(id):
     if request.method == 'POST':
         if 'settings' in request.form:                          #上传新头像
             file = request.files.get('editormd-image-file')     #获取上传的图片
-            uploadImg(id, 'avatar', file)
+            uploadImg(id, 'avatar.jpg', file)
 
     return render_template('userpage/changeAvatar.html')
 

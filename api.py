@@ -81,7 +81,11 @@ def readImg(uuid, name):                                                    #uui
     filepath = os.path.join(filedir, uuid)                                  #获取图片文件路径
 
     with open(os.path.join(filepath, name), 'rb') as f:
-        res = Response(f.read(), mimetype="image/jpeg")
+        if f:
+            res = Response(f.read(), mimetype="image/jpeg")
+        else:
+            with open(os.path.join(filedir, 'avatar.jpg'), 'rb') as f:
+                res = Response(f.read(), mimetype="image/jpeg")
     return res                                                              #返回图片
 
 #获取表内的一行数据
