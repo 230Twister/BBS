@@ -51,7 +51,7 @@ def showUserpage(id):
 @userpagebp.route('/<int:id>/image/<name>')
 @loginRequired
 def showImg(id, name):
-    readImg(id, name)
+    return readImg(id, name)
 
 @userpagebp.route('/<int:id>/post')
 def showPosts(id):

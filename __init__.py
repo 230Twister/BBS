@@ -10,7 +10,7 @@ def create_app():
 
     app.config.from_mapping(  #默认配置
         SECRET_KEY="dev",
-        MAX_CONTENT_LENGTH=3 * 1024 * 1024, #限制上传文件大小3M
+        MAX_CONTENT_LENGTH=1 * 1024 * 1024, #限制上传文件大小3M
 
         HOST="127.0.0.1",
         PORT=3306,
