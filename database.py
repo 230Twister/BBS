@@ -63,7 +63,7 @@ def initDatabase():
     cursor.execute('CREATE TABLE IF NOT EXISTS userinfo ('
         'uuid INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'#用户id
         'warn TEXT NOT NULL,'                                   #提醒
-        'permission varchar(32) NOT NULL,'                      #权限列表 admin管理员 part1/2/3/4版主 normal普通会员 ban禁言
+        'permission varchar(32) NOT NULL,'                      #权限列表 管理员 版主1/2/3/4 普通会员 禁言
         'collect TEXT NOT NULL,'                                #收藏的主题
         'point MEDIUMINT UNSIGNED NOT NULL)'                    #积分
     )

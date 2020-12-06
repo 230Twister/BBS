@@ -89,14 +89,15 @@ def uploadImg(uuid, name, file):
 def readImg(uuid, name):                                                    #uuid区分不同用户的id，name区分图片名称
     current_path = os.path.abspath(os.path.dirname(__file__))
     filedir = os.path.join(current_path, 'data\\img')
-    filepath = os.path.join(filedir, uuid)                                  #获取图片文件路径
+    filepath = os.path.join(filedir, str(uuid))                                  #获取图片文件路径
 
-    with open(os.path.join(filepath, name), 'rb') as f:
-        if f:
+    if os.path.exists(os.path.join(filepath, name)):
+        with open(os.path.join(filepath, name), 'rb') as f:
             res = Response(f.read(), mimetype="image/jpeg")
-        else:
-            with open(os.path.join(filedir, 'avatar.jpg'), 'rb') as f:
-                res = Response(f.read(), mimetype="image/jpeg")
+    else:
+        with open(os.path.join(current_path, 'static\\img\\avatar.jpg'), 'rb') as f:
+            res = Response(f.read(), mimetype="image/jpeg")
+        
     return res                                                              #返回图片
 
 #获取表内的一行数据
@@ -105,3 +106,12 @@ def getData(cursor, table, key, value):
         'SELECT * FROM '+table+' WHERE '+key+'=%s;', (value,)
     )
     return cursor.fetchone()
+
+#获取用户组名字
+def getGroupName(name):
+    if name == 'admin':
+        return '管理员'
+    elif name == 'normal':
+        return '普通会员'
+    else:
+        return '版主'

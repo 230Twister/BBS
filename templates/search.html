@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block main %}
+<div class="container body-index font-400">
+
+
+
+    <!-- 左边: 搜索结果 右边:用户信息 排行榜-->
+    <div class="row ">
+
+        <div class="col-md-12 col-lg-12 px-lg-5 px-sm-4 px-md-4 mt-5">
+            <div class="row justify-content-between">
+
+                <!-- 左边: 搜索结果-->
+                <div class="col-lg-8 px-3">
+
+                    <div class="card part mb-5">
+
+                        <div class="card-header part-title part-post py-2 " style="border-radius: .6rem .6rem 0 0;">
+                            <i class="fa fa-quote-left fa-fw"></i>&nbsp;{{ searchposts[1] }}&nbsp;<i
+                                class="fa fa-quote-right fa-fw"></i>
+                        </div>
+                        <ul class="list-group ">
+
+                            {% if searchposts[0] %}
+                            {% for result in searchposts[0] %}
+                            <li class="list-group-item part-post">
+                                <div class="row justify-content-between">
+                                    <div class="col-6 text-truncate post-title">
+                                        <a href="#">{{ result[0] }}</a>
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-user fa-fw"></i>{{ result[1] }}
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-comment fa-fw"></i>{{ result[2] }}
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                                <li class="list-group-item part-post my-3">
+                                    <div class="row justify-content-between">
+                                        <div class="col-12 text-center post-title">
+                                            <i class="fa fa-frown-o fa-fw"></i>无结果<i class="fa fa-frown-o fa-fw"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+
+                        </ul>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- 右边:用户信息 排行榜-->
+                <div class="col-lg-4 px-3">
+                    {% if g.user%}
+                    <div class="card w-100 info-card mb-5 pt-2 container-fluid px-0">
+
+                        <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
+                            <div class="col-4 my-auto pl-2 pr-0">
+                                <a href="#"><img class="avatar-md" src="{{ url_for('static', filename='img/avatar.jpg') }}"></a>
+                            </div>
+                            <div class="col-7 info-1 mx-auto pt-1 pb-2">
+                                <div class="username">{{ g.user[1] }}</div>
+                                <div class="info-2 mt-2">等级: Lv.{{ g.group[0] }}</div>
+                                <div class="info-2">积分: {{ g.userinfo[4] }}</div>
+                                <div class="info-2">用户组: {{ g.group[2] }}</div>
+                                <div class="progress w-100 mt-3" style="height: 10px;">
+                                    <div class="progress-bar"
+                                        style="width: {{ g.group[1] }}%; background-color: rgb(93, 156, 196);"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body row justify-content-between ">
+                            <div class="col-5 info-enter mx-2  py-1 text-center">
+                                <a href="#"><i class="fa fa-star fa-fw"></i>收藏</a>
+                            </div>
+                            <div class="col-5 info-enter mx-2 py-1 text-center">
+                                <a href="#"><i class="fa fa-gear fa-fw"></i>设置</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    {% endif %}
+
+                    <div class="card w-100 rank mb-5" >
+                        <div class="card-header text-center rank-title"
+                            style="border-radius: .6rem .6rem 0 0;background-color:rgb(0,0,0,0); padding-top: 1rem;">
+                            积分排行榜
+                        </div>
+                        <div class="card-body rank-list" style="padding-bottom: 2rem; padding-top: 0rem;">
+                            <ul class="list-group" >
+
+                                {% for user in highestusers %}
+                                <li class="list-group-item rank-item"><a href="#"><img class="avatar-sm"
+                                            src="./static/img/avatar.jpg">
+                                    </a>{{ user[0] }}
+                                    <div class="d-inline"
+                                        style="position:absolute; right: 3rem; top: 1rem; bottom: 1rem;">{{ user[4] }}</div>
+                                </li>
+                                {% endfor %}
+                                
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</div>
+{% endblock %}

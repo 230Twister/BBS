@@ -9,7 +9,7 @@ from threading import Thread
 import time, datetime, re
 
 from .database import getDatabase
-from .api import ImageCode, generateCode, sendMail, getData
+from .api import ImageCode, generateCode, sendMail, getData, getGroupName
 
 authbp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -158,10 +158,12 @@ def loadLoginedUser():
     if user is None:
         g.user = None
         g.userinfo = None
+        g.group = None
     else:
         cursor = getDatabase().cursor()
         g.user = getData(cursor, 'user', 'uuid', user[0])
         g.userinfo = getData(cursor, 'userinfo', 'uuid', user[0])
+        g.group = [int(g.userinfo[4]/100), g.userinfo[4]%100, getGroupName(g.userinfo[2])]
 
 #需要登陆检测
 def loginRequired(view):

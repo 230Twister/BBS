@@ -48,10 +48,9 @@ def showUserpage(id):
     return render_template('userpage.html', userpagedata = {user, userinfo})    #直接用user和userinfo就行...
 
 # 展示图片（头像）
-@userpagebp.route('/<int:id>/image/<name>')
-@loginRequired
-def showImg(id, name):
-    return readImg(id, name)
+@userpagebp.route('/<int:id>/image')
+def showImg(id):
+    return readImg(id, 'avatar.jpg')
 
 @userpagebp.route('/<int:id>/post')
 def showPosts(id):
