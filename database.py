@@ -48,8 +48,6 @@ def initDatabase():
         'userid INT UNSIGNED NOT NULL,'                         #用户id
         'content LONGTEXT NOT NULL,'                            #内容
         'posttime DATETIME NOT NULL,'                           #发表时间
-        'updatetime DATETIME NOT NULL,'                         #更新时间
-        'reply INT UNSIGNED NOT NULL'                           #回复对象
         ');')
     cursor.execute('CREATE TABLE IF NOT EXISTS user ('
         'uuid INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,'#用户id

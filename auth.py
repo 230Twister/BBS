@@ -126,8 +126,12 @@ def login():
             error = '验证码错误！'
 
         if error is None:
+            dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            cursor.execute(
+                'UPDATE user SET lastlogin=%s WHERE uuid=%s', (dtime, user[0],)
+            )
             session.clear()
-            session['userID'] = user
+            session['userID'] = getData(cursor, 'user', 'uuid', user[0])
             session['userInfo'] = getData(cursor, 'userinfo', 'uuid', user[0])
             return redirect(url_for('index.index'))
         flash(error)
