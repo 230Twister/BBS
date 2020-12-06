@@ -1,544 +1,198 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./static/css/styles.css">
-    <link rel="stylesheet" href="./static/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./static/editormd/css/editormd.min.css" />
-    <link rel="stylesheet" href="./static/editormd/css/editormd.preview.css" />
+{% block css %}
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='editormd/css/editormd.min.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='editormd/css/editormd.preview.min.css')}}">
 
-    <title>Post_detail</title>
-    <style>
-        .body-guide {
-            margin-top: 50px;
-            border-radius: 1rem;
-            padding-top: 30px;
-        }
+{% endblock %}
 
-        .body-end {
-            margin-top: 100px;
-            margin-bottom: 100px;
-            border-radius: 1rem;
-            padding: 10px 60px 15px 60px;
-            background-color: rgba(195, 206, 216, .85);
-            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
-        }
+{% block title %}{% endblock %}
 
-        .body-detail {
-            margin-top: 10px;
-            background-color: rgba(195, 206, 216, .85);
-            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
-            border-radius: 1rem;
-        }
+{% block main %}
 
-        .card-left {
-            margin-bottom: 1rem;
-            border-radius: 1rem 0 0 1rem;
-            padding-left: 0rem;
-            padding-right: 5rem;
-            background-color: #4f698a;
-        }
+<!-- 回帖按钮 -->
+<div class="container body-guide font-400">
+    <div class="row ">
+        <div class="col-md-12">
+            <a href="#reply" class="button mr-md-5 "><i class="fa fa-reply fa-fw"></i>回帖</a>
 
-        .card-left .data {
-            background-color: #4f698a;
-            margin: 0;
-            border-radius: 1rem 0 0 1rem;
-            padding: 20%;
-        }
+            {% if hostinfo[6] %}
+            <a href="{{ url_for('posts.collect',postid=postdata[0]) }}" class="button mr-3 "><i
+                    class="fa fa-star fa-fw"></i>收藏({{postdata[9]}})</a>
+            {% else %}
+            <a href="{{ url_for('posts.uncollect',postid=postdata[0]) }}" class="button mr-3 "><i
+                    class="fa fa-star fa-fw"></i>取消收藏({{postdata[9]}})</a>
+            {% endif %}
 
-        .card-right {
-            margin-bottom: 1rem;
-            border-radius: 0 1rem 1rem 0;
-            padding: 5px 5px 10px 10px;
-            background-color: rgb(221, 227, 233);
-            position: relative;
-        }
-
-        .headpic {
-            display: inline-block;
-            height: auto;
-            max-width: 100%;
-            margin-bottom: 15px;
-            border-style: solid;
-            border-color: rgba(67, 82, 108, 1);
-            border-width: 5px;
-        }
-
-        .postname {
-            margin: 20px 0 20px 0;
-            border-color: rgba(67, 82, 108, 1);
-            border-bottom-style: solid;
-            font-size: 25px;
-        }
-
-        .time {
-            font-size: 15px;
-            background-color: rgb(221, 227, 233);
-            padding-right: 10px;
-            border-bottom-style: dotted;
-            border-color: #4f698a;
-        }
-
-        .posttext {
-            background-color: rgb(221, 227, 233);
-            padding: 20px 10px 20px 10px;
-            font-size: 20px;
-        }
-
-        .edit {
-            padding-left: 25px;
-        }
-
-        .delete {
-            padding-left: 80px;
-        }
-
-        .page1 {
-            position: relative;
-        }
-
-        .page2 {
-            position: relative;
-            margin-bottom: 50px;
-        }
-
-        .pagenum1 {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            padding: 20px;
-        }
-
-        .pagenum2 {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 20px;
-        }
-
-        ul.pagination {
-            display: inline-block;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul.pagination li {
-            display: inline;
-        }
-
-        ul.pagination li a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 5px;
-            border: 1px solid rgb(115, 146, 173);
-        }
-
-        ul.pagination li a.active {
-            background-color: #4f698a;
-            color: white;
-            border-radius: 5px;
-        }
-
-        ul.pagination li a:hover:not(.active) {
-            background-color: rgb(115, 146, 173);
-            ;
-        }
-
-        a {
-            color: #4f698a;
-        }
-
-        a:link {
-            text-decoration: none;
-        }
-
-        .button {
-            background-color: rgb(115, 146, 173);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            padding: 16px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 4px 2px;
-            -webkit-transition-duration: 0.4s;
-            /* Safari */
-            transition-duration: 0.2s;
-            cursor: pointer;
-        }
-
-        .button:hover {
-            background-color: #4f698a;
-            color: white;
-            text-decoration: none
-        }
-
-        .pos {
-            position: absolute;
-            right: 0;
-        }
-
-        .disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .replyfont {
-            font-size: 25px;
-            margin: 24px 20px 0 20px;
-        }
-
-        .reply {
-            border-radius: 20px;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- 壁纸 -->
-    <div class="wrapper">
-        <!--背景图片-->
-        <div id="web_bg" style="background-image: url(./static/img/bg.jpg);"></div>
-    </div>
-
-    <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-light nav-bg fixed-top shadow py-1 mb-5 font-400 ">
-        <div class="container nav-bg">
-            <!-- 品牌 -->
-            <a class="navbar-brand" href="#">XXBBS</a>
-
-            <!--  -->
-            <button class="navbar-toggler " style="outline: none; border: none;" type="button" data-toggle="collapse"
-                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- 导航主体 -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                <ul class="navbar-nav navbar-bbs">
-                    <li class="item-hover  nav-item active" style="margin-right: 10px; ">
-                        <a class="nav-link " href="#"><i class="fa fa-home fa-fw"></i>首页 <span
-                                class="sr-only">(current)</span></a>
-                    </li>
-
-                </ul>
-
-                <ul class="navbar-nav navbar-bbs ml-lg-auto">
-                    <!-- 搜索输入框 与 搜索按钮 -->
-                    <form class="form-inline ">
-
-                        <input class=" form-control input-text " type="search" placeholder="What you want?"
-                            aria-label="Search">
-
-                        <button class="search-button button-hover " type="submit"><i
-                                class="fa fa-search fa-fw"></i>搜索</button>
-
-                    </form>
-
-                </ul>
-
-
-                <!-- 如果用户登录了 -->
-                <ul class="navbar-nav  navbar-bbs ml-auto">
-                    <li class="nav-item dropdown">
-
-                        <!-- 下拉菜单按钮 -->
-                        <a class="nav-link dropdown-toggle " id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-
-                            <!-- 用户头像 -->
-                            <img class="avatar-xs " src="/static/img/avatar.jpg">
-                        </a>
-
-                        <!-- 下拉菜单 -->
-                        <div class="dropdown-menu w-50" aria-labelledby="navbarDropdown">
-
-                            <!-- 展示部分(不可跳转) -->
-                            <a class="dropdown-item mx-0 dropdown-item-hover-no" href="#"><b>Admin</b></a>
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover-no"><i
-                                    class="fa fa-level-up fa-fw"></i>等级:2</a>
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover-no"><i
-                                    class="fa fa-jpy fa-fw"></i>积分:77</a>
-
-
-                            <!-- 经验条 -->
-                            <div class="progress w-75" style="height: 8px; margin-left:25px;">
-                                <div class="progress-bar " role="progressbar" style="width: 25%;" aria-valuenow="25"
-                                    aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-
-                            <!-- 分割线 -->
-                            <div class="dropdown-divider"></div>
-
-                            <!-- 可跳转选项 -->
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover " href="#"><i
-                                    class="fa fa-user fa-fw"></i>主页</a>
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="#"><i
-                                    class="fa fa-gear fa-fw"></i>设置</a>
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="#"><i
-                                    class="fa fa-sign-out fa-fw"></i>注销</a>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav navbar-bbs">
-
-                    <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="#"><i class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
-                    </li>
-
-                    <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="#"><i class="fa fa-bell-o fa-fw"></i>通知</a>
-                    </li>
-
-                </ul>
-
-                <!-- 如果用户没有登录 -->
-                <ul hidden class="navbar-nav ml-auto navbar-bbs" style="margin-right: 40px;">
-
-                    <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="#"><i class="fa fa-sign-in fa-fw"></i>登录</a>
-                    </li>
-
-                    <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="#"><i class="fa fa-user-plus fa-fw"></i>注册</a>
-                    </li>
-                </ul>
-            </div>
         </div>
-    </nav>
+    </div>
+</div>
 
-    <div class="container body-guide font-400">
-        <p style="font-size: 50px;">帖子详情</p>
-        <div class="row">
-            <div class="col-md-3">
-                <a href="#reply" class="button">回复</a>
-            </div>
-            <div class="col page1">
-                <ul class="pagination pagenum1">
-                    <li><a class="disabled">&laquo;</a>
-                    </li>
-                    <li><a class="active" href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a class="disabled">...</a></li>
-                    <li><a href="#">&raquo;</a>
-                    </li>
-                </ul>
-            </div>
+<!-- 帖子内容 -->
+<div class="container body-detail font-400">
+    <div class="row mx-md-5 mx-1 pt-md-4">
+        <div class="col postname">
+            <i class="fa fa-quote-left fa-fw"></i>&nbsp;{{ postdata[1] }}&nbsp;<i class="fa fa-quote-right fa-fw"></i>
         </div>
     </div>
 
-    <div class="container body-detail px-md-5 px-sm-1 pt-3 pb-1 font-400">
-        <div class="row px-5">
-            <div class="col postname">
-                这是标题
-            </div>
-        </div>
-        <div class="row px-5 pb-2">
-            <div class="col-md-3 card-left pr-0 border-0">
-                <div class="card data border-0">
-                    <a href="#">
-                        <img src="./static/img/timg.jfif" class="img-fluid headpic rounded-circle mx-auto d-block">
-                    </a>
-                    <p class="text-center font-weight-bold" style="font-size: 20px;line-height: 1;">这是用户名</p>
-                    <div style="line-height: 0.5;">
-                        <p class="text-center">等级：666</p>
-                        <p class="text-center">积分：233</p>
-                    </div>
-                    <div class="progress" style="height: 5px; margin-left: 10px; margin-right: 10px;">
-                        <div class="progress-bar" role="progressbar"
-                            style="width: 25%; background-color: #7da6dd; border-radius: 0.2rem;" aria-valuenow="25"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+    <div class="row mx-md-5 mx-1 pb-4">
+        <!-- 头像信息 -->
+        <div class="col-md-3 card-left ">
+            <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
+                <div class="col-md-10 col-4 mt-md-4 my-auto mx-md-3 mx-auto px-md-4">
+                    <a href="#"><img class="avatar-md" src="{{ url_for('userpage.showImg', id= hostinfo[0]) }}"></a>
                 </div>
-            </div>
-            <div class="col card-right pl-0 border-0">
-                <div class="card card-right border-0">
-                    <div class="text-right time">发表于2020-11-30 11:16:05</div>
-                    <div class="posttext border-0" id="test-markdown-view">
-                        <textarea style="display:none;">### Hello world!</textarea>
+                <div class="col-md-12 col-8 mx-auto py-2 pb-2 my-md-4 post-detail-info">
+                    <div style="font-weight: 700;">{{ hostinfo[1] }}</div>
+                    <div class="info-2 mt-2">等级:{{ hostinfo[3] }}</div>
+                    <div class="info-2">积分:{{ hostinfo[2] }}</div>
+                    <div class="info-2">用户组:{{ hostinfo[4] }}</div>
+
+                    <div class="progress w-100 mt-3" style="height: 10px;">
+                        <div class="progress-bar"
+                            style="width: {{ hostinfo[5] }}%; background-color: rgb(93, 156, 196);"></div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2" style="position: absolute; bottom: 15px; left: 10px;"><a href="#">编辑</a></div>
-                    <div class="col-md-2" style="position: absolute; bottom: 15px; left: 90px;"><a href="#">删除</a></div>
-                    <div class="col-md-6 text-right" style="position: absolute; bottom: 15px; right: 0;">#1</div>
                 </div>
             </div>
         </div>
 
-        <div class="row px-5 pb-2">
-            <div class="col-md-3 card-left pr-0 border-0">
-                <div class="card data border-0">
-                    <a href="#">
-                        <img src="./static/img/avatar.jpg" class="img-fluid headpic rounded-circle mx-auto d-block">
-                    </a>
-                    <p class="text-center font-weight-bold" style="font-size: 20px;line-height: 1;">这是用户名</p>
-                    <div style="line-height: 0.5;">
-                        <p class="text-center">等级：233</p>
-                        <p class="text-center">积分：666</p>
-                    </div>
-                    <div class="progress" style="height: 5px; margin-left: 10px; margin-right: 10px;">
-                        <div class="progress-bar" role="progressbar"
-                            style="width: 50%; background-color: #7da6dd; border-radius: 0.2rem;" aria-valuenow="50"
-                            aria-valuemin="0" aria-valuemax="100"></div>
+        <!-- 帖子信息 -->
+        <div class="col-md-9 card-right pt-3 border-0">
+
+            <div class="row px-3">
+                <div class="col-12 text-right time">
+                    <i class="fa fa-clock-o fa-fw"></i>发表于{{ postdata[5] }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-reply fa-fw"></i>回帖数:{{ replysize }}&nbsp;</div>
+            </div>
+
+            <div class="posttext border-0 mb-md-4 px-1" id="test-markdown-view">
+                <textarea>
+{{ postdata[3] }}
+                </textarea>
+            </div>
+            <div class="row px-3">
+                <div class="col-12 text-right">
+                    </i>#1</div>
+            </div>
+
+            {% if g.userinfo[2]=='admin' %}
+            <div class="row px-3">
+                <div class="col-12 text-right" style="font-size: 13px;">
+                    <a href="#"><i class="fa fa-trash fa-fw"></i>删除</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="#"><i class="fa fa-edit fa-fw"></i>编辑</a></div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    {% for reply in replyinfo %}
+    <div class="row mx-md-5 mx-1 pb-4">
+        <!-- 头像信息 -->
+        <div class="col-md-3 card-left ">
+            <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
+                <div class="col-md-10 col-4 mt-md-4 my-auto mx-md-3 mx-auto px-md-4">
+                    <a href="#"><img class="avatar-md" src="{{ url_for('userpage.showImg', id= reply[1][0]) }}"></a>
+                </div>
+                <div class="col-md-12 col-8 mx-auto pt-1 pb-2 my-md-4 post-detail-info">
+                    <div style="font-weight: 700;">{{ reply[1][1] }}</div>
+                    <div class="info-2 mt-2">等级:{{ reply[1][3] }}</div>
+                    <div class="info-2">积分:{{ reply[1][2] }}</div>
+                    <div class="info-2">用户组:{{ reply[1][4] }}</div>
+
+                    <div class="progress w-100 mt-3" style="height: 10px;">
+                        <div class="progress-bar"
+                            style="width: {{ reply[1][5] }}%; background-color: rgb(93, 156, 196);"></div>
                     </div>
                 </div>
             </div>
-            <div class="col card-right pl-0 border-0">
-                <div class="card card-right border-0">
-                    <div class="text-right time">发表于2020-12-1 00:40:00</div>
-                    <div class="posttext border-0" id="test-markdown-view">
-                        <textarea style="display:none;">### Hello world!</textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2" style="position: absolute; bottom: 15px; left: 10px;"><a href="#">删除</a></div>
-                    <div class="col-md-6 text-right" style="position: absolute; bottom: 15px; right: 0;">#1</div>
-                </div>
+        </div>
+
+        <!-- 帖子信息 -->
+        <div class="col-md-9 card-right pt-3 border-0">
+
+            <div class="row px-3">
+                <div class="col-12 text-right time">
+                    <i class="fa fa-clock-o fa-fw"></i>发表于{{ reply[0][3] }}&nbsp;&nbsp;&nbsp;</div>
+            </div>
+
+            <div class="posttext border-0 mb-md-4 px-1" id="test-markdown-view">
+                <textarea>
+{{ reply[0][2] }}
+                </textarea>
             </div>
         </div>
     </div>
+    {% endfor %}
+</div>
+
+<!-- 翻页 -->
+<div class="container">
+    <div class="row page2 mx-auto">
+        <ul class="pagination pagenum2">
+            {% for i in loops %}
+
+            {% if i==pages[0] %}
+            <li><a class="active" href="#">{{ i }}</a></li>
+            {% else %}
+            <li><a href="{{ url_for('posts.posts',postid=postdata[0],page=i) }}">{{ i }}</a></li>
+            {% endif %}
+
+            {% endfor %}
+        </ul>
     </div>
+</div>
 
-    <div class="container">
-        <div class="row page2">
-            <ul class="pagination pagenum2">
-                <li><a class="disabled">&laquo;</a>
-                </li>
-                <li><a class="active" href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a class="disabled">...</a></li>
-                <li><a href="#">10</a></li>
-                <li><a href="#">&raquo;</a>
-                </li>
-            </ul>
+<!-- 回复编辑框 -->
+<div class="container body-end font-400" id="reply">
+    <div class="row reply replyfont mx-md-5 mx-1 py-4 justify-content-between">
+
+        <div class="col-md-12">
+            <button form="test-editor" type="submit" class="button"><i class="fa fa-reply fa-fw"></i>回帖</button>
         </div>
+
+        <form id="test-editor" class="row mt-3 reply-edit">
+            <textarea class="col-md-12" name="content" required></textarea>
+        </form>
+
     </div>
+</div>
 
-    <div class="container body-end font-400" id="reply">
-        <div class="row reply replyfont">
-            <div class="col-md-6 pl-0 pt-4">发表你的看法吧...</div>
-            <div class="col pr-0 py-2">
-                <a href="#" class="button" style="float: right;">回复</a>
-            </div>
-        </div>
-        <div id="test-editor" class="row mt-2">
-            <textarea class="col-md-12" name="content" style="display:none;" required></textarea>
-        </div>
-    </div>
-    </div>
+{% endblock %}
 
-    <footer hidden class="footer-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 mt-5 mb=0">友情链接
-                    <hr class="mt-1 mb-2">
-                </div>
+{% block js %}
 
-                <div class="col-12 mt-0 mb-2 row text-center item-font-size-md overflow-auto footer-link">
-                    <div class="col-2 my-1 ">
-                        <a href="https://getbootstrap.com/"><img src="./static/img/bootstrap-icon.png"
-                                class="footer-icon"></a>
-                    </div>
-                    <div class="col-2 my-1">
-                        <a href="https://dormousehole.readthedocs.io/en/latest/"><img src="./static/img/flask-icon.png"
-                                class="footer-icon"></a>
-                    </div>
-                    <div class="col-2 my-1">
-                        <a href="http://canvas.tongji.edu.cn/"><img src="./static/img/canvas-icon.ico"
-                                class="footer-icon"></a>
-                    </div>
-                    <div class="col-2 my-1">
-                        <a href="https://www.python.org/"><img src="./static/img/python-icon.png"
-                                class="footer-icon"></a>
-                    </div>
-                    <div class="col-2 my-1">
-                        <a href="https://pandao.github.io/editor.md/"><img src="./static/img/editormd-icon.png"
-                                class="footer-icon"></a>
-                    </div>
-                    <div class="col-2 my-1">
-                        <a href="https://github.com/"><img src="./static/img/github-icon.png" class="footer-icon"></a>
-                    </div>
-                </div>
+<script src="{{ url_for('static', filename='editormd/editormd.js') }}"></script>
+<script src="{{ url_for('static', filename='editormd/lib/marked.min.js') }}"></script>
+<script src="{{ url_for('static', filename='editormd/lib/marked.min.js') }}"></script>
 
-                <div class="col-12 mt-2 mb-2 text-center" style="font-size: 10px;">
-                    Copyright ©2020 XXBBS TJUCS
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JS文件 -->
-    <script src="./static/js/jquery.slim.min.js"></script>
-    <script src="./static/js/popper.min.js"></script>
-    <script src="./static/js/bootstrap.min.js"></script>
-    <script src="./static/js/jquery.min.js"></script>
-    <script src="./static/editormd/editormd.js"></script>
-    <script src="./static/editormd/lib/marked.min.js"></script>
-    <script src="./static/editormd/lib/prettify.min.js"></script>
-
-    <script type="text/javascript">
-        $(function() {
-            var testView = editormd.markdownToHTML("test-markdown-view", {
-                // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
-                // htmlDecode : true,  // Enable / disable HTML tag encode.
-                // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
-            });
+<script type="text/javascript">
+    $(function () {
+        var testView = editormd.markdownToHTML("test-markdown-view", {
+            htmlDecode: "style,script,iframe"
         });
-    </script>
+    });
+</script>
 
-    <script type="text/javascript">
-        $(function () {
-            var editor = editormd("test-editor", {
-                emoji: true,
-                height: 400,
-                autoFocus: false,
-                imageUpload: false,
-                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                tex: true,                   // 开启科学公式TeX语言支持，默认关闭
-                flowChart: true,             // 开启流程图支持，默认关闭
-                sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭  
-                path: "./static/editormd/lib/",
-                toolbarIcons: function () {
-                    return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "|", "h1", "h2", "h3", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link", "image", "code", "code-block", "table", "datetime", "emoji", "html-entities", "|", "goto-line", "watch", "preview", "clear", "search"]
-                }
-            });
-        });
-    </script>
-
-    <script>
-        $(function () {
-            function footerPosition() {
-                $("footer").removeClass("fixed-bottom");
-                var contentHeight = document.body.scrollHeight,//网页正文全文高度
-                    winHeight = window.innerHeight;//可视窗口高度，不包括浏览器顶部工具栏
-                if (!(contentHeight > winHeight)) {
-                    //当网页正文高度小于可视窗口高度时，为footer添加类fixed-bottom
-                    $("footer").addClass("fixed-bottom");
-                } else {
-                    $("footer").removeClass("fixed-bottom");
-                }
+<script type="text/javascript">
+    $(function () {
+        var editor = editormd("test-editor", {
+            emoji: true,
+            height: 400,
+            autoFocus: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart: true,             // 开启流程图支持，默认关闭
+            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭  
+            path: "{{ url_for('static', filename='editormd/lib/') }}",
+            watch: false,
+            toolbarIcons: function () {
+                return ["undo", "redo", "|", "bold", "del", "italic", "quote", "h3", "|", "list-ul", "list-ol", "hr", "link", "image", "code", "table", "datetime", "emoji", "|", "watch", "clear"]
             }
-            footerPosition();
-            $(window).resize(footerPosition);
         });
-    </script>
-</body>
+    });
+</script>
 
-</html>
+{% endblock %}
