@@ -28,24 +28,34 @@ def showUserpage(id):
     #头像也要显示
 
     # table: user
-    uuid = user[0]
-    name = user[1]
-    ip = user[2]
-    email = user[4]
-    registertime = user[5]
-    lastlogin = user[6]
+    #uuid = user[0]
+    #name = user[1]
+    #ip = user[2]
+    #email = user[4]
+    #registertime = user[5]
+    #lastlogin = user[6]
         
     # table: userinfo
-    warn = userinfo[1]
-    permission = userinfo[2]
-    collect = userinfo[3]
-    point = userinfo[4]
+    # warn = userinfo[1]
+    # 以下为消息提醒
+    _warn = str(userinfo[1]).split(" ")
+    _postreply = []
+    _post_id = []
+    _reply_id = []
+    for i in [0, len(_warn)]:
+        _postreply[i] = _warn[i].split(":")
+        _post_id[i] = _postreply[i][0]          #回帖主题id
+        _reply_id[i] = _postreply[i][1]         #回复id
+
+    #permission = userinfo[2]
+    #collect = userinfo[3]
+    #point = userinfo[4]
 
     #如果是本人主页，可以修改设置
     if request.method == 'POST':
         return redirect(url_for('userpage.settings', id=id))
 
-    return render_template('userpage.html', userpagedata = {user, userinfo})    #直接用user和userinfo就行...
+    return render_template('userpage.html', userpagedata = [user, userinfo, _post_id, _reply_id])    #直接用user和userinfo就行...
 
 # 展示图片（头像）
 @userpagebp.route('/<int:id>/image')
