@@ -45,6 +45,8 @@ def create_app():
     app.register_blueprint(index.indexbp)       #主页
     from . import edit
     app.register_blueprint(edit.editbp)         #帖子编辑
+    from . import posts
+    app.register_blueprint(posts.postsbp)       
 
     @app.route('/')
     def hello():

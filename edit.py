@@ -87,12 +87,12 @@ def upload():
             }
         else:
             ext = os.path.splitext(file.filename)[1]
-            filename = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + ext
+            filename = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
             uploadImg(g.user[0], filename, file)
             result = {
                 'success':1,
                 'message':'上传成功',
-                'url':url_for('edit.image', name=filename)
+                'url':url_for('edit.image', name=filename + ext)
             }
         return result
 

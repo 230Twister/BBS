@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <a href="#reply" class="button mr-md-5 "><i class="fa fa-reply fa-fw"></i>回帖</a>
 
-            {% if hostinfo[6] %}
+            {% if not hostinfo[6] %}
             <a href="{{ url_for('posts.collect',postid=postdata[0]) }}" class="button mr-3 "><i
                     class="fa fa-star fa-fw"></i>收藏({{postdata[9]}})</a>
             {% else %}
@@ -46,9 +46,9 @@
                 </div>
                 <div class="col-md-12 col-8 mx-auto py-2 pb-2 my-md-4 post-detail-info">
                     <div style="font-weight: 700;">{{ hostinfo[1] }}</div>
-                    <div class="info-2 mt-2">等级:{{ hostinfo[3] }}</div>
-                    <div class="info-2">积分:{{ hostinfo[2] }}</div>
-                    <div class="info-2">用户组:{{ hostinfo[4] }}</div>
+                    <div class="info-2 mt-2">等级: Lv.{{ hostinfo[3] }}</div>
+                    <div class="info-2">积分: {{ hostinfo[2] }}</div>
+                    <div class="info-2">用户组: {{ hostinfo[4] }}</div>
 
                     <div class="progress w-100 mt-3" style="height: 10px;">
                         <div class="progress-bar"
@@ -117,7 +117,7 @@
                     <i class="fa fa-clock-o fa-fw"></i>发表于{{ reply[0][3] }}&nbsp;&nbsp;&nbsp;</div>
             </div>
 
-            <div class="posttext border-0 mb-md-4 px-1" id="test-markdown-view">
+            <div class="posttext border-0 mb-md-4 px-1" id="{{ loop.index }}">
                 <textarea>
 {{ reply[0][2] }}
                 </textarea>
@@ -152,7 +152,8 @@
             <button form="test-editor" type="submit" class="button"><i class="fa fa-reply fa-fw"></i>回帖</button>
         </div>
 
-        <form id="test-editor" class="row mt-3 reply-edit">
+        <form id="test-editor" class="row mt-3 reply-edit" method="POST"
+            action="{{ url_for('posts.reply', postid=postdata[0]) }}">
             <textarea class="col-md-12" name="content" required></textarea>
         </form>
 
@@ -165,11 +166,16 @@
 
 <script src="{{ url_for('static', filename='editormd/editormd.js') }}"></script>
 <script src="{{ url_for('static', filename='editormd/lib/marked.min.js') }}"></script>
-<script src="{{ url_for('static', filename='editormd/lib/marked.min.js') }}"></script>
+<script src="{{ url_for('static', filename='editormd/lib/prettify.min.js') }}"></script>
 
 <script type="text/javascript">
     $(function () {
-        var testView = editormd.markdownToHTML("test-markdown-view", {
+        for (var i = 1; i <= {{ replysize }}; i++) {
+        var testView = editormd.markdownToHTML(i.toString(), {
+            htmlDecode: "style,script,iframe"
+        });
+    }
+    var testView = editormd.markdownToHTML("test-markdown-view", {
             htmlDecode: "style,script,iframe"
         });
     });

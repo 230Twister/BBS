@@ -67,11 +67,15 @@ def uploadImg(uuid, name, file):
         if name == "avatar.jpg":
             im = Image.open(file)
             if im.size[0] > im.size[1]:
-                x = 0.5*(im.size[0] - im.size[1]), y = 0
-                w = im.size[1], h = im.size[1]
+                x = 0.5*(im.size[0] - im.size[1])
+                y = 0
+                w = im.size[1]
+                h = im.size[1]
             else:
-                x = 0, y = 0.5*(im.size[1] - im.size[0])
-                w = im.size[0], h = im.size[0]
+                x = 0
+                y = 0.5*(im.size[1] - im.size[0])
+                w = im.size[0]
+                h = im.size[0]
             _file = im.crop((x, y, x+w, y+h))
         else:
             _file = file
@@ -79,7 +83,7 @@ def uploadImg(uuid, name, file):
         filename = name + ext
         current_path = os.path.abspath(os.path.dirname(__file__))       #获取当前文件夹绝对路径
         filedir = os.path.join(current_path, 'data\\img')               #获取保存图片的路径
-        filepath = os.path.join(filedir, uuid)                          #获取当前用户保存图片的路径
+        filepath = os.path.join(filedir, str(uuid))                     #获取当前用户保存图片的路径
         if not os.path.exists(filepath):
             os.mkdir(filepath)
         _file.save(os.path.join(filepath, filename))
