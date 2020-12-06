@@ -64,6 +64,17 @@ def uploadImg(uuid, name, file):
     if not file:
         return False
     else:
+        if name == "avatar.jpg":
+            im = Image.open(file)
+            if im.size[0] > im.size[1]:
+                x = 0.5*(im.size[0] - im.size[1]), y = 0
+                w = im.size[1], h = im.size[1]
+            else:
+                x = 0, y = 0.5*(im.size[1] - im.size[0])
+                w = im.size[0], h = im.size[0]
+            _file = im.crop((x, y, x+w, y+h))
+        else:
+            _file = file
         ext = os.path.splitext(file.filename)[1]
         filename = name + ext
         current_path = os.path.abspath(os.path.dirname(__file__))       #获取当前文件夹绝对路径
@@ -71,7 +82,7 @@ def uploadImg(uuid, name, file):
         filepath = os.path.join(filedir, uuid)                          #获取当前用户保存图片的路径
         if not os.path.exists(filepath):
             os.mkdir(filepath)
-        file.save(os.path.join(filepath, filename))
+        _file.save(os.path.join(filepath, filename))
         return True
 
 #读取图片，包括帖子中的图片和用户头像
