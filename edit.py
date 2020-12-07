@@ -50,13 +50,20 @@ def edit(id):
     if request.method == 'POST':
         title = request.form['title']       #标题
         content = request.form['content']   #内容
-        _type = request.form['type']        #发往的版块
-
+        _type = None
         dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        cursor.execute(
-                    'UPDATE post SET title=%s, type=%s, content=%s, updatetime=%s WHERE id=%s;'
-                    , (title, _type, content, dtime, id,)
-                )
+
+        if 'type' in request.form:
+            _type = request.form['type']        #发往的版块
+            cursor.execute(
+                        'UPDATE post SET title=%s, type=%s, content=%s, updatetime=%s WHERE id=%s;'
+                        , (title, _type , content, dtime, id,)
+                    )
+        else:
+            cursor.execute(
+                        'UPDATE post SET title=%s, content=%s, updatetime=%s WHERE id=%s;'
+                        , (title, content, dtime, id,)
+                    )
         return redirect(url_for('index.index'))
     
     return render_template('post/edit.html', post=post)
@@ -92,14 +99,13 @@ def upload():
             result = {
                 'success':1,
                 'message':'上传成功',
-                'url':url_for('edit.image', name=filename + ext)
+                'url':url_for('edit.image', id=g.user[0], name=filename + ext)
             }
         return result
 
-@editbp.route('/image/<name>')
-@loginRequired
-def image(name):
-    return readImg(g.user[0], name)
+@editbp.route('/image/<int:id>/<name>')
+def image(id, name):
+    return readImg(id, name)
 
 #检查用户是否有对帖子的操作权限
 def hasPermission(post):

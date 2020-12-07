@@ -4,47 +4,38 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from .database import getDatabase
-from .api import readImg
+from .api import readImg, getData
 partsbp = Blueprint('parts', __name__, url_prefix='/parts')
 
-@partsbp.route('/<int:type>')
-def parts(type):
-    database=getDatabase()
-    cursor=database.cursor()
+@partsbp.route('/<int:type>/<int:page>')
+def parts(type, page):
+    database = getDatabase()
+    cursor = database.cursor()
     
-    part_new=cursor.execute(
+    cursor.execute(
        'SELECT * FROM post WHERE type=%s ORDER BY updatetime DESC;',(type,)
-       ).fetchall()
-    part_hot=cursor.execute(
-       'SELECT * FROM post WHERE type=%s ORDER BY visit DESC;',(type,)
-       ).fetchall()
-
-    parts={'new':part_new,
-           'hot':part_hot
-          }
-
-    size=len(part_new)    #热帖和新帖排序后总帖数相同
-    photos=[]
-    for i in range(6):
-        photos.append(readImg(part_hot[i][4]),'avatar.jpg')
-
-    if g.user:
-        avatar=readImg(g.user[0],'avatar.jpg')
-        user=cursor.execute('SELECT * FROM user WHERE uuid=%s;', (g.user[0], ))
-        userinfo=cursor.execute('SELECT * FROM userinfo WHERE uuid=%s;', (g.user[0], ))
-        username=user[1]
-        point=userinfo[4]
-    else:
-        avatar=None
-        username=None
-        point=None
-    _user={'avatar':avatar,
-           'name':username,
-           'point':point
-           }
+       )
+    partdata = cursor.fetchall()
+    partdata, pages = getPosts(cursor, partdata, page)
+    
     return render_template('parts.html', 
-                           parts=parts,               #板块内的帖子(最新、最热)
-                           size=size,                 #板块内帖子数目
-                           photos=photos,             #最热帖的图片
-                           user=_user                 #如果登陆的话会有用户信息
+                           partdata=partdata,           #板块内的帖子(最新)
+                           pages=pages                  #当前页数和总页数
                            )
+
+#生成某一页的帖子
+def getPosts(cursor, partdata, page):
+    length = len(partdata)
+    partdata = [partdata[x:x + 25] for x in range(0, length, 25)]   #每页25个帖子
+    pagecnt = len(partdata)                 #总共页数
+    if pagecnt > 0:
+        partdata = partdata[page - 1]
+    partinfo = []
+
+    for value in partdata:
+        user = getData(cursor, 'user', 'uuid', value[4])
+        partinfo.append([value[1], user[1], value[6], len(value[7].split(' '))])    #标题 用户 更新时间 回复数
+    
+    return partinfo, [page, pagecnt]
+    
+

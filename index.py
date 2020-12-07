@@ -23,8 +23,8 @@ def index():
 
     return render_template('index.html', indexdata = [post, highestusers])
 
-
 @indexbp.route('/search', methods=('GET', 'POST'))
+@loginRequired
 def search():
     # 搜索
     database = getDatabase()
@@ -56,7 +56,7 @@ def findLatestPosts(cursor, type):
     _post = cursor.fetchmany(4)
     post = []
     for p in _post:
-        post.append([p[1], findUser(cursor, p[4])[1], 10])
+        post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
     return post
 
 
@@ -79,5 +79,5 @@ def findSearchPost(cursor, search):
     _searchposts = cursor.fetchall()
     searchposts = []
     for p in _searchposts:
-        searchposts.append([p[1], findUser(cursor, p[4])[1], 10])
+        searchposts.append([p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
     return searchposts

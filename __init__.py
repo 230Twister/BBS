@@ -18,10 +18,10 @@ def create_app():
         PASSWORD="root",
         DATABASE="bbs",
 
-        MAIL_SERVER='smtp.qq.com',
-        MAIL_USERNAME="null",
-        MAIL_PASSWORD="null",
-        MAIL_DEFAULT_SENDER="null",
+        MAIL_SERVER='smtp.example.com',
+        MAIL_USERNAME="root",
+        MAIL_PASSWORD="root",
+        MAIL_DEFAULT_SENDER="root",
         MAIL_USE_TLS=True,
         MAIL_PORT=587
     )

@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bg fixed-top shadow p-1 mb-5 font-400 ">
         <div class="container nav-bg">
             <!-- 品牌 -->
-            <a class="navbar-brand" href="#">XXBBS</a>
+            <a class="navbar-brand" href="{{ url_for('index.index') }}">XXBBS</a>
 
             <!-- 下拉菜单 -->
             <button class="navbar-toggler" style="outline: none; border: none;" type="button" data-toggle="collapse"
@@ -38,7 +38,7 @@
 
                 <ul class="navbar-nav navbar-bbs">
                     <li class="nav-item item-hover active" style="margin-right: 10px; ">
-                        <a class="nav-link" href="#"><i class="fa fa-home fa-fw"></i>首页 <span
+                        <a class="nav-link" href="{{ url_for('index.index') }}"><i class="fa fa-home fa-fw"></i>首页 <span
                                 class="sr-only">(current)</span></a>
                     </li>
 
@@ -49,7 +49,7 @@
                     <form class="form-inline" action="{{ url_for('index.search') }}" method="POST">
 
                         <input class=" form-control input-text " type="search" placeholder="What you want?"
-                            aria-label="Search" name="search">
+                            aria-label="Search" name="search" required>
 
                         <button class="search-button button-hover " type="submit"><i
                                 class="fa fa-search fa-fw"></i>搜索</button>
