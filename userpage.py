@@ -25,44 +25,41 @@ def showUserpage(id):
     if user is None:
         return render_template('404.html'),404
 
-    #头像也要显示
-
-    # table: user
-    #uuid = user[0]
-    #name = user[1]
-    #ip = user[2]
-    #email = user[4]
-    #registertime = user[5]
-    #lastlogin = user[6]
-        
-    # table: userinfo
-    # warn = userinfo[1]
-    # 以下为消息提醒
-    _warn = str(userinfo[1]).split(" ")
-    _postreply = []
-    _post_id = []
-    _reply_id = []
-    for i in [0, len(_warn)]:
-        _postreply[i] = _warn[i].split(":")
-        _post_id[i] = _postreply[i][0]          #回帖主题id
-        _reply_id[i] = _postreply[i][1]         #回复id
-
-    #permission = userinfo[2]
-    #collect = userinfo[3]
-    #point = userinfo[4]
-
     #如果是本人主页，可以修改设置
     if request.method == 'POST':
-        return redirect(url_for('userpage.settings', id=id))
+        return redirect(url_for('userpage.setting', id=id))
 
-    return render_template('userpage.html', userpagedata = [user, userinfo, _post_id, _reply_id])    #直接用user和userinfo就行...
+    return render_template('info.html', userpagedata = [user, userinfo])
+
+
+@userpagebp.route('/<int:id>/collect')
+def collect(id):
+    database = getDatabase()
+    cursor = database.cursor()
+    user = checkUser(cursor, id)
+    userinfo = findUserinfo(cursor, id)
+    if user is None:
+        return render_template('404.html'),404
+
+    _collect = str(userinfo[3]).split(" ")
+    _post_id = []
+    posts = []
+    for i in [0, len(_collect)]:
+        _post_id[i] = _collect[i]
+
+    for i in [0, len(_collect)]:
+        posts[i] = database.execute(
+            'SELECT * FROM post WHERE id=%s'
+            'ORDER BY created DESC;', (_post_id[i], )
+        ).fetchone()
+    return render_template('collect.html', posts = posts)
 
 # 展示图片（头像）
 @userpagebp.route('/<int:id>/image')
 def showImg(id):
     return readImg(id, 'avatar.jpg')
 
-@userpagebp.route('/<int:id>/post')
+@userpagebp.route('/<int:id>/mypost')
 def showPosts(id):
     # 显示该用户曾发过的帖子
     database = getDatabase()
@@ -75,15 +72,51 @@ def showPosts(id):
 
     # 显示用户所有帖子
     posts = database.execute(
-        'SELECT * FROM post WHERE name=%s'
-        'ORDER BY created DESC'
+        'SELECT * FROM post WHERE userid=%s'
+        'ORDER BY created DESC;', (id, )
     ).fetchall()
-    return render_template('userposts.html', posts = posts)
+    return render_template('mypost.html', posts = posts)
+
+@userpagebp.route('/<int:id>/mypost')
+def showNotice(id):
+    database = getDatabase()
+    cursor = database.cursor()
+    user = checkUser(cursor, id)
+    userinfo = findUserinfo(cursor, id)
+    #error = None
+    if user is None:
+        return render_template('404.html'),404
+
+    # 以下为消息提醒
+    _warn = str(userinfo[1]).split(" ")
+    _postreply = []
+    _post_id = []
+    _reply_id = []
+    for i in [0, len(_warn)]:
+        _postreply[i] = _warn[i].split(":")
+        _post_id[i] = _postreply[i][0]          #回帖主题id
+        _reply_id[i] = _postreply[i][1]         #回复id
+
+    posts = []
+    reply = []
+    for i in [0, len(_warn)]:
+        posts[i] = database.execute(
+            'SELECT * FROM post WHERE id=%s'
+            'ORDER BY created DESC;', (_post_id[i], )
+        ).fetchone()
+
+    for i in [0, len(_warn)]:
+        reply[i] = database.execute(
+            'SELECT * FROM reply WHERE id=%s'
+            'ORDER BY created DESC;', (_reply_id[i], )
+        ).fetchone()
+
+    return render_template('notify.html', info = [posts, reply])
 
 
-@userpagebp.route('/<int:id>/settings', methods=('GET', 'POST'))
+@userpagebp.route('/<int:id>/setting', methods=('GET', 'POST'))
 @loginRequired
-def settings(id):
+def setting(id):
     # 用户设置，允许用户自行更改昵称、头像、密码、邮箱等
     database = getDatabase()
     cursor = database.cursor()
@@ -92,34 +125,13 @@ def settings(id):
     if user is None or g.user[0] != user[0]:
         # 用户不存在 或 无权访问他人设置页面
         return render_template('404.html'),404
-
-    # 允许用户开始设置
-    # 设置分两种：修改密码/修改头像
-    #if request.method == 'POST':
-    #    if 'changeCode' in request.form:
-    #        return redirect(url_for('userpage.changeCode', id=id))
-    #    elif 'changeAvatar' in request.form:
-    #        return redirect(url_for('userpage.changeAvatar', id=id))
-    return render_template('userpage/settings.html', userdata={})
-
-
-@userpagebp.route('/<int:id>/changecode', methods=('GET', 'POST'))
-@loginRequired
-def changeCode(id):
-    database = getDatabase()
-    cursor = database.cursor()
-    user = checkUser(cursor, id)
-    error = None
-    if user is None or g.user[0] != user[0]:
-        # 用户不存在 或 无权访问他人设置页面
-        return render_template('404.html'),404
-        
+    
     if request.method == 'POST':
         oldPassword = request.form['oldPassword']               #验证原密码
         newPassword = request.form['newPassword']               #新密码
         newRepassword = request.form['newRepassword']           #新确认密码
 
-        if 'settings' in request.form:                          #确认修改
+        if 'codeSetting' in request.form:                          #修改密码
             if not check_password_hash(user[3], oldPassword):
                 error = '原密码输入有误'
             elif newPassword != newRepassword:
@@ -131,32 +143,21 @@ def changeCode(id):
                     '= %s WHERE id = %s;'
                     , (generate_password_hash(newPassword), user[0])
                 )
-                return redirect(url_for('userpage.settings', id=id))
+                return redirect(url_for('userpage.setting', id=id))
             flash(error)
-            return render_template('userpage/changeCode.html', userdata={  "oldPassword":oldPassword,
+            return render_template('setting.html', userdata={  "oldPassword":oldPassword,
                                                                 "newPassword":newPassword,
                                                                 "newRepassword":newRepassword})
-
-    return render_template('userpage/changeCode.html', userdata={})
-
-
-@userpagebp.route('/<int:id>/changeavatar', methods=('GET', 'POST'))
-@loginRequired
-def changeAvatar(id):
-    database = getDatabase()
-    cursor = database.cursor()
-    user = checkUser(cursor, id)
-    error = None
-    if user is None or g.user[0] != user[0]:
-        # 用户不存在 或 无权访问他人设置页面
-        return render_template('404.html'),404
-
-    if request.method == 'POST':
-        if 'settings' in request.form:                          #上传新头像
+        else:                                                       #修改头像
             file = request.files.get('editormd-image-file')     #获取上传的图片
             uploadImg(id, 'avatar.jpg', file)
 
-    return render_template('userpage/changeAvatar.html')
+    return render_template('setting.html', userdata={})
+
+
+
+
+
 
 def checkUser(cursor, id):
     # 从user中查找用户记录
