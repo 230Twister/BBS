@@ -9,14 +9,13 @@ from .database import getDatabase
 from .auth import loginRequired
 from PIL import Image
 import os, datetime
-from .api import readImg, uploadImg
+from .api import readImg, uploadImg, getData
 
 userpagebp = Blueprint('userpage', __name__, url_prefix='/userpage')
 
 @userpagebp.route('/<int:id>', methods=('GET', 'POST'))
 def showUserpage(id):
     # 显示用户的个人主页
-    # 主要包括个人信息，如昵称、头像、邮箱、关注、收藏、积分等
     database = getDatabase()
     cursor = database.cursor()
     user = checkUser(cursor, id)
@@ -25,11 +24,16 @@ def showUserpage(id):
     if user is None:
         return render_template('404.html'),404
 
+    point = userinfo[4]
+    level = userinfo[4] / 100
+    percentage = userinfo[4] % 100
+    needpoint = 100 - percentage
+
     #如果是本人主页，可以修改设置
     if request.method == 'POST':
         return redirect(url_for('userpage.setting', id=id))
 
-    return render_template('info.html', userpagedata = [user, userinfo])
+    return render_template('info.html', userpagedata = [user, userinfo, point, level, percentage, needpoint])
 
 
 @userpagebp.route('/<int:id>/collect')
@@ -43,16 +47,21 @@ def collect(id):
 
     _collect = str(userinfo[3]).split(" ")
     _post_id = []
-    posts = []
+    _posts = []
     for i in [0, len(_collect)]:
         _post_id[i] = _collect[i]
 
     for i in [0, len(_collect)]:
-        posts[i] = database.execute(
+        _posts[i] = database.execute(
             'SELECT * FROM post WHERE id=%s'
             'ORDER BY created DESC;', (_post_id[i], )
         ).fetchone()
-    return render_template('collect.html', posts = posts)
+
+    post = []
+    for p in _posts:
+        post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
+
+    return render_template('collect.html', post = post)
 
 # 展示图片（头像）
 @userpagebp.route('/<int:id>/image')
@@ -71,13 +80,18 @@ def showPosts(id):
         return render_template('404.html'),404
 
     # 显示用户所有帖子
-    posts = database.execute(
+    _posts = database.execute(
         'SELECT * FROM post WHERE userid=%s'
         'ORDER BY created DESC;', (id, )
     ).fetchall()
-    return render_template('mypost.html', posts = posts)
 
-@userpagebp.route('/<int:id>/mypost')
+    post = []
+    for p in _posts:
+        post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
+
+    return render_template('mypost.html', post = post)
+
+@userpagebp.route('/<int:id>/notice')
 def showNotice(id):
     database = getDatabase()
     cursor = database.cursor()
@@ -97,21 +111,30 @@ def showNotice(id):
         _post_id[i] = _postreply[i][0]          #回帖主题id
         _reply_id[i] = _postreply[i][1]         #回复id
 
-    posts = []
-    reply = []
+    _posts = []
+    _reply = []
     for i in [0, len(_warn)]:
-        posts[i] = database.execute(
+        _posts[i] = database.execute(
             'SELECT * FROM post WHERE id=%s'
             'ORDER BY created DESC;', (_post_id[i], )
         ).fetchone()
 
+    post = []
+    for p in _posts:
+        post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
+
+
     for i in [0, len(_warn)]:
-        reply[i] = database.execute(
+        _reply[i] = database.execute(
             'SELECT * FROM reply WHERE id=%s'
             'ORDER BY created DESC;', (_reply_id[i], )
         ).fetchone()
 
-    return render_template('notify.html', info = [posts, reply])
+    reply = []
+    for r in _reply:
+        post.append([r[2]])
+
+    return render_template('notify.html', info = [post, reply])
 
 
 @userpagebp.route('/<int:id>/setting', methods=('GET', 'POST'))
@@ -155,9 +178,7 @@ def setting(id):
     return render_template('setting.html', userdata={})
 
 
-
-
-
+#   以下为功能函数
 
 def checkUser(cursor, id):
     # 从user中查找用户记录
@@ -174,3 +195,7 @@ def findUserinfo(cursor, id):
     )
     userinfo = cursor.fetchone()
     return userinfo
+
+def findUser(cursor, id):
+    # 从user中查找用户记录
+    return getData(cursor, 'user', 'uuid', id)
