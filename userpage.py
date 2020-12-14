@@ -9,7 +9,7 @@ from .database import getDatabase
 from .auth import loginRequired
 from PIL import Image
 import os, datetime
-from .api import readImg, uploadImg, getData
+from .api import readImg, uploadImg, getData, getGroupName
 
 userpagebp = Blueprint('userpage', __name__, url_prefix='/userpage')
 
@@ -20,43 +20,38 @@ def showUserpage(id):
     cursor = database.cursor()
     user = getData(cursor, 'user', 'uuid', id)
     userinfo = getData(cursor, 'userinfo', 'uuid', id)
-    #error = None
     if user is None:
         return render_template('404.html'),404
 
-    point = userinfo[4]
-    level = userinfo[4] / 100
+    level = int(userinfo[4] / 100)
     percentage = userinfo[4] % 100
     needpoint = 100 - percentage
+    group = getGroupName(userinfo[2])
 
-    #如果是本人主页，可以修改设置
-    if request.method == 'POST':
-        return redirect(url_for('userpage.setting', id=id))
-
-    return render_template('userpage/info.html', userpagedata = [user, userinfo, point, level, percentage, needpoint, id])
+    return render_template('userpage/info.html', userpagedata = [user, userinfo, group, level, percentage, needpoint, id])
 
 
 @userpagebp.route('/<int:id>/collect')
+@loginRequired
 def collect(id):
     database = getDatabase()
     cursor = database.cursor()
     user = getData(cursor, 'user', 'uuid', id)
     userinfo = getData(cursor, 'userinfo', 'uuid', id)
-    if user is None:
+    if user is None or g.user[0] != user[0]:            #不允许访问不存在用户和其他用户的收藏
         return render_template('404.html'),404
 
     _collect = str(userinfo[3]).split(" ")
     _collect.remove('')
-    _post_id = []
-    _posts = []
+    _post_id = []               #主题id列表
+    _posts = []                 #主题列表
     length = len(_collect)
     for i in range(0,length):
         _post_id.append(_collect[i])
 
     for i in range(0, length):
         cursor.execute(
-            'SELECT * FROM post WHERE id=%s'
-            'ORDER BY posttime DESC;', (_post_id[i], )
+            'SELECT * FROM post WHERE id=%s;', (_post_id[i], )
         )
         _posts.append (cursor.fetchone())
     post = []
@@ -76,14 +71,12 @@ def showPosts(id):
     database = getDatabase()
     cursor = database.cursor()
     user = getData(cursor, 'user', 'uuid', id)
-    #error = None
     if user is None:
         return render_template('404.html'),404
 
     # 显示用户所有帖子
     cursor.execute(
-        'SELECT * FROM post WHERE userid=%s '
-        'ORDER BY posttime DESC;', (id, )
+        'SELECT * FROM post WHERE userid=%s;', (id, )
     )
     _posts = cursor.fetchall()
 
@@ -100,8 +93,7 @@ def showNotice(id):
     cursor = database.cursor()
     user = getData(cursor, 'user', 'uuid', id)
     userinfo = getData(cursor, 'userinfo', 'uuid', id)
-    #error = None
-    if user is None:
+    if user is None or g.user[0] != user[0]:
         return render_template('404.html'),404
 
     # 以下为消息提醒
@@ -118,10 +110,10 @@ def showNotice(id):
 
     _posts = []
     _replyuser = []
-    for i in range(0, length):
+    for i in range(0, length):      #获取回复人的名字
         rep = getData(cursor, 'reply', 'id', _reply_id[i])
         _replyuser.append(getData(cursor, 'user', 'uuid', rep[1])[1])
-    for i in range(0, length):
+    for i in range(0, length):      #获取被回复的帖子信息
         _posts.append(getData(cursor, 'post', 'id', _post_id[i]))
 
     post = []
@@ -130,6 +122,25 @@ def showNotice(id):
 
     return render_template('userpage/notify.html', info = [post, id])
 
+@userpagebp.route('/<int:id>/unwarn/<int:postid>')
+@loginRequired
+def unwarn(id, postid):
+    database = getDatabase()
+    cursor = database.cursor()
+    userinfo = getData(cursor, 'userinfo', 'uuid', id)
+    if userinfo is None or g.user[0] != userinfo[0]:
+        return render_template('404.html'),404
+    
+    warn = ''
+    warnlist = userinfo[1].split(' ')
+    warnlist.remove('')
+    for w in warnlist:
+        if(not w.startswith(str(postid))):
+            warn = warn + ' ' + w
+    cursor.execute(
+        'UPDATE userinfo SET warn=%s WHERE uuid=%s;', (warn, id,)
+    )
+    return redirect(url_for('posts.posts', postid=postid, page=1))
 
 @userpagebp.route('/<int:id>/setting', methods=('GET', 'POST'))
 @loginRequired
@@ -168,6 +179,9 @@ def setting(id):
                                                                 "id":id})
         else:                                                   #修改头像
             file = request.files['editormd-image-file']
-            uploadImg(id, 'avatar', file)
+            if(os.path.splitext(file.filename)[1] == '.jpg' and not len(file.read())/1048576 > 1):
+                uploadImg(id, 'avatar', file)
+            else:
+                flash("上传图片格式错误或大小超限！")
 
     return render_template('userpage/setting.html', userdata={ "id":id })

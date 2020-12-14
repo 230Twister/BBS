@@ -47,7 +47,6 @@ def findUserinfo(cursor, id):
     # 从userinfo获取用户记录
     return getData(cursor, 'userinfo', 'uuid', id)
 
-
 def findLatestPosts(cursor, type):
     # 从post中按发布时间排序，取最新的4条
     cursor.execute(
