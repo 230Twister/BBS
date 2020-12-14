@@ -29,10 +29,10 @@
 
                             {% if userdata.username == '0' %}
                             <input type="text" id="inputEmail" class="form-control" placeholder="电子邮箱/用户名"
-                                name="username" style="flex:1; font-size: 14px;" autofocus required>
+                            maxlength="12" name="username" style="flex:1; font-size: 14px;" autofocus required>
                             {% else %}
                             <input type="text" id="inputEmail" class="form-control" placeholder="电子邮箱/用户名"
-                                name="username" style="flex:1; font-size: 14px;" value="{{ userdata.username }}"
+                            maxlength="12" name="username" style="flex:1; font-size: 14px;" value="{{ userdata.username }}"
                                 autofocus required>
                             {% endif %}
 
@@ -42,7 +42,7 @@
                         <!-- 输入密码 -->
                         <div class="form-label-group font-size-md">
                             <input type="password" id="inputPassword" class="form-control" placeholder="密码"
-                                name="password" style="flex:1; font-size: 14px;" required>
+                            maxlength="20" name="password" style="flex:1; font-size: 14px;" required>
                             <label for="inputPassword">密码</label>
 
                         </div>
@@ -51,7 +51,7 @@
                         <div class="" style="display: flex;justify-content:space-between;">
                             <!-- 显示验证码图片 -->
                             <input class="form-control form-verify" style="flex:1; font-size: 14px;" id="inputCode"
-                                name="verifycode" type="text" placeholder="验证码" required>
+                            maxlength="5" name="verifycode" type="text" placeholder="验证码" required>
                             <img id="verify_code" class="verify_code" src="/auth/imageCode"
                                 onclick="this.src='/auth/imageCode?'+ Math.random()">
 
