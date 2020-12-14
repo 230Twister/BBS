@@ -124,6 +124,7 @@ def checkUserCollect(cursor, id, flag = False):
 
     info = getData(cursor, 'userinfo', 'uuid', g.user[0])
     collected = info[3].split(' ')
+    collected.remove('')
 
     if str(id) in collected:
         if flag:

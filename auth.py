@@ -122,7 +122,7 @@ def login():
 
         if user is None or not check_password_hash(user[3], password):
             error = '用户名或密码错误！'
-        elif vcode !=  session['imageCode']:
+        elif vcode.lower() !=  session['imageCode'].lower():
             error = '验证码错误！'
 
         if error is None:
@@ -141,12 +141,6 @@ def login():
 @authbp.route('/imageCode')
 def imageCode():
     return ImageCode().getImageCode()
-
-@authbp.route('/forget', methods=('GET', 'POST'))
-def forgetPassword():
-    if request.method == 'POST':
-        pass
-    return render_template('auth/forget.html')
 
 #登出
 @authbp.route('/logout')

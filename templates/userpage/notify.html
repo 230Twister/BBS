@@ -34,7 +34,7 @@
                     <li class="list-group-item part-post">
                         <div class="row justify-content-between">
                             <div class="col-6 text-truncate post-title">
-                                <a href="{{ url_for('posts.posts', postid=post[0] ,page=1) }}">{{ post[1] }}</a>
+                                <a href="{{ url_for('userpage.unwarn', id=info[1] ,postid=post[0]) }}">{{ post[1] }}</a>
                             </div>
                             <div class="col-2 p-0 text-truncate post-info">
                                 <i class="fa fa-user fa-fw"></i>{{post[2]}}
