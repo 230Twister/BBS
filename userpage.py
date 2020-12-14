@@ -83,7 +83,7 @@ def showPosts(id):
     # 显示用户所有帖子
     cursor.execute(
         'SELECT * FROM post WHERE userid=%s'
-        'ORDER BY created DESC;', (id, )
+        'ORDER BY posttime DESC;', (id, )
     )
     _posts = cursor.fetchall()
 
@@ -119,7 +119,7 @@ def showNotice(id):
     for i in range(0,length):
         cursor.execute(
             'SELECT * FROM post WHERE id=%s'
-            'ORDER BY created DESC;', (_post_id[i], )
+            'ORDER BY posttime DESC;', (_post_id[i], )
         )
         _posts.append( cursor.fetchone())
 
@@ -131,7 +131,7 @@ def showNotice(id):
     for i in range(0,length):
         cursor.execute(
             'SELECT * FROM reply WHERE id=%s'
-            'ORDER BY created DESC;', (_reply_id[i], )
+            'ORDER BY posttime DESC;', (_reply_id[i], )
         )
         _reply.append(cursor.fetchone())
 
@@ -155,17 +155,18 @@ def setting(id):
         return render_template('404.html'),404
     
     if request.method == 'POST':
-        oldPassword = request.form['oldPassword']               #验证原密码
-        newPassword = request.form['newPassword']               #新密码
-        newRepassword = request.form['newRepassword']           #新确认密码
 
         if 'codeSetting' in request.form:                          #修改密码
+            oldPassword = request.form['oldPassword']               #验证原密码
+            newPassword = request.form['newPassword']               #新密码
+            newRepassword = request.form['newRepassword']           #新确认密码
             if not check_password_hash(user[3], oldPassword):
                 error = '原密码输入有误'
             elif newPassword != newRepassword:
                 error = '两次密码不一致'
                 
             if error is None:
+                flash("密码修改成功！")
                 cursor.execute(
                     'UPDATE user SET password'
                     '= %s WHERE id = %s;'
