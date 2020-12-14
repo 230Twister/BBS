@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/LastDance-Miss/image/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
     {% block css %}{% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
@@ -93,9 +94,9 @@
                             <div class="dropdown-divider"></div>
 
                             <!-- 可跳转选项 -->
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="#"><i
+                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="{{ url_for('userpage.showUserpage', id=g.user[0]) }}"><i
                                     class="fa fa-user fa-fw"></i>主页</a>
-                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="#"><i
+                            <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="{{ url_for('userpage.setting', id=g.user[0]) }}"><i
                                     class="fa fa-gear fa-fw"></i>设置</a>
                             <a class="item-font-size-md dropdown-item mx-0 dropdown-item-hover" href="{{ url_for('auth.logout') }}"><i
                                     class="fa fa-sign-out fa-fw"></i>注销</a>
@@ -111,7 +112,7 @@
                     </li>
 
                     <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="#"><i class="fa fa-bell-o fa-fw"></i>通知</a>
+                        <a class="nav-link" href="{{ url_for('userpage.showNotice' ,id=g.user[0]) }}"><i class="fa fa-bell-o fa-fw"></i>通知</a>
                     </li>
 
                 </ul>
