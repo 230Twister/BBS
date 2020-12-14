@@ -509,7 +509,7 @@ footer样式
     border: 0;
 }
 .rank {
-    background-color: rgb(195 217 240);
+    background-color: rgb(198 207 217);
     box-shadow: .5rem .5rem 1rem 0 rgba(0, 0, 0, 0.1);
     border-radius: .6rem;
     border: 0;
@@ -521,7 +521,7 @@ footer样式
     border: 0;
 }
 .rank-list {
-    background-color: rgb(195 217 240);
+    background-color: rgb(198 207 217);
     border-radius: 0 0 .6rem .6rem;
 }
 .rank-list .rank-item {

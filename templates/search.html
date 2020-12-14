@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Welcome{% endblock %}
+{% block title %}{% endblock %}
 
 {% block main %}
 <div class="container body-index font-400">
-
-
-
     <!-- 左边: 搜索结果 右边:用户信息 排行榜-->
     <div class="row ">
 
@@ -81,10 +78,10 @@
 
                         <div class="card-body row justify-content-between ">
                             <div class="col-5 info-enter mx-2  py-1 text-center">
-                                <a href="#"><i class="fa fa-star fa-fw"></i>收藏</a>
+                                <a href="{{ url_for('userpage.collect', id=g.user[0]) }}"><i class="fa fa-star fa-fw"></i>收藏</a>
                             </div>
                             <div class="col-5 info-enter mx-2 py-1 text-center">
-                                <a href="#"><i class="fa fa-gear fa-fw"></i>设置</a>
+                                <a href="{{ url_for('userpage.setting', id=g.user[0]) }}"><i class="fa fa-gear fa-fw"></i>设置</a>
                             </div>
                         </div>
 
@@ -120,10 +117,5 @@
         </div>
 
     </div>
-
-
-</div>
-
-
 </div>
 {% endblock %}
