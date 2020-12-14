@@ -17,21 +17,21 @@
                     </ol>
                     <div class="carousel-inner">
                         <div class="carousel-item ">
-                            <img src="{{ url_for('static', filename='img/1.jpg') }}" class="d-block w-100 top-pic-img">
+                            <a href="{{ url_for('posts.posts', postid=12 ,page=1) }}"><img src="http://cdn.jsdelivr.net/gh/Yaozhtj/image/img04/1.jpg" class="d-block w-100 top-pic-img"></a>
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>魔女宅急便</h5>
                                 <p>我想找个看得见海的地方</p>
                             </div>
                         </div>
                         <div class="carousel-item active">
-                            <img src="{{ url_for('static', filename='img/2.png') }}" class="d-block w-100 top-pic-img">
+                            <a href="{{ url_for('posts.posts', postid=15 ,page=1) }}"><img src="http://cdn.jsdelivr.net/gh/Yaozhtj/image/img04/2.png" class="d-block w-100 top-pic-img"></a>
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>New Edge</h5>
                                 <p>What? Why?</p>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img src="{{ url_for('static', filename='img/4.jpg') }}" class="d-block w-100 top-pic-img">
+                            <a href="{{ url_for('posts.posts', postid=16 ,page=1) }}"><img src="http://cdn.jsdelivr.net/gh/Yaozhtj/image/img04/4.jpg" class="d-block w-100 top-pic-img"></a>
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>起风了</h5>
                                 <p>和平才是梦想最好的温床</p>
@@ -67,7 +67,7 @@
                         <div class="card-header part-title part-post py-2 part-enter"
                             style="border-radius: .6rem .6rem 0 0;">
                             技术分享
-                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                            <a href="{{ url_for('parts.parts',type=1,page=1) }}">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
                         </div>
                         <ul class="list-group ">
                             {% for post1 in indexdata[0][0] %}
@@ -95,7 +95,7 @@
                         <div class="card-header part-title part-post py-2 part-enter"
                             style="border-radius: .6rem .6rem 0 0;">
                             学习生活
-                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                            <a href="{{ url_for('parts.parts',type=2,page=1) }}">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
                         </div>
                         <ul class="list-group ">
                             {% for post2 in indexdata[0][1] %}
@@ -123,7 +123,7 @@
                         <div class="card-header part-title part-post py-2 part-enter"
                             style="border-radius: .6rem .6rem 0 0;">
                             休闲娱乐
-                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                            <a href="{{ url_for('parts.parts',type=3,page=1) }}">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
                         </div>
                         <ul class="list-group ">
                             {% for post3 in indexdata[0][2] %}
@@ -151,7 +151,7 @@
                         <div class="card-header part-title part-post py-2 part-enter"
                             style="border-radius: .6rem .6rem 0 0;">
                             摸鱼灌水
-                            <a href="#">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
+                            <a href="{{ url_for('parts.parts',type=4,page=1) }}">进入板块<i class="fa fa-arrow-right fa-fw"></i></a>
                         </div>
                         <ul class="list-group ">
                             {% for post4 in indexdata[0][3] %}
@@ -182,7 +182,7 @@
 
                         <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
                             <div class="col-4 my-auto pl-2 pr-0">
-                                <a href="#"><img class="avatar-md" src="{{ url_for('userpage.showImg', id=g.user[0]) }}"></a>
+                                <a href="{{ url_for('userpage.showUserpage', id=g.user[0]) }}"><img class="avatar-md" src="{{ url_for('userpage.showImg', id=g.user[0]) }}"></a>
                             </div>
                             <div class="col-7 info-1 mx-auto pt-1 pb-2">
                                 <div class="username">{{ g.user[1] }}</div>
@@ -218,7 +218,7 @@
                             <ul class="list-group" >
 
                                 {% for user in indexdata[1] %}
-                                <li class="list-group-item rank-item"><a href="#"><img class="avatar-sm"
+                                <li class="list-group-item rank-item"><a href="{{ url_for('userpage.showUserpage', id=user[0]) }}"><img class="avatar-sm"
                                             src="{{ url_for('userpage.showImg', id=user[0]) }}">
                                     </a>{{ user[1] }}
                                     <div class="d-inline"

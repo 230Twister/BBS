@@ -9,6 +9,7 @@
 
         <div class="col-md-2 my-md-5 my-3 py-3 mx-auto mynavcol">
             <nav class="row px-4">
+                
                 <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.showUserpage', id=info[1]) }}"><i class="fa fa-info-circle fa-fw"></i>我的资料</a></li>
                 <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.setting', id=info[1]) }}"><i class="fa fa-pencil-square-o fa-fw"></i>修改信息</a></li>
                 <a class="nav-text my-1 col-12 text-center nav-active" href="#"><i class="fa fa-star fa-fw"></i>我的收藏</a></li>
@@ -20,11 +21,17 @@
 
         <div class="col-md-10 my-md-5 my-3 mx-auto px-md-5 px-0">
             <div class="card part">
-
+                {% if info[0] %}
                 <div class="card-header part-title part-post py-2 part-enter"
                     style="border-radius: .6rem .6rem 0 0;">
                     我的收藏
                 </div>
+                {% else %}
+                <div class="card-header part-title part-post py-2 part-enter"
+                    style="border-radius: .6rem .6rem 0 0;">
+                    无收藏
+                </div>
+                {% endif %}
                 <ul class="list-group ">
                     {% if info[0] %}
                     {% for post in info[0] %}

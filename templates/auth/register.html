@@ -78,26 +78,3 @@
     </div>
 </div>
 {% endblock %}
-
-{% block js %}
-<!-- <script type="text/javascript">
-    var countdown = 9;
-    function SetTime(obj) {
-        if (countdown == 0) {
-            obj.removeAttribute("disabled");
-            obj.value = "发送验证码";
-            countdown = 9;
-            return;
-        } else {
-            obj.setAttribute("disabled", true);
-            obj.value = "重新发送(" + countdown + "s)";
-            countdown--;
-        }
-
-        setTimeout(function () {
-            SetTime(obj)
-        }
-            , 1000)
-    }	  
-</script> -->
-{% endblock %}
