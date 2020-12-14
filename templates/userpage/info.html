@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Setting{% endblock %}
+
+{% block main %}
+<div class="container page-body font-400 mb-5 px-5 py-3" style="margin-top: 80px;">
+    <div class=row>
+
+        <div class="col-md-2 my-md-5 my-3 py-3 mx-auto mynavcol">
+            <nav class="row px-4">
+                <a class="nav-text my-1 col-12 text-center nav-active" href="#"><i class="fa fa-info-circle fa-fw"></i>我的资料</a></li>
+                <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.setting', id=userpagedata[6]) }}"><i class="fa fa-pencil-square-o fa-fw"></i>修改信息</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.collect', id=userpagedata[6]) }}"><i class="fa fa-star fa-fw"></i>我的收藏</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showPosts' ,id=userpagedata[6]) }}"><i class="fa fa-bookmark fa-fw"></i>我的发帖</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showNotice',id=userpagedata[6]) }}"><i class="fa fa-bell fa-fw"></i>我的通知</a></li>
+
+            </nav>
+        </div>
+
+        <div class="col-md-10 my-md-5 my-3 mx-auto px-md-5 px-0">
+            <div class="card w-100 info-card py-2 px-2 mb-4">
+                <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
+                    <div class="col-md-2 col-5 my-auto pl-2 pr-0">
+                        <a href="#"><img class="" style="width: 100%;
+                            border-radius: 100%;
+                            border: 5px solid rgb(210 225 240 / 85%);" src="{{ url_for('userpage.showImg', id=userpagedata[0][0]) }}"></a>
+                    </div>
+                    <div class="col-md-9 col-6 info-1 mx-auto pt-1 ">
+                        <div class="username">{{ userpagedata[0][1] }}</div>
+                        <div class="info-2 mt-2">等级: {{ userpagedata[2] }}</div>
+                        <div class="info-2">积分: {{ userpagedata[1][4] }}</div>
+                        <div class="progress w-100 mt-3" style="height: 10px;">
+                            <div class="progress-bar" style="width: {{ userpagedata[4] }}%; background-color: rgb(93, 156, 196);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card w-100 info-card py-2 px-2">
+                <div class="card-header row" style="background-color:rgb(0,0,0,0); border: 0;">
+                   
+                    <div class="col-11 info-1 mx-auto py-1 ">
+                        <div class="username">{{ userpagedata[0][1] }}</div>
+                        <hr style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" size=2>
+                        <div class="info-2 my-2">用户组: {{ userpagedata[1][2] }}</div>
+                        <div class="info-2 my-2">积分: {{ userpagedata[1][4] }}</div>
+                        <div class="info-2 my-2">距离下次升级所需积分: {{ userpagedata[5] }}</div>
+                        <div class="info-2 my-2">最近登录的IP: {{ userpagedata[0][2] }}</div>
+                        <div class="info-2 my-2">注册时间: {{ userpagedata[0][5] }}</div>
+                        <div class="info-2 my-2">上一次登录时间: {{ userpagedata[0][6] }}</div>
+                        
+                    </div>
+                    
+                    <div class="col-11 info-1 mx-auto py-1 mt-4">
+                        <div class="username">积分规则</div>
+                        <hr style="FILTER: alpha(opacity=100,finishopacity=0,style=1)" width="100%" size=2>
+                        <div class="info-2 my-2">发帖: +3</div>
+                        <div class="info-2 my-2">回帖: +1</div>
+                        <div class="info-2 my-2">每级所需积分: 100</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

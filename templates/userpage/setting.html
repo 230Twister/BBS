@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Setting{% endblock %}
+
+{% block main %}
+
+{% for message in get_flashed_messages() %}
+<div class="alert alert-dismissible fade show alert-login-reg" role="alert">
+    {{ message }}
+    <button type="button" class="close  alert-close-button" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+
+<div class="container page-body font-400 mb-5 px-5 py-3" style="margin-top: 80px;">
+    <div class=row>
+
+        <div class="col-md-2 my-md-5 my-3 py-3 mx-auto mynavcol">
+            <nav class="row px-4">
+                <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.showUserpage',id= userdata['id']) }}"><i class="fa fa-info-circle fa-fw"></i>我的资料</a></li>
+                <a class="nav-text my-1 col-12 text-center nav-active" href="#"><i class="fa fa-pencil-square-o fa-fw"></i>修改信息</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.collect',id= userdata['id']) }}"><i class="fa fa-star fa-fw"></i>我的收藏</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showPosts',id= userdata['id']) }}"><i class="fa fa-bookmark fa-fw"></i>我的发帖</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showNotice',id= userdata['id']) }}"><i class="fa fa-bell fa-fw"></i>我的通知</a></li>
+
+            </nav>
+        </div>
+
+        <div class="col-md-10 my-md-5 my-3 mx-auto px-md-5 px-0">
+
+            <div class="card card-setting">
+                <div class="card-header" style="border: none;background-color: rgb(198 207 217);">
+                    <a style="font-size: 17px;">修改密码</a>
+                </div>
+                <div class="card-body change-input" style="font-size: 15px;">
+                    <form method="POST" class="form">
+                        <div class="form-group required">
+                            <label class="form-control-lable" >用户名</label>
+                            <input class="form-control " id="name" name="name" style="border-radius:1.5rem" disabled
+                                value="{{ g.user[1] }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-lable" >旧密码</label>
+                            <input class="form-control" type="password" style="border-radius:1.5rem;"
+                                name="oldPassword">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-lable" >新密码</label>
+                            <input class="form-control" id="name" type="password" style="border-radius:1.5rem;"
+                                name="newPassword">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-lable" >确认新密码</label>
+                            <input class="form-control" type="password" id="name" style="border-radius:1.5rem;"
+                                name="newRepassword">
+                        </div>
+                        <input class="button-setting" style="float: left;" type="submit" value="提交">
+                    </form>
+                </div>
+            </div>
+
+            <div class="card card-setting mt-5">
+                <div class="card-header" style="border: none;background-color: rgb(198 207 217);">
+                    <a style="font-size: 17px;">修改头像</a>
+                </div>
+                <div class="card-body change-input" style="font-size: 15px;">
+                    <form action method="POST" class="form" >
+                        <img src="{{ url_for('userpage.showImg', id=g.user[0]) }}" class="img-fluid headpic rounded-circle mx-auto d-block"
+                            width="150" height="150" style="border-color:rgba(163, 175, 199, 0.678);">
+
+                        <div class="px-auto mx-auto" >
+                            <label for="file" id="upFile" class="upload" >上传图片</label>
+                            <input type="file" id="file" name="editormd-image-file">
+                            <p id="fileName"></p>
+                        </div>
+                        
+                        <input class=" button-setting" style="margin-left: 0; margin-top: 5px;" type="submit" value="提交">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    $("#file").on("change",function(){
+        // 截取路径，获取上传文件名
+        var urlArr = this.value.split("\\");
+        if (this && this.files && this.files[0]) {
+            document.getElementById("fileName").innerHTML = urlArr[urlArr.length-1];
+            var fileUrl = URL.createObjectURL(this.files[0]);
+            document.getElementById("fileImg").src = fileUrl;
+        }else{
+            // 兼容IE9以下
+            document.getElementById("fileName").innerHTML = urlArr[urlArr.length-1];
+            document.getElementById("fileImg").style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+            document.getElementById("fileImg").filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = this.value;
+        }
+    });
+</script>
+{% endblock %}

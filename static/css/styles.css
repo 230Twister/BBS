@@ -795,3 +795,139 @@ a:link {
     box-shadow: 0 0.3rem .5rem 0 rgba(0, 0, 0, 0.1);
     font-size: 13px;
 }
+
+/* 用户主页 */
+.button-setting
+{
+    background-color: rgb(115, 146, 173);
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 5px 20px;
+    margin-top:20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    
+}
+.card-setting
+{
+    background-color: rgb(221, 227, 233);
+    border-radius: 1rem;
+    overflow: auto;
+    border: none;
+    box-shadow: 0 0.8rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+.card-front-page
+{
+    background-color:rgb(221, 227, 233);
+    border-radius: 1rem 1rem 1rem 1rem;
+    margin-top: 50px;
+    overflow: auto;
+}
+.setting-input
+{
+    border-radius: 1rem 1rem 1rem 1rem;
+}
+
+.nav-text
+{
+    color:rgb(22, 21, 21);
+    border-radius: 1.05rem;
+    display: block;
+    padding: 0.5rem 1rem;
+}
+.nav-text:hover
+{
+    background-color:rgb(220 225 232 / 78%);
+    color:rgb(22, 21, 21);
+}
+.nav-active
+{
+    background-color:rgb(220 225 232 / 78%);
+}
+.table-passage
+{
+    background-color: rgb(228, 236, 241);
+    border-radius: 1rem 1rem 1rem 1rem;
+    overflow:auto;
+    border-top: hidden;
+    border-bottom: hidden;
+}
+.table-passage-td
+{
+    border-bottom: black;
+}
+.frontpage-table-tr
+{
+    background-color: rgb(228, 236, 241);
+}
+.container-sideindex
+{
+       margin-top:100px;
+       margin-left: 50px;
+       background: #f3f4f5;
+       width:150px;
+       height: 500px;
+       border-radius: 1rem;
+}
+.container-content
+{
+    margin-top:100px;
+    margin-left:150px;
+    border-radius:1rem;
+    width:500px;
+}
+ul.side-index
+{
+    list-style-type: none;
+    height: 500px;
+    width:150px;
+    margin-top: 0px;
+    margin-left: 0px;
+}
+li.index
+{
+    margin-top:50px;
+    font-size: large;
+}
+.page-body{
+    background-color: rgb(238 242 245 / 92%);
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+}
+.change-input {
+    background-color: rgba(255, 255, 255, 0.603);
+}
+.mynavcol{
+    background-color: rgba(104, 141, 184, 0.548); 
+    border-radius: 1.2rem; 
+    font-size: 16px; 
+    box-shadow: 0 0.8rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.upload{
+    background-color: rgb(115, 146, 173);
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+/*隐藏默认样式*/
+input[id=file]{
+	margin-left:-2000px;
+	height:0;
+}

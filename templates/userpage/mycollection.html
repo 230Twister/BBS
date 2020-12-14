@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Setting{% endblock %}
+
+{% block main %}
+
+<div class="container page-body font-400 mb-5 px-5 py-3" style="margin-top: 80px;">
+    <div class=row>
+
+        <div class="col-md-2 my-md-5 my-3 py-3 mx-auto mynavcol">
+            <nav class="row px-4">
+                <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.showUserpage', id=info[1]) }}"><i class="fa fa-info-circle fa-fw"></i>我的资料</a></li>
+                <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.setting', id=info[1]) }}"><i class="fa fa-pencil-square-o fa-fw"></i>修改信息</a></li>
+                <a class="nav-text my-1 col-12 text-center nav-active" href="#"><i class="fa fa-star fa-fw"></i>我的收藏</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showPosts' ,id=info[1]) }}"><i class="fa fa-bookmark fa-fw"></i>我的发帖</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showNotice' ,id=info[1]) }}"><i class="fa fa-bell fa-fw"></i>我的通知</a></li>
+
+            </nav>
+        </div>
+
+        <div class="col-md-10 my-md-5 my-3 mx-auto px-md-5 px-0">
+            <div class="card part">
+
+                <div class="card-header part-title part-post py-2 part-enter"
+                    style="border-radius: .6rem .6rem 0 0;">
+                    我的收藏
+                </div>
+                <ul class="list-group ">
+                    {% for post_ in info[0] %}
+                    <li class="list-group-item part-post">
+                        <div class="row justify-content-between">
+                            <div class="col-6 text-truncate post-title">
+                                <a href="{{ url_for('posts.posts', postid=post[0] ,page=1) }}">{{ post_[1] }}</a>
+                            </div>
+                            <div class="col-2 p-0 text-truncate post-info">
+                                <i class="fa fa-user fa-fw"></i>{{post_[2]}}
+                            </div>
+                            <div class="col-2 p-0 text-truncate post-info">
+                                <i class="fa fa-comment fa-fw"></i>{{post_[3]}}
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
