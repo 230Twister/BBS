@@ -18,8 +18,8 @@ def showUserpage(id):
     # 显示用户的个人主页
     database = getDatabase()
     cursor = database.cursor()
-    user = checkUser(cursor, id)
-    userinfo = findUserinfo(cursor, id)
+    user = getData(cursor, 'user', 'uuid', id)
+    userinfo = getData(cursor, 'userinfo', 'uuid', id)
     #error = None
     if user is None:
         return render_template('404.html'),404
@@ -40,8 +40,8 @@ def showUserpage(id):
 def collect(id):
     database = getDatabase()
     cursor = database.cursor()
-    user = checkUser(cursor, id)
-    userinfo = findUserinfo(cursor, id)
+    user = getData(cursor, 'user', 'uuid', id)
+    userinfo = getData(cursor, 'userinfo', 'uuid', id)
     if user is None:
         return render_template('404.html'),404
 
@@ -49,11 +49,11 @@ def collect(id):
     _collect.remove('')
     _post_id = []
     _posts = []
-    length=len(_collect)
+    length = len(_collect)
     for i in range(0,length):
         _post_id.append(_collect[i])
 
-    for i in range(0,length):
+    for i in range(0, length):
         cursor.execute(
             'SELECT * FROM post WHERE id=%s'
             'ORDER BY posttime DESC;', (_post_id[i], )
@@ -61,9 +61,9 @@ def collect(id):
         _posts.append (cursor.fetchone())
     post = []
     for p in _posts:
-        post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
+        post.append([p[0], p[1], getData(cursor, 'user', 'uuid', p[4])[1], len(p[7].split(' ')) - 1])
 
-    return render_template('userpage/collect.html', info = [post, id])
+    return render_template('userpage/mycollection.html', info = [post, id])
 
 # 展示图片（头像）
 @userpagebp.route('/<int:id>/image')
@@ -75,30 +75,31 @@ def showPosts(id):
     # 显示该用户曾发过的帖子
     database = getDatabase()
     cursor = database.cursor()
-    user = checkUser(cursor, id)
+    user = getData(cursor, 'user', 'uuid', id)
     #error = None
     if user is None:
         return render_template('404.html'),404
 
     # 显示用户所有帖子
     cursor.execute(
-        'SELECT * FROM post WHERE userid=%s'
+        'SELECT * FROM post WHERE userid=%s '
         'ORDER BY posttime DESC;', (id, )
     )
     _posts = cursor.fetchall()
 
     post = [] 
     for p in _posts:
-        post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
+        post.append([p[0], p[1], getData(cursor, 'user', 'uuid', p[4])[1], len(p[7].split(' ')) - 1])
 
     return render_template('userpage/mypost.html', info = [post, id])
 
 @userpagebp.route('/<int:id>/notice')
+@loginRequired
 def showNotice(id):
     database = getDatabase()
     cursor = database.cursor()
-    user = checkUser(cursor, id)
-    userinfo = findUserinfo(cursor, id)
+    user = getData(cursor, 'user', 'uuid', id)
+    userinfo = getData(cursor, 'userinfo', 'uuid', id)
     #error = None
     if user is None:
         return render_template('404.html'),404
@@ -109,37 +110,25 @@ def showNotice(id):
     _postreply = []
     _post_id = []
     _reply_id = []
-    length=len(_warn)
+    length = len(_warn)
     for i in range(0,length):
         _postreply.append(_warn[i].split(":"))
         _post_id.append( _postreply[i][0])          #回帖主题id
         _reply_id.append( _postreply[i][1])         #回复id
 
     _posts = []
-    _reply = []
-    for i in range(0,length):
-        cursor.execute(
-            'SELECT * FROM post WHERE id=%s'
-            'ORDER BY posttime DESC;', (_post_id[i], )
-        )
-        _posts.append(cursor.fetchone())
+    _replyuser = []
+    for i in range(0, length):
+        rep = getData(cursor, 'reply', 'id', _reply_id[i])
+        _replyuser.append(getData(cursor, 'user', 'uuid', rep[1])[1])
+    for i in range(0, length):
+        _posts.append(getData(cursor, 'post', 'id', _post_id[i]))
 
     post = []
-    for p in _posts:
-        post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
+    for index, p in enumerate(_posts):
+        post.append([p[0], p[1], getData(cursor, 'user', 'uuid', p[4])[1], len(p[7].split(' ')) - 1, _replyuser[index]])
 
-    for i in range(0,length):
-        cursor.execute(
-            'SELECT * FROM reply WHERE id=%s'
-            'ORDER BY posttime DESC;', (_reply_id[i], )
-        )
-        _reply.append(cursor.fetchone())
-
-    reply = []
-    for r in _reply:
-        post.append([r[2]])
-
-    return render_template('userpage/notify.html', info = [post, reply, id])
+    return render_template('userpage/notify.html', info = [post, id])
 
 
 @userpagebp.route('/<int:id>/setting', methods=('GET', 'POST'))
@@ -148,18 +137,17 @@ def setting(id):
     # 用户设置，允许用户自行更改昵称、头像、密码、邮箱等
     database = getDatabase()
     cursor = database.cursor()
-    user = checkUser(cursor, id)
+    user = getData(cursor, 'user', 'uuid', id)
     error = None
     if user is None or g.user[0] != user[0]:
         # 用户不存在 或 无权访问他人设置页面
         return render_template('404.html'),404
     
     if request.method == 'POST':
-        oldPassword = request.form['oldPassword']               #验证原密码
-        newPassword = request.form['newPassword']               #新密码
-        newRepassword = request.form['newRepassword']           #新确认密码
-
-        if 'codeSetting' in request.form:                          #修改密码
+        if 'codeSetting' in request.form:                           #修改密码
+            oldPassword = request.form['oldPassword']               #验证原密码
+            newPassword = request.form['newPassword']               #新密码
+            newRepassword = request.form['newRepassword']           #新确认密码
             if not check_password_hash(user[3], oldPassword):
                 error = '原密码输入有误'
             elif newPassword != newRepassword:
@@ -177,31 +165,8 @@ def setting(id):
                                                                 "newPassword":newPassword,
                                                                 "newRepassword":newRepassword,
                                                                 "id":id})
-        else:                                                       #修改头像
-            file = request.files.get('editormd-image-file')     #获取上传的图片
-            uploadImg(id, 'avatar.jpg', file)
+        else:                                                   #修改头像
+            file = request.files['editormd-image-file']
+            uploadImg(id, 'avatar', file)
 
     return render_template('userpage/setting.html', userdata={ "id":id })
-
-
-#   以下为功能函数
-
-def checkUser(cursor, id):
-    # 从user中查找用户记录
-    cursor.execute(
-        'SELECT * FROM user WHERE uuid=%s;', (id, )
-    )
-    user = cursor.fetchone()
-    return user
-
-def findUserinfo(cursor, id):
-    # 从userinfo获取用户记录
-    cursor.execute(
-        'SELECT * FROM userinfo WHERE uuid=%s;', (id, )
-    )
-    userinfo = cursor.fetchone()
-    return userinfo
-
-def findUser(cursor, id):
-    # 从user中查找用户记录
-    return getData(cursor, 'user', 'uuid', id)

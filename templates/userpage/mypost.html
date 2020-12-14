@@ -25,17 +25,17 @@
                     我的帖子
                 </div>
                 <ul class="list-group ">
-                    {% for post_ in info[0] %}
+                    {% for post in info[0] %}
                     <li class="list-group-item part-post">
                         <div class="row justify-content-between">
                             <div class="col-6 text-truncate post-title">
-                                <a href="{{ url_for('posts.posts', postid=post[0] ,page=1) }}">{{ post_[1] }}</a>
+                                <a href="{{ url_for('posts.posts', postid=post[0] ,page=1) }}">{{ post[1] }}</a>
                             </div>
                             <div class="col-2 p-0 text-truncate post-info">
-                                <i class="fa fa-user fa-fw"></i>{{post_[2]}}
+                                <i class="fa fa-user fa-fw"></i>{{post[2]}}
                             </div>
                             <div class="col-2 p-0 text-truncate post-info">
-                                <i class="fa fa-comment fa-fw"></i>{{post_[3]}}
+                                <i class="fa fa-comment fa-fw"></i>{{post[3]}}
                             </div>
                         </div>
                     </li>

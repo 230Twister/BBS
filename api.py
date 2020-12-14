@@ -64,7 +64,7 @@ def uploadImg(uuid, name, file):
     if not file:
         return False
     else:
-        if name == "avatar.jpg":
+        if name == "avatar":
             im = Image.open(file)
             if im.size[0] > im.size[1]:
                 x = 0.5*(im.size[0] - im.size[1])

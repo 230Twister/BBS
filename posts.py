@@ -81,7 +81,7 @@ def reply(postid):
             'UPDATE post SET reply = CONCAT(reply,%s), updatetime = %s WHERE id = %s;'  #更新本帖回复id和更新时间
             ,(updatedreply, dtime, postid))
 
-        appendData(cursor, 'userinfo', 'uuid', postdata[4], 'warn', 1, postdata[0])     #楼主的提醒加一
+        appendData(cursor, 'userinfo', 'uuid', postdata[4], 'warn', 1, str(postdata[0])+':'+str(replyid))     #楼主的提醒加一
 
     return redirect(url_for('posts.posts', postid = postid, page = 1))
 

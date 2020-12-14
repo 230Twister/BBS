@@ -65,7 +65,7 @@
                     <a style="font-size: 17px;">修改头像</a>
                 </div>
                 <div class="card-body change-input" style="font-size: 15px;">
-                    <form action method="POST" class="form" >
+                    <form action method="POST" class="form" enctype="multipart/form-data">
                         <img src="{{ url_for('userpage.showImg', id=g.user[0]) }}" class="img-fluid headpic rounded-circle mx-auto d-block"
                             width="150" height="150" style="border-color:rgba(163, 175, 199, 0.678);">
 
