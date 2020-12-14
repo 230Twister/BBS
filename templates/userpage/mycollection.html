@@ -26,6 +26,7 @@
                     我的收藏
                 </div>
                 <ul class="list-group ">
+                    {% if info[0] %}
                     {% for post in info[0] %}
                     <li class="list-group-item part-post">
                         <div class="row justify-content-between">
@@ -41,6 +42,15 @@
                         </div>
                     </li>
                     {% endfor %}
+                    {% else %}
+                    <li class="list-group-item part-post">
+                        <div class="row justify-content-between">
+                            <div class="col-12 text-truncate post-title py-4">
+                            
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
