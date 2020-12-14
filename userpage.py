@@ -154,6 +154,7 @@ def setting(id):
                 error = '两次密码不一致'
                 
             if error is None:
+                flash("密码修改成功！")
                 cursor.execute(
                     'UPDATE user SET password'
                     '= %s WHERE uuid = %s;'
