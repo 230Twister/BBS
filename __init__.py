@@ -47,6 +47,8 @@ def create_app():
     app.register_blueprint(edit.editbp)         #帖子编辑
     from . import posts
     app.register_blueprint(posts.postsbp)       #主题页面
+    from . import parts
+    app.register_blueprint(parts.partsbp)       #主题页面
 
     @app.route('/')
     def hello():
