@@ -115,12 +115,12 @@ def login():
         database = getDatabase()
         cursor = database.cursor()
         cursor.execute(
-            'SELECT * FROM user WHERE name=%s OR email=%s;', (username, username,)
+            'SELECT uuid,password FROM user WHERE name=%s OR email=%s;', (username, username,)
             )                            #从数据库查找用户记录
         user = cursor.fetchone()
         error = None
 
-        if user is None or not check_password_hash(user[3], password):
+        if user is None or not check_password_hash(user[1], password):
             error = '用户名或密码错误！'
         elif vcode.lower() !=  session['imageCode'].lower():
             error = '验证码错误！'
@@ -176,7 +176,7 @@ def loginRequired(view):
 #查询是否存在一个用户
 def checkUser(cursor, name, email):
     cursor.execute(
-                'SELECT * FROM user WHERE name=%s OR email=%s;', (name, email, )
+                'SELECT uuid FROM user WHERE name=%s OR email=%s;', (name, email, )
             )
     user = cursor.fetchone()                        #从数据库查找用户记录
     return user

@@ -64,10 +64,10 @@ def reply(postid):
     if request.method == 'POST':
         database = getDatabase()
         cursor = database.cursor()
-        cursor.execute('SELECT * FROM post WHERE id=%s;', (postid, ))
-        postdata = cursor.fetchone()
-        dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        text = request.form['content']
+        cursor.execute('SELECT id,userid FROM post WHERE id=%s;', (postid, ))
+        postdata = cursor.fetchone()                                    #当前帖子id与楼主uuid
+        dtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")   #当前时间
+        text = request.form['content']                                  #回复内容
 
         cursor.execute(
             'INSERT INTO reply(id, userid , content, posttime)'
@@ -80,9 +80,12 @@ def reply(postid):
         cursor.execute(
             'UPDATE post SET reply = CONCAT(reply,%s), updatetime = %s WHERE id = %s;'  #更新本帖回复id和更新时间
             ,(updatedreply, dtime, postid))
+        cursor.execute(
+            'UPDATE userinfo SET point=point+1 WHERE uuid=%s;', (g.user[0],)            #回复获得积分
+        )
 
-        if(postdata[4] != g.user[0]):
-            appendData(cursor, 'userinfo', 'uuid', postdata[4], 'warn', 1, str(postdata[0])+':'+str(replyid[0]))     #楼主的提醒加一
+        if(postdata[1] != g.user[0]):                               #楼主的提醒加一
+            appendData(cursor, 'userinfo', 'uuid', postdata[1], 'warn', 1, str(postdata[0])+':'+str(replyid[0]))     
 
     return redirect(url_for('posts.posts', postid = postid, page = 1))
 

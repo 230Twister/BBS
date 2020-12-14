@@ -32,6 +32,9 @@ def create(part):
                     'VALUES(null, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
                     , (title, _type, content, g.user[0], dtime, dtime, '', 1, 0)
                 )
+        cursor.execute(
+            'UPDATE userinfo SET point=point+3 WHERE uuid=%s;', (g.user[0],)        #发表主题获得积分
+        )
         return redirect(url_for('index.index'))
     return render_template('post/edit.html', post=None)
 
