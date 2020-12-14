@@ -83,7 +83,7 @@ def showPosts(id):
     # 显示用户所有帖子
     cursor.execute(
         'SELECT * FROM post WHERE userid=%s'
-        'ORDER BY created DESC;', (id, )
+        'ORDER BY posttime DESC;', (id, )
     )
     _posts = cursor.fetchall()
 
@@ -105,6 +105,7 @@ def showNotice(id):
 
     # 以下为消息提醒
     _warn = str(userinfo[1]).split(" ")
+    _warn.remove('')
     _postreply = []
     _post_id = []
     _reply_id = []
@@ -119,19 +120,18 @@ def showNotice(id):
     for i in range(0,length):
         cursor.execute(
             'SELECT * FROM post WHERE id=%s'
-            'ORDER BY created DESC;', (_post_id[i], )
+            'ORDER BY posttime DESC;', (_post_id[i], )
         )
-        _posts.append( cursor.fetchone())
+        _posts.append(cursor.fetchone())
 
     post = []
     for p in _posts:
         post.append([p[0], p[1], findUser(cursor, p[4])[1], len(p[7].split(' ')) - 1])
 
-
     for i in range(0,length):
         cursor.execute(
             'SELECT * FROM reply WHERE id=%s'
-            'ORDER BY created DESC;', (_reply_id[i], )
+            'ORDER BY posttime DESC;', (_reply_id[i], )
         )
         _reply.append(cursor.fetchone())
 
@@ -168,12 +168,12 @@ def setting(id):
             if error is None:
                 cursor.execute(
                     'UPDATE user SET password'
-                    '= %s WHERE id = %s;'
+                    '= %s WHERE uuid = %s;'
                     , (generate_password_hash(newPassword), user[0])
                 )
                 return redirect(url_for('userpage.setting', id=id))
             flash(error)
-            return render_template('setting.html', userdata={  "oldPassword":oldPassword,
+            return render_template('userpage/setting.html', userdata={  "oldPassword":oldPassword,
                                                                 "newPassword":newPassword,
                                                                 "newRepassword":newRepassword,
                                                                 "id":id})

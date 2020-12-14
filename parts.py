@@ -18,7 +18,7 @@ def parts(type, page):
     partdata = cursor.fetchall()
     partdata, pages = getPosts(cursor, partdata, page)
     
-    return render_template('parts.html', 
+    return render_template('post/parts.html', 
                            partdata=partdata,           #板块内的帖子(最新)
                            pages=pages                  #当前页数和总页数
                            )

@@ -10,15 +10,15 @@ def create_app():
 
     app.config.from_mapping(  #默认配置
         SECRET_KEY="dev",
-        MAX_CONTENT_LENGTH=1 * 1024 * 1024, #限制上传文件大小3M
+        MAX_CONTENT_LENGTH=1 * 1024 * 1024, #限制上传文件大小1M
 
-        HOST="127.0.0.1",
+        HOST="127.0.0.1",                   #Mysql数据库设置
         PORT=3306,
         USER="root",
         PASSWORD="root",
         DATABASE="bbs",
 
-        MAIL_SERVER='smtp.example.com',
+        MAIL_SERVER='smtp.example.com',     #stmp服务器设置
         MAIL_USERNAME="root",
         MAIL_PASSWORD="root",
         MAIL_DEFAULT_SENDER="root",
@@ -35,7 +35,7 @@ def create_app():
     mail = Mail(app)
 
     from . import database
-    database.init_app(app)       #注册数据库初始化命令
+    database.init_app(app)                      #注册数据库初始化命令
 
     from . import auth
     app.register_blueprint(auth.authbp)         #登陆注册
@@ -46,7 +46,7 @@ def create_app():
     from . import edit
     app.register_blueprint(edit.editbp)         #帖子编辑
     from . import posts
-    app.register_blueprint(posts.postsbp)       
+    app.register_blueprint(posts.postsbp)       #主题页面
 
     @app.route('/')
     def hello():
