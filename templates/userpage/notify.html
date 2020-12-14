@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{% endblock %}
+{% block title %}Hey{% endblock %}
 
 {% block main %}
 <div class="container page-body font-400 mb-5 px-5 py-3" style="margin-top: 80px;">
@@ -8,19 +8,24 @@
 
         <div class="col-md-2 my-md-5 my-3 py-3 mx-auto mynavcol">
             <nav class="row px-4">
-                <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.showUserpage' ,id= info[1]) }}"><i class="fa fa-info-circle fa-fw"></i>我的资料</a></li>
-                <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.setting',id= info[1]) }}"><i class="fa fa-pencil-square-o fa-fw"></i>修改信息</a></li>
-                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.collect',id= info[1]) }}"><i class="fa fa-star fa-fw"></i>我的收藏</a></li>
-                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showPosts',id= info[1]) }}"><i class="fa fa-bookmark fa-fw"></i>我的发帖</a></li>
-                <a class="nav-text my-1 col-12 text-center nav-active" href="#"><i class="fa fa-bell fa-fw"></i>我的通知</a></li>
+                <a class="nav-text my-1 col-12 text-center "
+                    href="{{ url_for('userpage.showUserpage' ,id= info[1]) }}"><i
+                        class="fa fa-info-circle fa-fw"></i>我的资料</a></li>
+                <a class="nav-text my-1 col-12 text-center " href="{{ url_for('userpage.setting',id= info[1]) }}"><i
+                        class="fa fa-pencil-square-o fa-fw"></i>修改信息</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.collect',id= info[1]) }}"><i
+                        class="fa fa-star fa-fw"></i>我的收藏</a></li>
+                <a class="nav-text my-1 col-12 text-center" href="{{ url_for('userpage.showPosts',id= info[1]) }}"><i
+                        class="fa fa-bookmark fa-fw"></i>我的发帖</a></li>
+                <a class="nav-text my-1 col-12 text-center nav-active" href="#"><i class="fa fa-bell fa-fw"></i>我的通知</a>
+                </li>
             </nav>
         </div>
 
         <div class="col-md-10 my-md-5 my-3 mx-auto px-md-5 px-0">
             <div class="card part">
-
-                <div class="card-header part-title part-post py-2 part-enter"
-                    style="border-radius: .6rem .6rem 0 0;">
+                {% if info[0] %}
+                <div class="card-header part-title part-post py-2 part-enter" style="border-radius: .6rem .6rem 0 0;">
                     有新回复!
                 </div>
                 <ul class="list-group ">
@@ -40,8 +45,22 @@
                         </div>
                     </li>
                     {% endfor %}
-                    
+
                 </ul>
+                {% else %}
+                <div class="card-header part-title part-post py-2 part-enter" style="border-radius: .6rem .6rem 0 0;">
+                    无通知
+                </div>
+                <ul class="list-group ">
+                    <li class="list-group-item part-post">
+                        <div class="row justify-content-between">
+                            <div class="col-12 text-truncate post-title">
+                                
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                {% endif %}
             </div>
         </div>
     </div>

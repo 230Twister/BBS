@@ -50,7 +50,7 @@
                     <form class="form-inline" action="{{ url_for('index.search') }}" method="POST">
 
                         <input class=" form-control input-text " type="search" placeholder="What you want?"
-                            aria-label="Search" name="search" required>
+                            maxlength="15" aria-label="Search" name="search" required>
 
                         <button class="search-button button-hover " type="submit"><i
                                 class="fa fa-search fa-fw"></i>搜索</button>

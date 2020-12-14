@@ -19,7 +19,8 @@
         <div class="col-sm-9 col-md-6 col-lg-5 mx-auto">
             <div class="card card-reg ">
                 <div class="card-body">
-                    <h3 class="card-title text-center" style="font-size: 30px; font-weight: bold;">注&nbsp;&nbsp;&nbsp;册</h3>
+                    <h3 class="card-title text-center" style="font-size: 30px; font-weight: bold;">注&nbsp;&nbsp;&nbsp;册
+                    </h3>
                     <form class="form-reg" method="POST">
                         <div class="form-label-group font-size-md">
                             <input type="email" id="inputEmail" class="form-control" placeholder="电子邮箱" name="email"
@@ -30,32 +31,36 @@
                         <!-- 输入用户名 -->
                         <div class="form-label-group font-size-md">
                             <input type="text" id="inputUsername" class="form-control" placeholder="用户名" name="username"
-                                style="flex:1; font-size: 14px;" value="{{ userdata.username }}" autofocus required>
+                                maxlength="12" style="flex:1; font-size: 14px;" value="{{ userdata.username }}"
+                                autofocus required>
                             <label for="inputUsername">用户名</label>
                         </div>
 
                         <!-- 输入密码 -->
                         <div class="form-label-group font-size-md">
                             <input type="password" id="inputPassword" class="form-control" placeholder="密码"
-                                name="password" style="flex:1; font-size: 14px;" value="{{ userdata.password }}" required>
+                                maxlength="20" name="password" style="flex:1; font-size: 14px;"
+                                value="{{ userdata.password }}" required>
                             <label for="inputPassword">密码</label>
                         </div>
 
                         <!-- 确认密码 -->
                         <div class="form-label-group font-size-md">
                             <input type="password" id="inputPasswordCheck" class="form-control" placeholder="确认密码"
-                                name="repassword" style="flex:1; font-size: 14px;" value="{{ userdata.repassword }}" required>
+                                maxlength="20" name="repassword" style="flex:1; font-size: 14px;"
+                                value="{{ userdata.repassword }}" required>
                             <label for="inputPasswordCheck">确认密码</label>
                         </div>
 
                         <!-- 输入验证码 -->
                         <div class="" style="display: flex;justify-content:space-between;">
                             <input class="form-control form-verify" name="emailcode" style="flex:1; font-size: 14px;"
-                                id="inputCode" type="text" placeholder="验证码">
+                                maxlength="5" id="inputCode" type="text" placeholder="验证码">
 
 
                             <!-- 发送验证码 -->
-                            <button class="verify_btn button-hover verify_input_btn" type="submit" name="send">发送验证码</button>
+                            <button class="verify_btn button-hover verify_input_btn" type="submit"
+                                name="send">发送验证码</button>
 
                         </div>
 
