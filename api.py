@@ -82,7 +82,7 @@ def uploadImg(uuid, name, file):
         ext = os.path.splitext(file.filename)[1]
         filename = name + ext
         current_path = os.path.abspath(os.path.dirname(__file__))       #获取当前文件夹绝对路径
-        filedir = os.path.join(current_path, 'data\\img')               #获取保存图片的路径
+        filedir = os.path.join(current_path, 'data/img')               #获取保存图片的路径
         filepath = os.path.join(filedir, str(uuid))                     #获取当前用户保存图片的路径
         if not os.path.exists(filepath):
             os.mkdir(filepath)
@@ -92,14 +92,14 @@ def uploadImg(uuid, name, file):
 #读取图片，包括帖子中的图片和用户头像
 def readImg(uuid, name):                                                    #uuid区分不同用户的id，name区分图片名称
     current_path = os.path.abspath(os.path.dirname(__file__))
-    filedir = os.path.join(current_path, 'data\\img')
+    filedir = os.path.join(current_path, 'data/img')
     filepath = os.path.join(filedir, str(uuid))                                  #获取图片文件路径
 
     if os.path.exists(os.path.join(filepath, name)):
         with open(os.path.join(filepath, name), 'rb') as f:
             res = Response(f.read(), mimetype="image/jpeg")
     else:
-        with open(os.path.join(current_path, 'static\\img\\avatar.jpg'), 'rb') as f:
+        with open(os.path.join(current_path, 'static/img/avatar.jpg'), 'rb') as f:
             res = Response(f.read(), mimetype="image/jpeg")
         
     return res                                                              #返回图片
