@@ -36,7 +36,7 @@ def create(part):
             'UPDATE userinfo SET point=point+3 WHERE uuid=%s;', (g.user[0],)        #发表主题获得积分
         )
         return redirect(url_for('index.index'))
-    return render_template('post/edit.html', post=[0, part])
+    return render_template('post/edit.html', post=[0, 0, part])
 
 @editbp.route('/<int:id>/post', methods=('GET', 'POST'))
 @loginRequired

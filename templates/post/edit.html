@@ -24,7 +24,7 @@
             </select>
 
             <input type="text" class="col-7 form-control font-md edit-input font-title" style="border-radius: 15px;"
-                name="title" placeholder="标题..." value="{%if post != None %}{{ post[1] }}{% endif %}" required>
+                name="title" placeholder="标题..." value="{%if post[0] != 0 %}{{ post[1] }}{% endif %}" required>
 
         </div>
 
