@@ -3,7 +3,16 @@
 {% block title %}Part{% endblock %}
 
 {% block main %}
-<div class="container body-index font-400">
+
+<div class="container body-guide font-400">
+    <div class="row ">
+        <div class="col-md-12">
+            <a href="{{ url_for('edit.create', part=type) }}" class="button ml-md-4 " style="float: left;"><i class="fa fa-edit fa-fw"></i>发帖</a>
+        </div>
+    </div>
+</div>
+
+<div class="container body-index font-400" style="margin-top: 10px;">
     <!-- 左边: 板块一二三四 右边:用户信息 -->
     <div class="row ">
 
@@ -26,11 +35,14 @@
                             {% for post in partdata %}
                             <li class="list-group-item part-post">
                                 <div class="row justify-content-between">
-                                    <div class="col-5 text-truncate post-title">
+                                    <div class="col-4 text-truncate post-title">
                                         <a href="{{ url_for('posts.posts', postid=post[0] ,page=1) }}">{{ post[1] }}</a>
                                     </div>
                                     <div class="col-2 p-0 text-truncate post-info">
                                         <i class="fa fa-user fa-fw"></i>{{ post[2] }}
+                                    </div>
+                                    <div class="col-2 p-0 text-truncate post-info">
+                                        <i class="fa fa-comment fa-fw"></i>{{ post[4]-1 }}
                                     </div>
                                     <div class="col-4 p-0 text-truncate post-info">
                                         <i class="fa fa-clock-o fa-fw"></i>{{ post[3] }}
