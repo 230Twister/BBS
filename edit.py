@@ -67,7 +67,7 @@ def edit(id):
                         'UPDATE post SET title=%s, content=%s, updatetime=%s WHERE id=%s;'
                         , (title, content, dtime, id,)
                     )
-        return redirect(url_for('index.index'))
+        return redirect(url_for('posts.posts', postid=id, page=1))
     
     return render_template('post/edit.html', post=post)
 

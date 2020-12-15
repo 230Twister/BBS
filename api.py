@@ -111,6 +111,20 @@ def getData(cursor, table, key, value):
     )
     return cursor.fetchone()
 
+#获取表内一行数据的部分列
+def getPartData(cursor, table, key, value, *data):
+    cursor.execute(
+        'SELECT '+(','.join(data))+' FROM '+table+' WHERE '+key+'=%s;', (value,)
+    )
+    return cursor.fetchone()
+
+def getUserName(cursor, uuid):
+    cursor.execute(
+        'SELECT name FROM user WHERE uuid=%s;', (uuid,)
+    )
+    user = cursor.fetchone()
+    return user[0] if user is not None else None
+
 #获取用户组名字
 def getGroupName(name):
     if name == 'admin':

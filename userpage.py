@@ -9,7 +9,7 @@ from .database import getDatabase
 from .auth import loginRequired
 from PIL import Image
 import os, datetime
-from .api import readImg, uploadImg, getData, getGroupName
+from .api import readImg, uploadImg, getData, getGroupName, getUserName, getPartData
 
 userpagebp = Blueprint('userpage', __name__, url_prefix='/userpage')
 
@@ -23,40 +23,43 @@ def showUserpage(id):
     if user is None:
         return render_template('404.html'),404
 
-    level = int(userinfo[4] / 100)
-    percentage = userinfo[4] % 100
-    needpoint = 100 - percentage
-    group = getGroupName(userinfo[2])
+    level = int(userinfo[4] / 100)      #等级
+    percentage = userinfo[4] % 100      #经验条比例
+    needpoint = 100 - percentage        #升级所需经验
+    group = getGroupName(userinfo[2])   #用户组
 
     return render_template('userpage/info.html', userpagedata = [user, userinfo, group, level, percentage, needpoint, id])
-
 
 @userpagebp.route('/<int:id>/collect')
 @loginRequired
 def collect(id):
     database = getDatabase()
     cursor = database.cursor()
-    user = getData(cursor, 'user', 'uuid', id)
-    userinfo = getData(cursor, 'userinfo', 'uuid', id)
-    if user is None or g.user[0] != user[0]:            #不允许访问不存在用户和其他用户的收藏
+    user = getUserName(cursor, id)
+    userinfo = getPartData(cursor, 'userinfo', 'uuid', id, 'collect')
+    if user is None or g.user[0] != id:               #不允许访问不存在用户和其他用户的收藏
         return render_template('404.html'),404
 
-    _collect = str(userinfo[3]).split(" ")
-    _collect.remove('')
-    _post_id = []               #主题id列表
-    _posts = []                 #主题列表
+    _collect = str(userinfo[0]).split(" ")      #主题id列表
+    if '' in _collect:
+        _collect.remove('')
+    _posts = []                                 #主题列表
     length = len(_collect)
-    for i in range(0,length):
-        _post_id.append(_collect[i])
 
     for i in range(0, length):
-        cursor.execute(
-            'SELECT * FROM post WHERE id=%s;', (_post_id[i], )
-        )
-        _posts.append (cursor.fetchone())
+        collectpost = getPartData(cursor, 'post', 'id', _collect[i], 'id', 'title', 'userid', 'reply')
+        if collectpost is not None:
+            _posts.append (collectpost)
+        else:
+            del _collect[i]                 #收藏中的帖子不存在，应该删除
+
+    cursor.execute(
+        'UPDATE userinfo SET collect=%s WHERE uuid=%s;'     #更新收藏列表，去除不存在的收藏
+        , (' '.join(_collect), id,)
+    )
     post = []
     for p in _posts:
-        post.append([p[0], p[1], getData(cursor, 'user', 'uuid', p[4])[1], len(p[7].split(' ')) - 1])
+        post.append([p[0], p[1], getUserName(cursor, p[2]), len(p[3].split(' ')) - 1])
 
     return render_template('userpage/mycollection.html', info = [post, id])
 
@@ -70,19 +73,18 @@ def showPosts(id):
     # 显示该用户曾发过的帖子
     database = getDatabase()
     cursor = database.cursor()
-    user = getData(cursor, 'user', 'uuid', id)
-    if user is None:
+    if getUserName(cursor, id) is None:
         return render_template('404.html'),404
 
     # 显示用户所有帖子
     cursor.execute(
-        'SELECT * FROM post WHERE userid=%s;', (id, )
+        'SELECT id,title,userid,reply FROM post WHERE userid=%s;', (id, )
     )
     _posts = cursor.fetchall()
 
     post = [] 
     for p in _posts:
-        post.append([p[0], p[1], getData(cursor, 'user', 'uuid', p[4])[1], len(p[7].split(' ')) - 1])
+        post.append([p[0], p[1], getUserName(cursor, p[2]), len(p[3].split(' ')) - 1])
 
     return render_template('userpage/mypost.html', info = [post, id])
 
@@ -91,34 +93,30 @@ def showPosts(id):
 def showNotice(id):
     database = getDatabase()
     cursor = database.cursor()
-    user = getData(cursor, 'user', 'uuid', id)
-    userinfo = getData(cursor, 'userinfo', 'uuid', id)
-    if user is None or g.user[0] != user[0]:
+    user = getUserName(cursor, id)
+    userinfo = getPartData(cursor, 'userinfo', 'uuid', id, 'warn')
+    if user is None or g.user[0] != id:
         return render_template('404.html'),404
 
     # 以下为消息提醒
-    _warn = str(userinfo[1]).split(" ")
-    _warn.remove('')
-    _postreply = []
-    _post_id = []
-    _reply_id = []
-    length = len(_warn)
-    for i in range(0,length):
-        _postreply.append(_warn[i].split(":"))
-        _post_id.append( _postreply[i][0])          #回帖主题id
-        _reply_id.append( _postreply[i][1])         #回复id
+    _warn = str(userinfo[0]).split(" ")
+    if '' in _warn:
+        _warn.remove('')
 
     _posts = []
     _replyuser = []
-    for i in range(0, length):      #获取回复人的名字
-        rep = getData(cursor, 'reply', 'id', _reply_id[i])
-        _replyuser.append(getData(cursor, 'user', 'uuid', rep[1])[1])
-    for i in range(0, length):      #获取被回复的帖子信息
-        _posts.append(getData(cursor, 'post', 'id', _post_id[i]))
+    length = len(_warn)
+    for i in range(0,length):
+        tmp = _warn[i].split(":")
+        _posts.append(
+            getPartData(cursor, 'post', 'id', tmp[0], 'id', 'title', 'userid', 'reply')
+            )    #获取被回复帖子信息
+        rep = getPartData(cursor, 'reply', 'id', tmp[1], 'userid')
+        _replyuser.append(getUserName(cursor, rep[0]))          #获取回复人名字
 
     post = []
     for index, p in enumerate(_posts):
-        post.append([p[0], p[1], getData(cursor, 'user', 'uuid', p[4])[1], len(p[7].split(' ')) - 1, _replyuser[index]])
+        post.append([p[0], p[1], getUserName(cursor, p[2]), len(p[3].split(' ')) - 1, _replyuser[index]])
 
     return render_template('userpage/notify.html', info = [post, id])
 
@@ -127,20 +125,21 @@ def showNotice(id):
 def unwarn(id, postid):
     database = getDatabase()
     cursor = database.cursor()
-    userinfo = getData(cursor, 'userinfo', 'uuid', id)
-    if userinfo is None or g.user[0] != userinfo[0]:
+    userinfo = getPartData(cursor, 'userinfo', 'uuid', id, 'warn')
+    if userinfo is None or g.user[0] != id:
         return render_template('404.html'),404
     
     warn = ''
-    warnlist = userinfo[1].split(' ')
-    warnlist.remove('')
-    for w in warnlist:
+    warnlist = userinfo[0].split(' ')
+    if '' in warnlist:
+        warnlist.remove('')
+    for w in warnlist:              #消除已经打开的提醒
         if(not w.startswith(str(postid))):
             warn = warn + ' ' + w
     cursor.execute(
         'UPDATE userinfo SET warn=%s WHERE uuid=%s;', (warn, id,)
     )
-    return redirect(url_for('posts.posts', postid=postid, page=1))
+    return redirect(url_for('posts.posts', postid = postid, page = 1))
 
 @userpagebp.route('/<int:id>/setting', methods=('GET', 'POST'))
 @loginRequired
@@ -148,7 +147,7 @@ def setting(id):
     # 用户设置，允许用户自行更改昵称、头像、密码、邮箱等
     database = getDatabase()
     cursor = database.cursor()
-    user = getData(cursor, 'user', 'uuid', id)
+    user = getPartData(cursor, 'user', 'uuid', id, 'uuid', 'password')
     error = None
     if user is None or g.user[0] != user[0]:
         # 用户不存在 或 无权访问他人设置页面
@@ -159,7 +158,7 @@ def setting(id):
             oldPassword = request.form['oldPassword']               #验证原密码
             newPassword = request.form['newPassword']               #新密码
             newRepassword = request.form['newRepassword']           #新确认密码
-            if not check_password_hash(user[3], oldPassword):
+            if not check_password_hash(user[1], oldPassword):
                 error = '原密码输入有误'
             elif newPassword != newRepassword:
                 error = '两次密码不一致'
@@ -167,8 +166,7 @@ def setting(id):
             if error is None:
                 flash("密码修改成功！")
                 cursor.execute(
-                    'UPDATE user SET password'
-                    '= %s WHERE uuid = %s;'
+                    'UPDATE user SET password = %s WHERE uuid = %s;'
                     , (generate_password_hash(newPassword), user[0])
                 )
                 return redirect(url_for('userpage.setting', id=id))

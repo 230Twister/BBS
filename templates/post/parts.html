@@ -19,7 +19,7 @@
                     <div class="card part mb-1">
 
                         <div class="card-header part-title part-post py-2 " style="border-radius: .6rem .6rem 0 0;">
-                            <i class="fa fa-quote-left fa-fw"></i>&nbsp;技术分享&nbsp;<i
+                            <i class="fa fa-quote-left fa-fw"></i>&nbsp;{{ typename }}&nbsp;<i
                                 class="fa fa-quote-right fa-fw"></i>
                         </div>
                         <ul class="list-group ">
@@ -45,12 +45,12 @@
                     <div class="container">
                         <div class="row page2 mx-auto">
                             <ul class="pagination pagenum2">
-                                {% for i in [1] %}
+                                {% for i in loops %}
                     
                                 {% if i==pages[0] %}
                                 <li><a class="active" href="">{{ i }}</a></li>
                                 {% else %}
-                                <li><a href="{{ url_for('parts.parts',type=1,page=i) }}">{{ i }}</a></li>
+                                <li><a href="{{ url_for('parts.parts',type=type,page=i) }}">{{ i }}</a></li>
                                 {% endif %}
                     
                                 {% endfor %}
