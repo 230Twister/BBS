@@ -184,7 +184,9 @@
     $(function () {
         for (var i = 1; i <= {{ replysize }}; i++) {
         var testView = editormd.markdownToHTML(i.toString(), {
-            htmlDecode: "style,script,iframe"
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true
         });
     }
     var testView = editormd.markdownToHTML("test-markdown-view", {

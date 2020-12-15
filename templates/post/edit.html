@@ -17,10 +17,10 @@
         <div class="row input-group mt-5 justify-content-between" style="margin-right: 0px; margin-left: 0px;">
 
             <select class="col-4 custom-select font-md edit-input" style="border-radius: 15px;" name="type" {% if post != None and g.userinfo[2] != 'admin' and g.userinfo[2] != 'part'~post[2] %}disabled="disabled"{% endif %} required>
-                <option value="1" {% if post != None and post[2] == 1 %}selected="select"{% endif %}>技术分享</option>
-                <option value="2" {% if post != None and post[2] == 2 %}selected="select"{% endif %}>学习生活</option>
-                <option value="3" {% if post != None and post[2] == 3 %}selected="select"{% endif %}>休闲娱乐</option>
-                <option value="4" {% if post != None and post[2] == 4 %}selected="select"{% endif %}>摸鱼灌水</option>
+                <option value="1" {% if post[2] == 1 %}selected="select"{% endif %}>技术分享</option>
+                <option value="2" {% if post[2] == 2 %}selected="select"{% endif %}>学习生活</option>
+                <option value="3" {% if post[2] == 3 %}selected="select"{% endif %}>休闲娱乐</option>
+                <option value="4" {% if post[2] == 4 %}selected="select"{% endif %}>摸鱼灌水</option>
             </select>
 
             <input type="text" class="col-7 form-control font-md edit-input font-title" style="border-radius: 15px;"
