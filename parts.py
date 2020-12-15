@@ -40,13 +40,13 @@ def getPosts(cursor, partdata, page):
     partdata = [partdata[x:x + 15] for x in range(0, length, 15)]   #每页25个帖子
     pagecnt = len(partdata)                 #总共页数
     if pagecnt > 0:
-        partdata = partdata[page - 1]
+        partdata = partdata[page - 1 if page - 1 < pagecnt else 0]
     partinfo = []
 
     for value in partdata:
         user = getData(cursor, 'user', 'uuid', value[2])
         partinfo.append([value[0], value[1], user[1], value[3], len(value[4].split(' '))])    #标题 用户 更新时间 回复数
     
-    return partinfo, [page, pagecnt]
+    return partinfo, [page if page <= pagecnt else 1, pagecnt]
     
 

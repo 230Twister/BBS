@@ -98,7 +98,7 @@ def getReplyInfo(cursor, postdata, page):
     replyidlist = [replyidlist[x:x + 15] for x in range(0, length, 15)]        #分割，每一页15楼
     pagecnt = len(replyidlist)          #总页数
     if pagecnt > 0:
-        replyidlist = replyidlist[page - 1]
+        replyidlist = replyidlist[page - 1 if page - 1 < pagecnt else 0]
     replyinfo = []
 
     for value in replyidlist:
@@ -106,7 +106,7 @@ def getReplyInfo(cursor, postdata, page):
         user = getUserDisplay(  getPartData(cursor, 'user', 'uuid', reply[1], 'uuid', 'name'), 
                                 getPartData(cursor, 'userinfo', 'uuid', reply[1], 'permission', 'point'))
         replyinfo.append([reply, user])         #回复内容与回复人
-    return replyinfo, length, [page, pagecnt]
+    return replyinfo, length, [page if page <= pagecnt else 1, pagecnt]
 
 #获取用户展示使用的信息
 def getUserDisplay(user, info):

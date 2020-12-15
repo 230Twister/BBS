@@ -16,7 +16,7 @@
 
         <div class="row input-group mt-5 justify-content-between" style="margin-right: 0px; margin-left: 0px;">
 
-            <select class="col-4 custom-select font-md edit-input" style="border-radius: 15px;" name="type" {% if post != None and g.userinfo[2] != 'admin' and g.userinfo[2] != 'part'~post[2] %}disabled="disabled"{% endif %} required>
+            <select class="col-4 custom-select font-md edit-input" style="border-radius: 15px;" name="type" {% if post[0] != 0 and g.userinfo[2] != 'admin' and g.userinfo[2] != 'part'~post[2] %}disabled="disabled"{% endif %} required>
                 <option value="1" {% if post != None and post[2] == 1 %}selected="select"{% endif %}>技术分享</option>
                 <option value="2" {% if post != None and post[2] == 2 %}selected="select"{% endif %}>学习生活</option>
                 <option value="3" {% if post != None and post[2] == 3 %}selected="select"{% endif %}>休闲娱乐</option>
@@ -30,7 +30,7 @@
 
         <div id="test-editor" class=" row mt-4">
             <textarea class="col-12" name="content" style="display:none;" required>
-{% if post != None%}{{post[3]}}{% else %}
+{% if post[0] != 0%}{{post[3]}}{% else %}
 ### 这是小标题🧑
 **这是粗体❤**
 
@@ -53,7 +53,7 @@ Hello World!
 
     <div class="row justify-content-end mx-2 mt-3 mb-2">
         <button type="submit" class="edit-submit-bnt px-3 my-2 button-hover">
-        {% if post != None %}保&nbsp;&nbsp;&nbsp;存{% else %}发&nbsp;&nbsp;&nbsp;布{% endif %}
+        {% if post[0] != 0 %}保&nbsp;&nbsp;&nbsp;存{% else %}发&nbsp;&nbsp;&nbsp;布{% endif %}
         </button>
     </div>
 </form>
@@ -62,7 +62,8 @@ Hello World!
 
 {% block js %}
 
-<script src="{{ url_for('static', filename='editormd/editormd.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='editormd/editormd.js') }}"></script> -->
+<script src="https://cdn.bootcdn.net/ajax/libs/editor-md/1.5.0/editormd.min.js"></script>
 
 <script type="text/javascript">
     $(function () {
