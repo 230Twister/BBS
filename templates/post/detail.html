@@ -129,6 +129,17 @@
                     <i class="fa fa-clock-o fa-fw"></i>发表于{{ reply[0][3] }}&nbsp;&nbsp;&nbsp;</div>
             </div>
 
+            <div class="row px-3 pt-1">
+                <div class="col-12 text-right" style="font-size: 13px;">
+                    {% if g.user %}
+                    {% if g.userinfo[2]=='part'~postdata[2] or g.userinfo[2]=='admin'%}
+                    <a href="{{ url_for('edit.delreply', id=postdata[0] ,replyid=reply[0][0]) }}"><i
+                            class="fa fa-trash fa-fw"></i>删除</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
             <div class="posttext border-0 mb-md-4 px-1" id="{{ loop.index }}">
                 <textarea>
 {{ reply[0][2] }}

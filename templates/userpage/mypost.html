@@ -25,6 +25,8 @@
         <div class="col-md-10 my-md-5 my-3 mx-auto px-md-5 px-0">
             <div class="card part">
                 {% if g.user[0]== info[1] %}
+
+                {% if info[0] %}
                 <div class="card-header part-title part-post py-2 part-enter"
                     style="border-radius: .6rem .6rem 0 0;">
                     我的帖子
@@ -32,10 +34,27 @@
                 {% else %}
                 <div class="card-header part-title part-post py-2 part-enter"
                     style="border-radius: .6rem .6rem 0 0;">
-                    用户帖子
+                    无帖子
                 </div>
                 {% endif %}
+                
+                {% else %}
+
+                {% if info[0] %}
+                <div class="card-header part-title part-post py-2 part-enter"
+                    style="border-radius: .6rem .6rem 0 0;">
+                    用户帖子
+                </div>
+                {% else %}
+                <div class="card-header part-title part-post py-2 part-enter"
+                    style="border-radius: .6rem .6rem 0 0;">
+                    无帖子
+                </div>
+                {% endif %}
+
+                {% endif %}
                 <ul class="list-group ">
+                    {% if info[0] %}
                     {% for post in info[0] %}
                     <li class="list-group-item part-post">
                         <div class="row justify-content-between">
@@ -51,6 +70,15 @@
                         </div>
                     </li>
                     {% endfor %}
+                    {% else %}
+                    <li class="list-group-item part-post">
+                        <div class="row justify-content-between">
+                            <div class="col-12 text-truncate post-title py-3">
+                            
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
