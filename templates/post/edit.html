@@ -30,23 +30,16 @@
 
         <div id="test-editor" class=" row mt-4">
             <textarea class="col-12" name="content" style="display:none;" required>
-{% if post[0] != 0%}{{post[3]}}{% else %}
-### 这是小标题🧑
-**这是粗体❤**
+{% if post[0] != 0%}{{post[3]}}{% else %}### Title🧑
+**Bold❤**
+> quote🎁
 
-> 这是引用🎁
-
-*斜体不用我多说了吧*
-
-~~我被删除了😅~~
-
+*Italic🧨*
+~~Del😅~~
+```c++
+cout<<"Hello World!🥳";
 ```
-Hello World!
-这里放代码🥳
-```
-![图片](http://cdn.jsdelivr.net/gh/LastDance-Miss/image/img04/20200603121555.png)
-{% endif %}
-</textarea>
+![图片](http://cdn.jsdelivr.net/gh/LastDance-Miss/image/img04/20200603121555.png){% endif %}</textarea>
         </div>
 
     </div>
@@ -72,13 +65,13 @@ Hello World!
             height: 600,
             imageUpload: true,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            tex: true,                   // 开启科学公式TeX语言支持，默认关闭
-            flowChart: true,             // 开启流程图支持，默认关闭
-            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭
+            tex: false,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart: false,             // 开启流程图支持，默认关闭
+            sequenceDiagram: false,       // 开启时序/序列图支持，默认关闭
             imageUploadURL: "{{ url_for('edit.upload') }}",  
             path: "{{ url_for('static',filename='editormd/lib/') }}",
             toolbarIcons: function () {
-                return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "|", "h1", "h2", "h3", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link", "image", "code", "code-block", "table", "datetime", "emoji", "html-entities", "|", "goto-line", "watch", "preview", "clear", "search", "|", "help", "info"]
+                return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "|", "list-ul", "list-ol", "hr", "|", "link", "image", "code", "code-block", "table", "datetime", "emoji", "|", "watch", "preview", "clear", "search", "|", "help"]
             }
         });
     });
