@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, redirect, url_for
 from flask_mail import Mail
+from datetime import timedelta
 
 mail = None         #邮件发送对象
 
@@ -9,8 +10,9 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
 
     app.config.from_mapping(  #默认配置
-        SECRET_KEY="dev",
+        SECRET_KEY="woaixuexiaaajikedao666",
         MAX_CONTENT_LENGTH=1 * 1024 * 1024, #限制上传文件大小1M
+        PERMANENT_SESSION_LIFETIME = timedelta(hours=24),
 
         HOST="127.0.0.1",                   #Mysql数据库设置
         PORT=3306,

@@ -20,9 +20,15 @@ def posts(postid, page):
     #楼主信息
     hostinfo = getUserDisplay(  getPartData(cursor, 'user', 'uuid', postdata[4], 'uuid', 'name'), 
                                 getPartData(cursor, 'userinfo', 'uuid', postdata[4], 'permission', 'point'))
-    cursor.execute(
-        'UPDATE post SET visit = %s WHERE id = %s;'     #更新阅读量
-        ,(int(postdata[8]) + 1, postdata[0]))
+    
+    if postid not in session['posts']:
+        cursor.execute(
+            'UPDATE post SET visit=visit+1 WHERE id = %s;'     #更新阅读量
+            , (postdata[0]),)
+        temp = session['posts']
+        temp.append(postid)
+        session['posts'] = temp
+    
     replyinfo, replysize, pages = getReplyInfo(cursor, postdata, page)
     isCollect = checkUserCollect(cursor, postid)        #是否有收藏
     return render_template( 'post/detail.html',
@@ -31,7 +37,7 @@ def posts(postid, page):
                             replyinfo = replyinfo,          #帖子回复信息
                             pages = pages,                  #当前页数与总页数
                             loops = range(1, pages[1] + 1),
-                            iscollect = isCollect,
+                            iscollect = isCollect,          #当前帖子是否被观看者收藏
                             hostinfo = hostinfo)            #楼主信息
 
 @postsbp.route('/<int:postid>/collect')

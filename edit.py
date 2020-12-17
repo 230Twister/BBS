@@ -13,13 +13,10 @@ editbp = Blueprint('edit', __name__, url_prefix='/edit')
 @editbp.route('/<int:part>/create', methods=('GET','POST'))
 @loginRequired
 def create(part):
-    if part < 1 or part > 4:
+    if part < 1 or part > 4 or g.userinfo[2] == 'ban':
         return render_template('404.html')
     database = getDatabase()
     cursor = database.cursor()
-
-    if g.userinfo[2] == 'ban':
-        return render_template('404.html')
 
     if request.method == 'POST':
         title = request.form['title']       #标题

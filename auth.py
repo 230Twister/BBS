@@ -145,7 +145,7 @@ def imageCode():
 #登出
 @authbp.route('/logout')
 def logout():
-    if session['userID']:
+    if 'userID' in session.keys():
         session.clear()
     return redirect(url_for('index.index'))
 
@@ -153,6 +153,9 @@ def logout():
 def loadLoginedUser():
     user = session.get('userID')
     userinfo = session.get('userInfo')
+    session.permanent = True            #开启持久化session
+    if 'posts' not in session.keys():
+        session['posts'] = []           #记录阅读过的帖子
     if user is None:
         g.user = None
         g.userinfo = None
