@@ -107,7 +107,7 @@
                 <ul class="navbar-nav navbar-bbs">
 
                     <li class="nav-item item-hover active ">
-                        <a class="nav-link" href="{{ url_for('edit.create', part=1) }}"><i
+                        <a class="nav-link"  {%if g.userinfo[2]!='ban'%}href="{{ url_for('edit.create', part=1) }}"{%endif%}><i
                                 class="fa fa-pencil-square-o fa-fw"></i>发帖</a>
                     </li>
 

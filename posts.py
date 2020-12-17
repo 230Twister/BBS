@@ -7,7 +7,6 @@ from .database import getDatabase
 from .api import getData, getPartData, getGroupName
 postsbp = Blueprint('posts', __name__, url_prefix='/posts')
 
-
 @postsbp.route('/<int:postid>/posts/<int:page>')  #标注编号
 def posts(postid, page):
     database = getDatabase()
@@ -18,6 +17,7 @@ def posts(postid, page):
     if postdata is None:
         return render_template('404.html'), 404
     
+    #楼主信息
     hostinfo = getUserDisplay(  getPartData(cursor, 'user', 'uuid', postdata[4], 'uuid', 'name'), 
                                 getPartData(cursor, 'userinfo', 'uuid', postdata[4], 'permission', 'point'))
     cursor.execute(
@@ -62,7 +62,7 @@ def uncollect(postid):
 @postsbp.route('/<int:postid>/reply', methods=('GET', 'POST'))
 @loginRequired
 def reply(postid):
-    if request.method == 'POST':
+    if request.method == 'POST' and g.userinfo[2] != 'ban':
         database = getDatabase()
         cursor = database.cursor()
         postdata = getPartData(cursor, 'post', 'id', postid, 'id', 'userid')        #当前帖子id与楼主uuid

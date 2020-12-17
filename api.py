@@ -131,5 +131,7 @@ def getGroupName(name):
         return '管理员'
     elif name == 'normal':
         return '普通会员'
+    elif name == 'ban':
+        return '禁言状态'
     else:
         return '版主'

@@ -71,11 +71,11 @@
                         <div class="row px-3 pt-1">
                             <div class="col-12 text-right" style="font-size: 13px;">
                                 {% if g.user %}
-                                {% if g.userinfo[2]=='admin'%}
+                                {% if g.userinfo[2]!='normal' and g.userinfo[2]!='ban'%}
 
-                                <a href="#"><i class="fa fa-ban fa-fw"></i>禁言</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{ url_for('userpage.setGroup', id=userpagedata[0][0], group='ban') }}"><i class="fa fa-ban fa-fw"></i>禁言</a>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                <a href="#"><i class="fa fa-ban fa-fw"></i>解除禁言</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{ url_for('userpage.setGroup', id=userpagedata[0][0], group='unban') }}"><i class="fa fa-ban fa-fw"></i>解除禁言</a>&nbsp;&nbsp;&nbsp;&nbsp;
                                 
                                 {% endif %}
                                 {% endif %}

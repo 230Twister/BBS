@@ -7,7 +7,9 @@
 <div class="container body-guide font-400">
     <div class="row ">
         <div class="col-md-12">
-            <a href="{{ url_for('edit.create', part=type) }}" class="button ml-md-4 " style="float: left;"><i class="fa fa-edit fa-fw"></i>发帖</a>
+            {% if g.user %}
+            <a {%if g.userinfo[2]!='ban'%}href="{{ url_for('edit.create', part=type) }}"{%endif%} class="button ml-md-4 " style="float: left;"><i class="fa fa-edit fa-fw"></i>发帖</a>
+            {% endif %}
         </div>
     </div>
 </div>

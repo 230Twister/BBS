@@ -6,7 +6,7 @@ from PIL import Image
 
 from .auth import loginRequired
 from .database import getDatabase
-from .api import readImg, uploadImg, getData
+from .api import readImg, uploadImg, getData, getPartData
 
 editbp = Blueprint('edit', __name__, url_prefix='/edit')
 
@@ -43,11 +43,8 @@ def create(part):
 def edit(id):
     database = getDatabase()
     cursor = database.cursor()
-    cursor.execute(
-        'SELECT * FROM post WHERE id=%s;' ,(id,)
-    )
-    post = cursor.fetchone()
-    if not hasPermission(post):                     #检查是否有权限
+    post = getData(cursor, 'post', 'id', id)
+    if post is None or not hasPermission(post[4], post[2]):         #检查是否有权限
         return render_template('404.html')          #返回404
 
     if request.method == 'POST':
@@ -76,14 +73,44 @@ def edit(id):
 def delete(id):
     database = getDatabase()
     cursor = database.cursor()
-    post = getData(cursor, 'post', 'id', id)        #获取帖子信息
-    if not hasPermission(post):                     #检查是否有权限
+    post = getPartData(cursor, 'post', 'id', id, 'userid', 'type', 'reply')     #获取帖子信息
+    if post is None or not hasPermission(post[0], post[1]):                     #检查是否有权限
         return render_template('404.html')          #返回404
+
+    replys = post[2].split(' ')
+    for reply in replys:                            #删除该帖子的所有回复
+        if reply != '':
+            cursor.execute(
+                'DELETE FROM reply WHERE id=%s;', (reply,)
+            )
 
     cursor.execute(
         'DELETE FROM post WHERE id=%s;', (id,)
     )
-    return redirect(url_for('index.index'))
+    return redirect(url_for('parts.parts', type = post[1], page = 1))
+
+@editbp.route('/<int:id>/delreply/<int:replyid>')
+@loginRequired
+def delreply(id, replyid):          #删除回复
+    database = getDatabase()
+    cursor = database.cursor()
+    post = getPartData(cursor, 'post', 'id', id, 'userid', 'type', 'reply')              #获取帖子信息
+    reply = getPartData(cursor, 'reply', 'id', replyid, 'id')
+    if reply is None or post is None or not hasPermission(post[0], post[1]):    #检查是否有权限
+        return render_template('404.html')          #返回404
+
+    cursor.execute(
+        'DELETE FROM reply WHERE id=%s;', (replyid,)    #删除回复
+    )
+    replylist = post[2].split(' ')
+    if '' in replylist:
+        replylist.remove('')
+    replylist.remove(str(replyid))
+    cursor.execute(
+        'UPDATE post SET reply=%s WHERE id=%s;', (' '.join(replylist), id,)     #从帖子中删除回复
+    )
+
+    return redirect(url_for('posts.posts', postid = id, page = 1))
 
 @editbp.route('/upload', methods=('GET', 'POST'))
 @loginRequired
@@ -111,12 +138,10 @@ def image(id, name):
     return readImg(id, name)
 
 #检查用户是否有对帖子的操作权限
-def hasPermission(post):
-    if post is None:
-        return False
+def hasPermission(userid, typep):
     if g.userinfo[2] == 'ban':
         return False
-    if post[4] != g.user[0] and g.userinfo[2] != 'admin' and g.userinfo[2] != 'part' + str(post[2]):
+    if userid != g.user[0] and g.userinfo[2] != 'admin' and g.userinfo[2] != 'part' + str(typep):
         return False
     return True
 

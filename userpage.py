@@ -76,7 +76,7 @@ def showPosts(id):
     if getUserName(cursor, id) is None:
         return render_template('404.html'),404
 
-    # 显示用户所有帖子
+    # 获取用户所有帖子
     cursor.execute(
         'SELECT id,title,userid,reply FROM post WHERE userid=%s;', (id, )
     )
@@ -183,3 +183,26 @@ def setting(id):
                 flash("上传图片格式错误或大小超限！")
 
     return render_template('userpage/setting.html', userdata={ "id":id })
+
+@userpagebp.route('/<int:id>/setgroup/<group>')
+@loginRequired
+def setGroup(id, group):        #设置禁言和解除禁言
+    database = getDatabase()
+    cursor = database.cursor()
+    username = getUserName(cursor, id)
+    oldgroup = getPartData(cursor, 'userinfo', 'uuid', id, 'permission')
+    if  username is None       or\
+        g.userinfo[2] == 'ban' or g.userinfo[2] == 'normal' or\
+        (group != 'ban'        and group != 'unban'        )or\
+        oldgroup[0] == 'admin':
+        return render_template('404.html'),404
+    if oldgroup[0].startswith('part') and g.userinfo[2].startswith('part'):
+        return render_template('404.html'),404
+
+    group = 'normal' if group == 'unban' else group
+    cursor.execute(
+        'UPDATE userinfo SET permission=%s WHERE uuid=%s;', (group, id,)
+    )
+    return redirect(url_for('userpage.showUserpage', id=id))
+
+
