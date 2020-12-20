@@ -60,11 +60,11 @@ def findLatestPosts(cursor, type):
 
 
 def findHighestPoints(cursor):
-    # 从userinfo中按积分排序，取积分最高的15个用户
+    # 从userinfo中按积分排序，取积分最高的10个用户
     cursor.execute(
         'SELECT uuid,point FROM userinfo ORDER BY point DESC LIMIT 16;'
     )
-    users = cursor.fetchmany(15)
+    users = cursor.fetchmany(10)
     user = []
     for u in users:
         user.append([u[0], findUser(cursor, u[0])[1], u[1]])

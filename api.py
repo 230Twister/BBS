@@ -84,7 +84,7 @@ def uploadImg(uuid, name, file):
         ext = os.path.splitext(file.filename)[1]
         filename = name + ext
         current_path = os.path.abspath(os.path.dirname(__file__))       #获取当前文件夹绝对路径
-        filedir = os.path.join(current_path, 'data/img')               #获取保存图片的路径
+        filedir = os.path.join(current_path, 'data/img')                #获取保存图片的路径
         filepath = os.path.join(filedir, str(uuid))                     #获取当前用户保存图片的路径
         if not os.path.exists(filepath):
             os.mkdir(filepath)
@@ -95,7 +95,7 @@ def uploadImg(uuid, name, file):
 def readImg(uuid, name):                                                    #uuid区分不同用户的id，name区分图片名称
     current_path = os.path.abspath(os.path.dirname(__file__))
     filedir = os.path.join(current_path, 'data/img')
-    filepath = os.path.join(filedir, str(uuid))                                  #获取图片文件路径
+    filepath = os.path.join(filedir, str(uuid))                             #获取图片文件路径
 
     if os.path.exists(os.path.join(filepath, name)):
         with open(os.path.join(filepath, name), 'rb') as f:
@@ -130,11 +130,13 @@ def getUserName(cursor, uuid):
 
 #获取用户组名字
 def getGroupName(name):
-    if name == 'admin':
-        return '管理员'
-    elif name == 'normal':
-        return '普通会员'
-    elif name == 'ban':
-        return '禁言状态'
-    else:
-        return '版主'
+    groupdic = {
+        'admin': '管理员',
+        'normal': '普通会员',
+        'ban': '禁言状态',
+        'part1': '技术分享 版主',
+        'part2': '学习生活 版主',
+        'part3': '休闲娱乐 版主',
+        'part4': '摸鱼灌水 版主'
+    }
+    return groupdic[name]
