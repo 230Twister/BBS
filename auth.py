@@ -122,7 +122,7 @@ def login():
 
         if user is None or not check_password_hash(user[1], password):
             error = '用户名或密码错误！'
-        elif vcode.lower() !=  session['imageCode'].lower():
+        elif 'imageCode' not in session.keys() or vcode.lower() !=  session['imageCode'].lower():
             error = '验证码错误！'
 
         if error is None:

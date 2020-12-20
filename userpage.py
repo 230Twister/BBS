@@ -78,7 +78,7 @@ def showPosts(id):
 
     # 获取用户所有帖子
     cursor.execute(
-        'SELECT id,title,userid,reply FROM post WHERE userid=%s;', (id, )
+        'SELECT id,title,userid,reply FROM post WHERE userid=%s ORDER BY posttime DESC;', (id, )
     )
     _posts = cursor.fetchall()
 
