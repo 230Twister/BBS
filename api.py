@@ -1,4 +1,4 @@
-from flask import make_response, session, Response, request, g, url_for
+from flask import make_response, session, Response, request, g, url_for, render_template
 from flask_mail import Message
 import random
 import string
@@ -54,9 +54,11 @@ class ImageCode():
 def generateCode() -> str:
     return ''.join(random.sample(string.ascii_letters + string.digits, 4))
 
+#发送邮件
 def sendMail(app, desemail, captcha):
     with app.app_context():
-        message = Message(subject = '论坛验证码', recipients=[desemail], body='您的验证码是 %s 请在五分钟内进行验证' % captcha)
+        message = Message(subject = 'XXBBS注册验证码', recipients=[desemail])
+        message.html = render_template('auth/emailcode.html', code=captcha)
         mail.send(message)
 
 #上传图片
@@ -118,6 +120,7 @@ def getPartData(cursor, table, key, value, *data):
     )
     return cursor.fetchone()
 
+#获取用户名字
 def getUserName(cursor, uuid):
     cursor.execute(
         'SELECT name FROM user WHERE uuid=%s;', (uuid,)

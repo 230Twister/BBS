@@ -190,13 +190,13 @@ def setGroup(id, group):        #设置禁言和解除禁言
     database = getDatabase()
     cursor = database.cursor()
     username = getUserName(cursor, id)
-    oldgroup = getPartData(cursor, 'userinfo', 'uuid', id, 'permission')
+    oldgroup = getPartData(cursor, 'userinfo', 'uuid', id, 'permission')    #被操作人的原来用户组
+    error = None       #错误信息
     if  username is None       or\
         g.userinfo[2] == 'ban' or g.userinfo[2] == 'normal' or\
         (group != 'ban'        and group != 'unban'        )or\
-        oldgroup[0] == 'admin':
-        return render_template('404.html'),404
-    if oldgroup[0].startswith('part') and g.userinfo[2].startswith('part'):
+        oldgroup[0] == 'admin' or\
+        (oldgroup[0].startswith('part') and g.userinfo[2].startswith('part')):
         return render_template('404.html'),404
 
     group = 'normal' if group == 'unban' else group
