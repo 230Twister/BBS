@@ -77,7 +77,7 @@
 
     - 支持积分排行榜
 
-    <img src="https://img-blog.csdnimg.cn/20201220205751940.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom: 67%;" />
+    <img src="https://img-blog.csdnimg.cn/20201220205751940.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center" alt="" style="zoom: 67%;" />
 
 - 帖子详情页面
 
@@ -99,9 +99,9 @@
 
 - 支持移动端
 
-    <img src="https://img-blog.csdnimg.cn/20201220220314397.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_5,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:25%;" />
+    <img src="https://img-blog.csdnimg.cn/20201220220314397.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_5,color_FFFFFF,t_70#pic_center" alt="" style="zoom:25%;" />
 
-<img src="https://img-blog.csdnimg.cn/20201220220314396.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:25%;" />
+    <img src="https://img-blog.csdnimg.cn/20201220220314396.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center" alt="" style="zoom:25%;" />
 
 ### At Last
 
