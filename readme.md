@@ -1,7 +1,7 @@
-## 基于FLASK的BBS框架
+## 基于FLASK的小型BBS
 ²³³³³³   ₂₃₃₃₃ 
 
-🎃上海某前三985计科导大作业懂的都懂
+🎃上海某985大作业懂的都懂
 
 ### 简介
 
@@ -31,7 +31,7 @@
 
 + 2020/12/15🍳 **无数次的测试完善和改bug**
 
-### 功能(多图警告⚠)
+### 功能(多图警告⚠)(好吧，图片可能不能显示😥)
 
 - 首页
 
@@ -61,19 +61,19 @@
 
 - 回帖功能(回帖部分也使用了相对简洁的markdown编辑):
 
-    ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201220203335688.gif#pic_center)
+    ![](https://img-blog.csdnimg.cn/20201220203335688.gif#pic_center)
 
 - 用户主页
 
     - 用户可以查看通知(自己的帖子有无新回复)，自己发的帖子，收藏的帖子
 
-    ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201220203757546.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
+    ![](https://img-blog.csdnimg.cn/20201220203757546.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
 
     - 支持用户的积分制与升级，积分规则：参与发帖或者回复均可增加指定积分，积分累加可升级
 
     - 支持上传头像
 
-    ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201220215421345.gif#pic_center)
+    ![](https://img-blog.csdnimg.cn/20201220215421345.gif#pic_center)
 
     - 支持积分排行榜
 
@@ -83,9 +83,9 @@
 
     支持`markdown`转`html`渲染
 
-    ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201220210118875.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
+    ![](https://img-blog.csdnimg.cn/20201220210118875.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
 
-    ![在这里插入图片描述](https://img-blog.csdnimg.cn/2020122021104423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
+    ![](https://img-blog.csdnimg.cn/2020122021104423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
 
 - 权限功能
 
@@ -95,7 +95,7 @@
 
     版主可增删本板块的帖子，移动本版块的帖子，可以禁言普通用户
 
-    ![在这里插入图片描述](https://img-blog.csdnimg.cn/20201220214554426.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
+    ![](https://img-blog.csdnimg.cn/20201220214554426.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhb1pob25naGFv,size_16,color_FFFFFF,t_70#pic_center)
 
 - 支持移动端
 
@@ -107,4 +107,3 @@
 
 - 第一次用git合作开发，有点不熟悉，水了好多次commit
 - 其实还有一些细节未完善，还请大家多多提issue(卑微求star⭐)
-
