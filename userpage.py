@@ -106,13 +106,22 @@ def showNotice(id):
     _posts = []
     _replyuser = []
     length = len(_warn)
-    for i in range(0,length):
+    for i in range(length - 1, -1, -1):
         tmp = _warn[i].split(":")
-        _posts.append(
-            getPartData(cursor, 'post', 'id', tmp[0], 'id', 'title', 'userid', 'reply')
-            )    #获取被回复帖子信息
-        rep = getPartData(cursor, 'reply', 'id', tmp[1], 'userid')
-        _replyuser.append(getUserName(cursor, rep[0]))          #获取回复人名字
+        rpost = getPartData(cursor, 'post', 'id', tmp[0], 'id', 'title', 'userid', 'reply')
+        if rpost is None:
+            del _warn[i]            #删除不存在的帖子
+        else:                                    
+            rep = getPartData(cursor, 'reply', 'id', tmp[1], 'userid')
+            if rep is None:
+                del _warn[i]        #删除不存在的回复
+            else:
+                _posts.append(rpost)                                #获取被回复帖子信息
+                _replyuser.append(getUserName(cursor, rep[0]))      #获取回复人名字
+    
+    cursor.execute(
+        'UPDATE userinfo SET warn=%s WHERE uuid=%s;', (' '.join(_warn), id,)
+    )           #清除已被删除的帖子与回复
 
     post = []
     for index, p in enumerate(_posts):

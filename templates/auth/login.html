@@ -29,10 +29,10 @@
 
                             {% if userdata.username == '0' %}
                             <input type="text" id="inputEmail" class="form-control" placeholder="电子邮箱/用户名"
-                            maxlength="12" name="username" style="flex:1; font-size: 14px;" autofocus required>
+                            maxlength="20" name="username" style="flex:1; font-size: 14px;" autofocus required>
                             {% else %}
                             <input type="text" id="inputEmail" class="form-control" placeholder="电子邮箱/用户名"
-                            maxlength="12" name="username" style="flex:1; font-size: 14px;" value="{{ userdata.username }}"
+                            maxlength="20" name="username" style="flex:1; font-size: 14px;" value="{{ userdata.username }}"
                                 autofocus required>
                             {% endif %}
 
